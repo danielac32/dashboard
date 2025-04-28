@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'controller/dashboard_menu.dart';
 import 'widget/drawer_header.dart';
 import '../../infrastructure/entities/user.dart';
 import 'widget/item_widget.dart';
@@ -12,7 +13,9 @@ import 'widget/items_user/items_user.dart';
 
 
 class DashboardAdmin extends StatelessWidget {
-  const DashboardAdmin({super.key});
+   DashboardAdmin({super.key});
+  final  menuControllerScreen = Get.put(MenuControllerScreen());
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +37,73 @@ class DashboardAdmin extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
-        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.home),
+              tooltip: 'Inicio',
+              onPressed: () {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
+            // Para Quiénes Somos
+            IconButton(
+              icon: const Icon(Icons.people),
+              tooltip: 'Quiénes Somos',
+              onPressed: () {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
+
+            // Para Contáctanos
+            IconButton(
+              icon: const Icon(Icons.contact_mail),
+              tooltip: 'Contáctanos',
+              onPressed: () {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
+
+            // Para Multimedia
+            IconButton(
+              icon: const Icon(Icons.collections),
+              tooltip: 'Multimedia',
+              onPressed: () {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
+
+            // Para Publicaciones
+            IconButton(
+              icon: const Icon(Icons.article),
+              tooltip: 'Publicaciones',
+              onPressed: () {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.newspaper),
+              tooltip: 'Noticias',
+              onPressed: () {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
+              },
+            )
+          ],
+        ),
+        //centerTitle: true,
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(Icons.menu),
@@ -46,6 +114,10 @@ class DashboardAdmin extends StatelessWidget {
         ),
         backgroundColor: colors.primary,
         foregroundColor: colors.onPrimary,
+        actions: <Widget>[
+
+
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -62,7 +134,11 @@ class DashboardAdmin extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
+      body: Obx((){
+        return menuControllerScreen.screens[menuControllerScreen.currentIndex.value];
+      }),
+      //  body: Home()
+      /*Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
@@ -95,8 +171,50 @@ class DashboardAdmin extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      ),*/
 
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: colors.shadow,
+            ),
+
+            child: SizedBox(
+              height: 100,
+              width: 100,
+              child: Center(child: Text("cuadro 1"),),
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: colors.onSecondaryContainer,
+
+            ),
+            child: SizedBox(
+              height: 100,
+              width: 100,
+              child: Center(child: Text("cuadro 2"),),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -6,5 +6,8 @@
 run:
     flutter run -d linux
 
+runweb:
+    flutter build web
+
 build:
     flutter build web

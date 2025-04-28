@@ -17,7 +17,6 @@ class AppRoutes {
   // Lista de rutas para GetPages
   static final List<GetPage> routes = [
     GetPage(name: login, page: () => LoginScreen()),
-    //GetPage(name: register, page: () => RegisterScreen()),
     GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
     GetPage(name: dashboardUser, page: () => DashboardUser()),
   ];
