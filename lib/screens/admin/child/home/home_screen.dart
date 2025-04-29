@@ -246,10 +246,130 @@ class HomeScreen extends StatelessWidget {
 
         const SizedBox(width: 20),
 
-        // Aside (destacados)
+        // Columna para los asides y el contenedor adicional
         Expanded(
           flex: 1,
-          child: _buildAsideSection(),
+          child: Column(
+            children: [
+              // Fila con los dos asides
+              Row(
+                children: [
+                  Expanded(child: _buildAsideSection()),
+                  const SizedBox(width: 5),
+                  Expanded(child: _buildAsideSection()),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              // Contenedor adicional que querías agregar
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 5,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Contenedor Adicional',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text('La Ingeniería de Sistemas es una disciplina que integra conocimientos de ingeniería y ciencias de la computación para diseñar, desarrollar, y gestionar sistemas complejos, que pueden ser desde software y redes de computadoras hasta procesos de negocios. Su objetivo principal es optimizar el rendimiento de los sistemas, utilizando herramientas y técnicas modernas para lograr eficiencia y economía. '),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('algo'),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Contenedor adicional que querías agregar
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 5,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Contenedor Adicional',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text('La Ingeniería de Sistemas es una disciplina que integra conocimientos de ingeniería y ciencias de la computación para diseñar, desarrollar, y gestionar sistemas complejos, que pueden ser desde software y redes de computadoras hasta procesos de negocios. Su objetivo principal es optimizar el rendimiento de los sistemas, utilizando herramientas y técnicas modernas para lograr eficiencia y economía. '),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('algo'),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Contenedor adicional que querías agregar
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 5,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Contenedor Adicional',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text('La Ingeniería de Sistemas es una disciplina que integra conocimientos de ingeniería y ciencias de la computación para diseñar, desarrollar, y gestionar sistemas complejos, que pueden ser desde software y redes de computadoras hasta procesos de negocios. Su objetivo principal es optimizar el rendimiento de los sistemas, utilizando herramientas y técnicas modernas para lograr eficiencia y economía. '),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('algo'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -279,7 +399,7 @@ class HomeScreen extends StatelessWidget {
           //carouselController: controller,
           itemCount: controller.items.length,
           options: CarouselOptions(
-            height: 200.0,
+            height: 400.0,
             autoPlay: true,
             aspectRatio: 16/9,
             viewportFraction: 1.0,
@@ -418,9 +538,20 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         // Contenedor con scroll para los artículos
+        Center(
+            child: const Text(
+              'Artículos',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ),
         Container(
-          height: 400, // Altura fija para el área de scroll
+          height: 600, // Altura fija para el área de scroll
+
           decoration: BoxDecoration(
+
             borderRadius: BorderRadius.circular(12),
             color: Colors.white,
             boxShadow: [
@@ -578,6 +709,8 @@ class HomeScreen extends StatelessWidget {
 
   // Sección aside (destacados)
   Widget _buildAsideSection() {
+    //final double screenHeight = MediaQuery.of(context).size.height;
+    //final double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Card(
@@ -617,9 +750,9 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 16),
-        Container(
+       /* Container(
           height: 400, // Altura fija
+          width: 260,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Colors.white,
@@ -640,8 +773,34 @@ class HomeScreen extends StatelessWidget {
               contentPadding: const EdgeInsets.symmetric(horizontal: 16), // Añadir padding
             ),
           ),
-        )
+        ),
+        const SizedBox(height: 16),
+        Container(
+          height: 400, // Altura fija
+          width: 260,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: ListView.builder( // Directamente ListView sin Column
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: 20,
+            itemBuilder: (context, index) => ListTile(
+              title: Text('Item $index'),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16), // Añadir padding
+            ),
+          ),
+        )*/
       ],
     );
   }
 }
+
