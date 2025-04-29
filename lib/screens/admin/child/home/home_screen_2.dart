@@ -91,7 +91,10 @@ class _MainLayoutState extends State<MainLayout> {
                 // Barra lateral (visible solo en pantallas grandes cuando _showSidebar es true)
                 if (!isSmallScreen && _showSidebar)
                   Container(
-                    color: Colors.green[100],
+                    decoration: BoxDecoration(
+                      color: Colors.green[100],
+                      borderRadius: BorderRadius.circular(20), // Radio de los bordes
+                    ),
                     width: 200, // Ancho fijo para el sidebar
                     child: _buildSidebarContent(),
                   ),
@@ -100,7 +103,10 @@ class _MainLayoutState extends State<MainLayout> {
                 // Contenido principal
                 Expanded(
                   child: Container(
-                    color: Colors.orange[100],
+                    decoration: BoxDecoration(
+                      color: Colors.orange[100],
+                      borderRadius: BorderRadius.circular(20), // Radio de los bordes
+                    ),
                     child: _buildContentSection(),
                   ),
                 ),
@@ -109,7 +115,11 @@ class _MainLayoutState extends State<MainLayout> {
                 if (!isSmallScreen) const SizedBox(width: 5),
                 if (!isSmallScreen)
                   Container(
-                    color: Colors.purple[100],
+                    decoration: BoxDecoration(
+                      color: Colors.purple[100],
+                      borderRadius: BorderRadius.circular(20), // Radio de los bordes
+                    ),
+
                     width: 200, // Ancho fijo para la barra derecha
                     child: _buildRightSidebar(),
                   ),
