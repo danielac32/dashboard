@@ -199,8 +199,8 @@ class Content extends StatelessWidget {
 
 
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen2 extends StatelessWidget {
+  const HomeScreen2({super.key});
 
   @override
   Widget build(BuildContext context) {

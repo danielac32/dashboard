@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../child/home/home_screen.dart';
+import '../child/home/home_screen_2.dart';
 
 
 class MenuControllerScreen extends GetxController {
