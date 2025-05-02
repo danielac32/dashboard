@@ -398,6 +398,10 @@ class _HomePageState extends State<HomePage> {
                           _buildNewsCard(),
                           _buildNewsCard(),
                           _buildNewsCard(),
+                          _buildNewsCard(),
+                          _buildNewsCard(),
+                          _buildNewsCard(),
+                          _buildNewsCard(),
                         ],
                       ),
                     ],
@@ -496,42 +500,46 @@ class _HomePageState extends State<HomePage> {
           ),
 
           // Navbar fijo en la parte superior
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: _isNavExpanded ? 70 : 60,
-              color: Colors.white.withOpacity(0.9),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    const FlutterLogo(size: 40), // Logo
-                    const Spacer(),
-                    _buildNavLink('Inicio'),
-                    _buildNavLink('Nosotros'),
-                    _buildNavLink('Publicaciones'),
-                    _buildNavLink('Noticias'),
-                    _buildNavLink('Contáctanos'),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          Navbar(),
 
           // Botón para volver arriba
           if (_showBackToTop)
             Positioned(
               bottom: 20,
-              right: 20,
+              right: 50,
               child: FloatingActionButton(
                 onPressed: _scrollToTop,
                 child: const Icon(Icons.arrow_upward),
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Widget Navbar(){
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        height: _isNavExpanded ? 70 : 60,
+        color: Colors.white.withOpacity(0.9),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              const FlutterLogo(size: 40), // Logo
+              const Spacer(),
+              _buildNavLink('Inicio'),
+              _buildNavLink('Nosotros'),
+              _buildNavLink('Publicaciones'),
+              _buildNavLink('Noticias'),
+              _buildNavLink('Contáctanos'),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -548,6 +556,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+
+
 /*
   Widget _buildCarouselItem(String image, String title) {
     return Stack(
