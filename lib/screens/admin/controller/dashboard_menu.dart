@@ -10,7 +10,7 @@ import '../child/user/user_list/user_list.dart';
 
 class MenuControllerScreen extends GetxController {
   // Índice de la pantalla actual
-  var currentIndex = 1.obs;
+  var currentIndex = 2.obs;
 
   // Lista de pantallas disponibles
   final List<Widget> screens = [
