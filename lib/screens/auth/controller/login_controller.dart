@@ -68,7 +68,7 @@ class LoginController extends GetxController {
       final apiResponse = await AuthService.login(emailController.text, passwordController.text);
       await LocalStorage.saveToken(apiResponse.token!);
       await LocalStorage.saveUser(apiResponse.user!);
-      //print('Login exitoso: ${apiResponse.user?.toJson()} -- ${apiResponse.token}');
+      print(apiResponse.token);
 
       //definir que layout mostrar
       final userRole = apiResponse.user!.role;
@@ -117,6 +117,7 @@ class LoginController extends GetxController {
 
     } catch (e) {
       Get.snackbar('error al iniciar sesion','');
+      print(e);
       return;
     }
   }

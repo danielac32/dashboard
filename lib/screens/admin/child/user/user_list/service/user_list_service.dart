@@ -5,21 +5,64 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../../../../../../infrastructure/shared/storage.dart';
+
 class UserListService {
   static const String _baseUrl = 'http://localhost:8080';
+
+
+  static Future<Map<String, String>> _getHeaders() async {
+    final token = await LocalStorage.getToken();
+    if (token == null) {
+      throw Exception('No se encontró un token de autenticación');
+    }
+    return {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+  }
+
 
   // Método genérico para POST
   static Future<dynamic> post(String endpoint, Map<String, dynamic> body) async {
     final url = Uri.parse('$_baseUrl/$endpoint');
-
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: await _getHeaders(),
         body: jsonEncode(body),
       );
-
       return _handleResponse(response);
+    } catch (e) {
+      throw Exception('Error de red: $e');
+    }
+  }
+
+  static Future<dynamic> update(String endpoint, {required int id, required Map<String, dynamic> data}) async {
+    final url = Uri.parse('$_baseUrl/$endpoint/$id'); // Construye la URL con el ID
+    print('url $url');
+    try {
+      final response = await http.patch(
+        url,
+        headers: await _getHeaders(),
+        body: jsonEncode(data), // Codifica los datos en JSON
+      );
+      return _handleResponse(response); // Maneja la respuesta
+    } catch (e) {
+      throw Exception('Error de red: $e');
+    }
+  }
+
+  static Future<dynamic> delete(String endpoint, {required int id}) async {
+    final url = Uri.parse('$_baseUrl/$endpoint/$id');
+
+    try {
+      // Realizar la solicitud DELETE con el token en los encabezados
+      final response = await http.delete(
+        url,
+        headers: await _getHeaders(),
+      );
+      return _handleResponse(response); // Manejar la respuesta
     } catch (e) {
       throw Exception('Error de red: $e');
     }
@@ -30,7 +73,10 @@ class UserListService {
     final url = Uri.parse('$_baseUrl/$endpoint').replace(queryParameters: queryParams);
 
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: await _getHeaders(),
+      );
       return _handleResponse(response);
     } catch (e) {
       throw Exception('Error de red: $e');
@@ -40,7 +86,9 @@ class UserListService {
   // Manejar la respuesta
   static dynamic _handleResponse(http.Response response) {
     switch (response.statusCode) {
-      case 200:
+      case 200: // OK
+      case 201: // Created
+      case 204: // No Content (para DELETE)
         return jsonDecode(response.body);
       case 400:
         throw Exception('Bad Request: ${response.body}');

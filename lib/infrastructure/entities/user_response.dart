@@ -29,8 +29,8 @@ class User {
   String? name;
   String? role;
   String? department;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   bool? isActive;
   String? profileImage; // Imagen de perfil (puede ser nulo)
   String? position;
@@ -59,8 +59,17 @@ class User {
     isActive = json['isActive'];
     profileImage = json['profileImage'];
     position = json['position'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
+    //createdAt = json['createdAt'];
+    //updatedAt = json['updatedAt'];
+    // Convierte createdAt de String a DateTime?
+    createdAt = json['createdAt'] is String && json['createdAt'].isNotEmpty
+        ? DateTime.parse(json['createdAt'])
+        : null;
+
+    // Convierte updatedAt de String a DateTime?
+    updatedAt = json['updatedAt'] is String && json['updatedAt'].isNotEmpty
+        ? DateTime.parse(json['updatedAt'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -74,8 +83,10 @@ class User {
       'isActive': isActive,
       'profileImage': profileImage,
       'position': position,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      //'createdAt': createdAt,
+      //'updatedAt': updatedAt,
+      'createdAt': createdAt?.toIso8601String(), // Convierte DateTime a String
+      'updatedAt': updatedAt?.toIso8601String(), // Convierte DateTime a String
     };
   }
 
@@ -100,6 +111,7 @@ class User {
       department: department ?? this.department,
       profileImage: profileImage ?? this.profileImage,
       position: position ?? this.position,
+      updatedAt: DateTime.now(),
     );
   }
 

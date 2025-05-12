@@ -1,10 +1,11 @@
 
 import 'dart:io';
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../core/utils/enum.dart';
+import '../../../../../../infrastructure/entities/update_response.dart';
 import '../../../../../../infrastructure/entities/user_response.dart';
 import '../../../../../../infrastructure/shared/interface/cargo_response.dart';
 import '../../../../../../infrastructure/shared/interface/direccion_response.dart';
@@ -80,8 +81,7 @@ class UserListController extends GetxController {
   Future<void> deleteUser(int id) async {
     try {
       // Primero intentamos eliminar en el servidor
-      //await UserListService.delete(id.toString());
-
+      await UserListService.delete("user",id: id);
       // Si tiene éxito, eliminamos localmente
       users.removeWhere((user) => user.id == id);
       filteredUsers.removeWhere((user) => user.id == id);
@@ -134,6 +134,12 @@ class UserEditController extends GetxController {
   final isLoading = true.obs;
   final errorLoadingData = false.obs;
 
+
+  late TextEditingController nameController;
+  late TextEditingController emailController;
+
+
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -166,6 +172,15 @@ class UserEditController extends GetxController {
       positions.assignAll(resCargo.cargos as Iterable<Cargos>);
 
       isLoading.value = false;
+
+      nameController = TextEditingController();
+      emailController = TextEditingController();
+
+      // Escuchar cambios en los controladores y sincronizar con las variables reactivas
+      nameController.addListener(() => name.value = nameController.text);
+      emailController.addListener(() => email.value = emailController.text);
+
+
     } catch (e) {
       isLoading.value = false;
       errorLoadingData.value = true;
@@ -174,6 +189,12 @@ class UserEditController extends GetxController {
   }
 
 
+  @override
+  void onClose() {
+    nameController.dispose();
+    emailController.dispose();
+    super.onClose();
+  }
 
   // Método para inicializar los valores del usuario
   void initialize(User user) {
@@ -191,9 +212,13 @@ class UserEditController extends GetxController {
     position.value = user.position ?? '';
 
     profileImage.value = null;
+    // Actualizar los controladores con los valores iniciales
+    nameController.text = name.value;
+    emailController.text = email.value;
   }
 
   // Método para obtener el usuario actualizado
+
   User updateUser(User originalUser) {
     return originalUser.copyWith(
       name: name.value,
@@ -218,5 +243,18 @@ class UserEditController extends GetxController {
   // Método para reintentar carga de datos
   Future<void> retryLoadingData() async {
     await loadInitialData();
+  }
+
+  Future<void> updateService(User user)async {
+    print(user.toString());
+    final apiResponse = await UserListService.update("user",id: user.id!,data: user.toJson());
+    final res = UpdateResponse.fromJson(apiResponse);
+    if(res.success == true){
+      Get.snackbar('Ok', 'Usuario Actualizado');
+      await Get.find<UserListController>().refreshUsers();
+      Get.back();
+    }else {
+      Get.snackbar('Error', 'Usuario no Actualizado');
+    }
   }
 }

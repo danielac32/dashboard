@@ -7,11 +7,14 @@ import 'controller/user_list_controller.dart';
 
 class UserList extends StatelessWidget {
   UserList({super.key});
-  final userListController = Get.put(UserListController());
+
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final userListController = Get.put(UserListController());
+    final userEditController = Get.put(UserEditController());
 
     return Center(
       child: Container(
@@ -120,8 +123,8 @@ class UserList extends StatelessWidget {
                                              );
 
                                              if (updatedUser != null) {
-                                               print('Usuario actualizado: ${updatedUser.name}, ${updatedUser.email}');
-                                               // Aquí puedes actualizar el estado o enviar los datos al servidor
+                                               print('Usuario actualizado: ${updatedUser.toString()}');
+                                               userEditController.updateService(updatedUser);
                                              } else {
                                                print('Edición cancelada.');
                                              }
@@ -274,16 +277,18 @@ class UserEditDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Obx(() => TextField(
-              controller: TextEditingController(text: controller.name.value),
+            TextField(
+              keyboardType: TextInputType.text,
+              controller: controller.nameController,
               onChanged: (value) => controller.name.value = value,
-              decoration: const InputDecoration(labelText: 'Nombre'),
-            )),
-            Obx(() => TextField(
-              controller: TextEditingController(text: controller.email.value),
+              decoration:  InputDecoration(labelText: 'Nombre',/*hintText: controller.name.value*/),
+            ),
+             TextField(
+              keyboardType: TextInputType.emailAddress,
+              controller: controller.emailController,//TextEditingController(text: controller.email.value),
               onChanged: (value) => controller.email.value = value,
               decoration: const InputDecoration(labelText: 'Correo Electrónico'),
-            )),
+            ),
             Obx(() => SwitchListTile(
               title: const Text('Activo'),
               value: controller.isActive.value,
