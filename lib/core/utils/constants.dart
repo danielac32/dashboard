@@ -58,5 +58,7 @@ static const String coordinador="COORDINADOR";
   static const String consultor="CONSULTOR";
   static const String hp="HP";
   static const String otro="OTRO";
-
+  static const urlApi='http://localhost:8080';
 }
+
+

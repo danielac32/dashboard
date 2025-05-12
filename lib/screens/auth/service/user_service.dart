@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:core_system/infrastructure/shared/storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../core/utils/constants.dart';
 import '../../../infrastructure/entities/user_response.dart';
 
 class ApiService {
-  static const String _baseUrl = 'http://localhost:8080';
+  static const String _baseUrl = AppStrings.urlApi;
 
   // Método genérico para POST
   static Future<dynamic> post(String endpoint, Map<String, dynamic> body) async {

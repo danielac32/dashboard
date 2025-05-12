@@ -204,6 +204,18 @@ void ShowUserDetails(BuildContext context,User user) {
               ),
             ),
             const SizedBox(height: 10),
+            Text(
+              user.isActive == true ? 'ACTIVO' : user.isActive == false ? 'INACTIVO' : 'DESCONOCIDO',
+              style: TextStyle(
+                fontSize: 20,
+                color: user.isActive == true
+                    ? Colors.green
+                    : user.isActive == false
+                    ? Colors.red
+                    : Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 10),
             Text('Email: ${user.email}'),
             const SizedBox(height: 5),
             Text('Departamento: ${user.department}'),

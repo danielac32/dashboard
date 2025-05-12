@@ -17,6 +17,7 @@ class ItemsUser extends StatelessWidget {
       children: [
         ListTile(
           title: Text('Lista de Usuarios'),
+          leading: Icon(Icons.people, color: colors.primary),
           onTap: () {
             menuControllerScreen.currentIndex(1);
             Get.back(); // Cierra el Drawer
@@ -24,8 +25,17 @@ class ItemsUser extends StatelessWidget {
         ),
         ListTile(
           title: Text('Registro'),
+          leading: Icon(Icons.account_circle, color: colors.primary),
           onTap: () {
-
+            menuControllerScreen.currentIndex(2);
+            Get.back(); // Cierra el Drawer
+          },
+        ),
+        ListTile(
+          title: Text('Permisos'),
+          leading: Icon(Icons.lock, color: colors.primary),
+          onTap: () {
+            menuControllerScreen.currentIndex(3);
             Get.back(); // Cierra el Drawer
           },
         ),

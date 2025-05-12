@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 
 import '../child/home/home_screen_2.dart';
+import '../child/user/register/user_register.dart';
 import '../child/user/user_list/user_list.dart';
 
 
@@ -14,7 +15,8 @@ class MenuControllerScreen extends GetxController {
   // Lista de pantallas disponibles
   final List<Widget> screens = [
     HomeScreen(),//0
-    UserList()
+    UserList(),//1
+    UserRegister(),//2
     /*IndexScreen(),
     UsersScreen(),
     ContentScreen(),

@@ -28,7 +28,7 @@ class UserListController extends GetxController {
 
     // Obtener datos de la API a través de  UserListService
     try {
-      final apiResponse = await UserListService.get("get");
+      final apiResponse = await UserListService.get("user");
       final res = UserListResponse.fromJson(apiResponse);
 
       // Asignar los usuarios obtenidos de la API

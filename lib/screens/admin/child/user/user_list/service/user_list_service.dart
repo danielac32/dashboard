@@ -3,12 +3,13 @@
 
 import 'dart:convert';
 
+import 'package:core_system/core/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../../infrastructure/shared/storage.dart';
 
 class UserListService {
-  static const String _baseUrl = 'http://localhost:8080';
+  static const String _baseUrl = AppStrings.urlApi;
 
 
   static Future<Map<String, String>> _getHeaders() async {
