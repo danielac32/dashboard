@@ -2,18 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../child/home/home_screen.dart';
-import '../child/home/home_screen_4.dart';
+
+import '../child/home/home_screen_2.dart';
+import '../child/user/user_list/user_list.dart';
 
 
 class MenuControllerScreen extends GetxController {
   // Índice de la pantalla actual
-  var currentIndex = 0.obs;
+  var currentIndex = 1.obs;
 
   // Lista de pantallas disponibles
   final List<Widget> screens = [
-    HomeScreen()
-
+    HomeScreen(),//0
+    UserList()
     /*IndexScreen(),
     UsersScreen(),
     ContentScreen(),

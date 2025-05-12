@@ -40,25 +40,27 @@ enum Directorate {
   String get label {
     switch (this) {
       case Directorate.direccionGeneralAdministracion:
-        return 'Dirección General de Administración';
+        return 'DIRECCIÓN GENERAL DE ADMINISTRACIÓN';
       case Directorate.direccionGeneralEgreso:
-        return 'Dirección General de Egreso';
+        return 'DIRECCIÓN GENERAL DE EGRESO';
       case Directorate.direccionGeneralIngreso:
-        return 'Dirección General de Ingreso';
+        return 'DIRECCIÓN GENERAL DE INGRESO';
       case Directorate.direccionGeneralCuentaUnica:
-        return 'Dirección General de Cuenta Única';
+        return 'DIRECCIÓN GENERAL DE CUENTA ÚNICA';
       case Directorate.direccionGeneralTecnologiaInformacion:
-        return 'Dirección General de Tecnología de Información';
+        return 'DIRECCIÓN GENERAL DE TECNOLOGÍA DE INFORMACIÓN';
       case Directorate.direccionGeneralPlanificacionAnalisisFinanciero:
-        return 'Dirección General de Planificación y Análisis Financiero';
+        return 'DIRECCIÓN GENERAL DE PLANIFICACIÓN Y ANÁLISIS FINANCIERO';
       case Directorate.direccionGeneralRecaudacionIngreso:
-        return 'Dirección General de Recaudación de Ingreso';
+        return 'DIRECCIÓN GENERAL DE RECAUDACIÓN DE INGRESO';
       case Directorate.direccionGeneralRecursosHumanos:
-        return 'Dirección General de Recursos Humanos';
+        return 'DIRECCIÓN GENERAL DE RECURSOS HUMANOS';
       case Directorate.direccionGeneralInversionesYValores:
-        return 'Dirección General de Inversiones y Valores';
+        return 'DIRECCIÓN GENERAL DE INVERSIONES Y VALORES';
       case Directorate.direccionGeneralConsultoriaJuridica:
-        return 'Dirección General de Consultoría Jurídica';
+        return 'DIRECCIÓN GENERAL DE CONSULTORÍA JURÍDICA';
+      default:
+        return 'DESCONOCIDO';
     }
   }
 }
@@ -78,23 +80,23 @@ enum Position {
   String get label {
     switch (this) {
       case Position.COORDINADOR:
-        return "Coordinador";
+        return "COORDINADOR";
       case Position.DIRECTOR_GENERAL:
-        return "Director General";
+        return "DIRECTOR GENERAL";
       case Position.DIRECTOR_LINEA:
-        return "Director de Línea";
+        return "DIRECTOR DE LINEA";
       case Position.ASISTENTE:
-        return "Asistente";
+        return "ASISTENTE";
       case Position.ANALISTA:
-        return "Analista";
+        return "ANALISTA";
       case Position.ASESOR:
-        return "Asesor";
+        return "ASESOR";
       case Position.CONSULTOR:
-        return "Consultor";
+        return "CONSULTOR";
       case Position.HP:
         return "HP"; // Si HP es un acrónimo, puedes dejarlo igual o expandirlo según el contexto.
       case Position.OTRO:
-        return "Otro";
+        return "OTRO";
     }
   }
 }
@@ -102,16 +104,24 @@ enum Position {
 enum Role {
   SUPER_ADMIN,
   ADMIN,
-  USER;
+  USER,
+  VIEWER,
+  GUEST;
+
+
 
   String get label {
     switch (this) {
       case Role.SUPER_ADMIN:
-        return 'Super Admin';
+        return 'SUPER_ADMIN';
       case Role.ADMIN:
-        return 'Admin';
+        return 'ADMIN';
       case Role.USER:
-        return 'User';
+        return 'USER';
+      case Role.VIEWER:
+        return 'VIEWER';
+      case Role.GUEST:
+        return 'GUEST';
     }
   }
 }

@@ -10,15 +10,43 @@ import '../../screens/user/dashboard_user.dart';
 
 class AppRoutes {
   static const String login = '/login';
-  //static const String register = '/register';
-  static const String dashboardAdmin = '/admin';
-  static const String dashboardUser = '/user';
+  static const String dashboardSuperAdmin = '/superAdmin';
+  //static const String dashboardAdmin = '/admin';
+  //static const String dashboardUser = '/user';
+
+  // Rutas para departamentos
+  static const String dashboardTecnologia = '/tecnologia';
+  static const String dashboardAdministracion = '/administracion';
+  static const String dashboardEgreso = '/egreso';
+  static const String dashboardIngreso = '/ingreso';
+  static const String dashboardCuentaUnica = '/cuentaunica';
+  static const String dashboardPlanificacionAnalisisFinanciero = '/planificacionanalisisfinanciero';
+  //static const String dashboardRecaudacionIngreso = '/recaudacioningreso';
+  static const String dashboardRecursosHumanos = '/recursoshumanos';
+  static const String dashboardInversionesValores = '/inversionesvalores';
+  static const String dashboardConsultoriaJuridica = '/consultoriajuridica';
+
 
   // Lista de rutas para GetPages
   static final List<GetPage> routes = [
     GetPage(name: login, page: () => LoginScreen()),
-    GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
-    GetPage(name: dashboardUser, page: () => DashboardUser()),
+    GetPage(name: dashboardSuperAdmin, page: () => DashboardAdmin()),
+    //GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
+    //GetPage(name: dashboardUser, page: () => DashboardUser()),
+
+  // Dashboards por departamento
+    /*GetPage(name: dashboardTecnologia, page: () => DashboardTecnologia()),
+    GetPage(name: dashboardAdministracion, page: () => DashboardAdministracion()),
+    GetPage(name: dashboardEgreso, page: () => DashboardEgreso()),
+    GetPage(name: dashboardIngreso, page: () => DashboardIngreso()),
+    GetPage(name: dashboardCuentaUnica, page: () => DashboardCuentaUnica()),
+    GetPage(name: dashboardPlanificacionAnalisisFinanciero, page: () => DashboardPlanificacionAnalisisFinanciero()),
+    //GetPage(name: dashboardRecaudacionIngreso, page: () => DashboardRecaudacionIngreso()),
+    GetPage(name: dashboardRecursosHumanos, page: () => DashboardRecursosHumanos()),
+    GetPage(name: dashboardInversionesValores, page: () => DashboardInversionesValores()),
+    GetPage(name: dashboardConsultoriaJuridica, page: () => DashboardConsultoriaJuridica( // Dashboards por departamento
+
+     */
   ];
 
   // Método para navegar a una ruta específica

@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ItemsUser extends StatelessWidget {
-  const ItemsUser({super.key});
+import '../../controller/dashboard_menu.dart';
 
+class ItemsUser extends StatelessWidget {
+   ItemsUser({super.key});
+  final  menuControllerScreen = Get.find<MenuControllerScreen>();
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -16,7 +18,7 @@ class ItemsUser extends StatelessWidget {
         ListTile(
           title: Text('Lista de Usuarios'),
           onTap: () {
-
+            menuControllerScreen.currentIndex(1);
             Get.back(); // Cierra el Drawer
           },
         ),

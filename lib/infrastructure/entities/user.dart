@@ -1,6 +1,8 @@
 
 
 //import 'enum.dart';
+
+/*
 class UserEntity {
   final int id;
   final String name;
@@ -127,7 +129,7 @@ class UserEntity {
       profileImage.hashCode ^
       position.hashCode;
 }
-
+*/
 /*
 1. Crear una instancia de UserEntity
 final newUser = UserEntity(

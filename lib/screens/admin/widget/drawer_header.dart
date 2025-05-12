@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../infrastructure/entities/user.dart';
+import '../../../infrastructure/entities/user_response.dart';
 import 'avatar_widget.dart';
 import 'text_drawer_dashboard.dart';
 
@@ -13,7 +14,7 @@ class DrawerWidget extends StatelessWidget {
   });
 
   final ColorScheme colors;
-  final UserEntity user;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +31,8 @@ class DrawerWidget extends StatelessWidget {
             AvatarWidget(colors: colors,urlImage: ""),
             SizedBox(height: 10),
             TextDrawerDashboard(text: user.position!, colors: colors.onPrimary,size: 18),
-            TextDrawerDashboard(text: user.email, colors: colors.onPrimary.withOpacity(0.7),size: 14),
-            TextDrawerDashboard(text: user.name, colors: colors.onPrimary.withOpacity(0.7),size: 14),
+            TextDrawerDashboard(text: user.email!, colors: colors.onPrimary.withOpacity(0.7),size: 14),
+            TextDrawerDashboard(text: user.name!, colors: colors.onPrimary.withOpacity(0.7),size: 14),
           ],
         ),
       ),

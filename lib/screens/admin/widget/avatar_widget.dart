@@ -12,7 +12,7 @@ class AvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundImage: AssetImage('assets/1.jpeg'),
+      backgroundImage: NetworkImage('http://localhost:8080/avatar'),//AssetImage('assets/1.jpeg'),
       radius: 30,
       backgroundColor: colors.secondary,
       //child: Icon(Icons.person, size: 40, color: colors.onSecondary),

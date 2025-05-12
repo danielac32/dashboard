@@ -1,9 +1,15 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+import '../../../core/app/routes.dart';
+import '../../../core/utils/constants.dart';
 import '../../../core/utils/enum.dart';
-import '../../../infrastructure/entities/user.dart';
+import '../../../infrastructure/shared/storage.dart';
+import '../service/user_service.dart';
 
 
 class LoginController extends GetxController {
@@ -45,32 +51,73 @@ class LoginController extends GetxController {
   }
 
   // Método para enviar el formulario
-  void submitForm() {
+  Future<void> submitForm() async {
     final emailError = validateEmail(emailController.text);
     final passwordError = validatePassword(passwordController.text);
 
     if(emailError != null){
-      //Get.snackbar('Error', '${emailError}');
-      //return;
+      Get.snackbar('Error', '${emailError}');
+      return;
     }
     if(passwordError != null){
-      //Get.snackbar('Error', '${passwordError}');
-      //return;
+      Get.snackbar('Error', '${passwordError}');
+      return;
     }
 
-    final newUser = UserEntity(
-        id: 1,
-        name: 'Astrid Quintero',
-        email: 'danielquinteroac32@gmail.com',
-        password: 'ac32mqn42',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        department: Directorate.direccionGeneralTecnologiaInformacion.label,
-        profileImage: 'https://example.com/profile.jpg',
-        position: Position.COORDINADOR.label,//'Coordinador',
-        rol: Role.ADMIN.label
-    );
+    try {
+      final apiResponse = await AuthService.login(emailController.text, passwordController.text);
+      await LocalStorage.saveToken(apiResponse.token!);
+      await LocalStorage.saveUser(apiResponse.user!);
+      //print('Login exitoso: ${apiResponse.user?.toJson()} -- ${apiResponse.token}');
 
-    Get.toNamed("/admin", arguments: newUser); // Navega al dashboard de admin
+      //definir que layout mostrar
+      final userRole = apiResponse.user!.role;
+      final userDepartment = apiResponse.user!.department;
+
+      if(userRole==Role.SUPER_ADMIN.label){
+        Get.offNamed(AppRoutes.dashboardSuperAdmin, arguments: { 'user': apiResponse.user});// este layout aunque dice admin es el superadmin global
+      }else{
+        switch (userDepartment) {
+          case AppStrings.dgTecnologiaInformacion:
+            Get.offAllNamed(AppRoutes.dashboardTecnologia, arguments: {'role': userRole});
+            break;
+          case AppStrings.dgAdministracion:
+            Get.offAllNamed(AppRoutes.dashboardAdministracion, arguments: {'role': userRole});
+            break;
+          case AppStrings.dgEgreso:
+            Get.offAllNamed(AppRoutes.dashboardEgreso, arguments: {'role': userRole});
+            break;
+          case AppStrings.dgIngreso:
+            Get.offAllNamed(AppRoutes.dashboardIngreso, arguments: {'role': userRole});
+            break;
+          case AppStrings.dgCuentaUnica:
+            Get.offAllNamed(AppRoutes.dashboardCuentaUnica, arguments: {'role': userRole});
+            break;
+          case AppStrings.dgPlanificacionAnalisisFinanciero:
+            Get.offAllNamed(AppRoutes.dashboardPlanificacionAnalisisFinanciero, arguments: {'role': userRole});
+            break;
+         /* case AppStrings.dgRecaudacionIngreso:
+            Get.offAllNamed(AppRoutes.dashboardRecaudacionIngreso, arguments: {'role': userRole});
+            break;
+          */
+          case AppStrings.dgRecursosHumanos:
+            Get.offAllNamed(AppRoutes.dashboardRecursosHumanos, arguments: {'role': userRole});
+            break;
+          case AppStrings.dgInversionesYValores:
+            Get.offAllNamed(AppRoutes.dashboardInversionesValores, arguments: {'role': userRole});
+            break;
+          case AppStrings.dgConsultoriaJuridica:
+            Get.offAllNamed(AppRoutes.dashboardConsultoriaJuridica, arguments: {'role': userRole});
+            break;
+          default:
+            Get.snackbar('Error', 'Dirección no reconocida');
+            return;
+        }
+      }
+
+    } catch (e) {
+      Get.snackbar('error al iniciar sesion','');
+      return;
+    }
   }
 }
