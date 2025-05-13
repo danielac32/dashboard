@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'package:core_system/screens/admin/child/user/user_list/interface/user_permission.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,12 +15,110 @@ import '../interface/user_list_response.dart';
 import '../service/user_list_service.dart';
 
 
+
+enum FilterStatus { all, active, inactive }
+
+
 class UserListController extends GetxController {
   var users = <User>[].obs;
   var filteredUsers = <User>[].obs;
   var searchQuery = ''.obs;
   var currentPage = 1.obs;
   final int pageSize = 8; // Número de elementos por página
+
+
+  final RxMap<int, List<Permission>> userPermissions = <int, List<Permission>>{}.obs;
+  final isLoadingPermissions = <int, bool>{}.obs;
+
+  final isLoading = false.obs;
+  final filterStatus = FilterStatus.all.obs;
+
+  Future<void> toggleFilter() async {
+    try {
+      isLoading.value = true;
+
+      // Cambiar el estado del filtro
+      filterStatus.value = FilterStatus.values[
+      (filterStatus.value.index + 1) % FilterStatus.values.length
+      ];
+
+      // Hacer la petición a la API según el filtro
+
+      Map<String, dynamic> params = {};
+
+      switch(filterStatus.value) {
+        case FilterStatus.active:
+          params['status'] = 'active';
+          break;
+        case FilterStatus.inactive:
+          params['status'] = 'inactive';
+          break;
+        case FilterStatus.all:
+          params['status'] = 'all';
+          break;
+      }
+
+      final apiResponse = await UserListService.getFilterUser('user','filter', queryParams: params);
+      final res = UserListResponse.fromJson(apiResponse);
+
+      users.value = res.users ?? [];
+      filteredUsers.value = users;
+      currentPage.value = 1;
+
+      print('Usuarios filtrados cargados: ${users.length}');
+
+    } catch (e) {
+      print('Error al filtrar usuarios: $e');
+      users.value = [];
+      Get.snackbar('Error', 'No se pudo aplicar el filtro');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
+  String get filterText {
+    switch(filterStatus.value) {
+      case FilterStatus.all: return 'Todos';
+      case FilterStatus.active: return 'Activos';
+      case FilterStatus.inactive: return 'Inactivos';
+    }
+  }
+
+  Color get filterColor {
+    switch(filterStatus.value) {
+      case FilterStatus.all: return Colors.blue;
+      case FilterStatus.active: return Colors.green;
+      case FilterStatus.inactive: return Colors.red;
+    }
+  }
+
+  String get filterTooltip {
+    switch(filterStatus.value) {
+      case FilterStatus.all: return 'Mostrando todos - Click para filtrar activos';
+      case FilterStatus.active: return 'Mostrando activos - Click para filtrar inactivos';
+      case FilterStatus.inactive: return 'Mostrando inactivos - Click para mostrar todos';
+    }
+  }
+
+  Future<void> loadPermissionsForUser(int userId) async {
+    try {
+      isLoadingPermissions[userId] = true;
+      final permissions = await UserListService.getUserPermissions(
+          'user',
+          'permissions',
+          userId: userId
+      );
+      final resPermissions = ResponsePermission.fromJson(permissions);
+      userPermissions[userId] = resPermissions.permissions as List<Permission>;
+    } catch (e) {
+      //Get.snackbar('Error', 'No se pudieron cargar los permisos para el usuario $userId');
+    } finally {
+      isLoadingPermissions[userId] = false;
+    }
+  }
+
+
 
 
   @override
@@ -135,6 +234,9 @@ class UserEditController extends GetxController {
   final errorLoadingData = false.obs;
 
 
+
+
+
   late TextEditingController nameController;
   late TextEditingController emailController;
 
@@ -177,12 +279,19 @@ class UserEditController extends GetxController {
       emailController.addListener(() => email.value = emailController.text);
 
 
+      /*final permissions = await UserListService.getUserPermissions('user','permissions', userId: 52);
+      final resPermissions = ResponsePermission.fromJson(permissions);
+      permissionUser.assignAll(resPermissions.permissions as Iterable<Permission>);*/
+
+
+
     } catch (e) {
       isLoading.value = false;
       errorLoadingData.value = true;
       print('Error al cargar datos iniciales: $e');
     }
   }
+
 
 
   @override

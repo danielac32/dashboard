@@ -1,3 +1,4 @@
+import 'package:core_system/screens/admin/child/user/user_list/widget/card_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +9,20 @@ import 'controller/user_list_controller.dart';
 class UserList extends StatelessWidget {
   UserList({super.key});
 
+
+
+  Widget _buildPermissionIcon({
+    required bool hasPermission,
+    required IconData icon,
+    required String tooltip,
+    required Color activeColor,
+  }) {
+    return IconButton(
+      onPressed: hasPermission ? () {} : null,
+      icon: Icon(icon, color: hasPermission ? activeColor : Colors.grey),
+      tooltip: tooltip,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,131 +39,91 @@ class UserList extends StatelessWidget {
         child: Column(
          //mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Barra de búsqueda
-            SizedBox(
-              height: 60,
-              width: 300,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Buscar usuario',
-                    border: OutlineInputBorder(),
-                    suffixIcon: Icon(Icons.search),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Barra de búsqueda
+                SizedBox(
+                  height: 60,
+                  width: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Buscar usuario',
+                        border: OutlineInputBorder(),
+                        suffixIcon: Icon(Icons.search),
+                      ),
+                      onChanged: (query) {
+                        userListController.search(query);
+                      },
+                    ),
                   ),
-                  onChanged: (query) {
-                    userListController.search(query);
-                  },
                 ),
-              ),
+                Obx(() {
+                  final controller = Get.find<UserListController>();
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: controller.isLoading.value ? null : controller.toggleFilter,
+                        icon: Badge(
+                          backgroundColor: controller.filterColor,
+                          label: controller.isLoading.value
+                              ? SizedBox(
+                            width: 10,
+                            height: 10,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                              : Text(
+                            controller.filterStatus.value == FilterStatus.all
+                                ? 'T'
+                                : controller.filterStatus.value == FilterStatus.active
+                                ? 'A'
+                                : 'I',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          child: controller.isLoading.value
+                              ? CircularProgressIndicator(strokeWidth: 2)
+                              : Icon(
+                            Icons.filter_list,
+                            color: controller.filterColor,
+                          ),
+                        ),
+                        tooltip: controller.filterTooltip,
+                      ),
+                      if (controller.isLoading.value)
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                    ],
+                  );
+                })
+
+              ]
             ),
 
             // Lista de usuarios paginada
             Expanded(
               child: Obx(() {
                 final paginatedUsers = userListController.getPaginatedUsers();
+
                 return ListView.builder(
                   itemCount: paginatedUsers.length,
                   itemBuilder: (context, index) {
                     final user = paginatedUsers[index];
-                    return Card(
-                      elevation: 4,
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      color: colors.surface, // Fondo diferenciado
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: colors.outline.withOpacity(0.1),
-                          width: 1,
-                        ),
-                      ),
-                      child:InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () => ShowUserDetails(context, user),
-                            child: Padding(
-                                 padding: const EdgeInsets.all(12.0),
-                                 child: Row(
-                                   children: [
-                                     // Contenido alineado a la izquierda
-                                     Expanded(
-                                       child: Align(
-                                         alignment: Alignment.centerLeft,
-                                         child: Column(
-                                           crossAxisAlignment: CrossAxisAlignment.start, // Alineación izquierda para textos
-                                           mainAxisSize: MainAxisSize.min, // Ocupa solo el espacio necesario
-                                           children: [
-                                             Text(
-                                               user.name ?? 'Nombre no disponible',
-                                               style: textTheme.bodyLarge?.copyWith(
-                                                 fontWeight: FontWeight.w600,
-                                                 color: colors.onSurface,
-                                               ),
-                                             ),
-                                             const SizedBox(height: 4),
-                                             Text(
-                                               user.position ?? 'Sin cargo',
-                                               style: textTheme.bodyMedium?.copyWith(
-                                                 color: colors.onSurface.withOpacity(0.8),
-                                               ),
-                                             ),
-                                             Text(
-                                               user.department ?? 'Sin departamento',
-                                               style: textTheme.bodySmall?.copyWith(
-                                                 color: colors.onSurface.withOpacity(0.6),
-                                               ),
-                                             ),
-                                             Text(
-                                               user.role ?? 'Sin rol',
-                                               style: textTheme.bodySmall?.copyWith(
-                                                 color: colors.onSurface.withOpacity(0.6),
-                                               ),
-                                             ),
-                                           ],
-                                         ),
-                                       ),
-                                     ),
-
-                                     // Espaciador para empujar los botones a la derecha
-                                     const Spacer(),
-
-                                     // Botones alineados a la derecha
-                                     Row(
-                                       mainAxisSize: MainAxisSize.min,
-                                       children: [
-                                         IconButton(
-                                           icon: Icon(Icons.edit, color: colors.primary),
-                                           onPressed: () async {
-                                             User? updatedUser = await Get.dialog<User?>(
-                                               UserEditDialog(user: user),
-                                             );
-
-                                             if (updatedUser != null) {
-                                               print('Usuario actualizado: ${updatedUser.toString()}');
-                                               userEditController.updateService(updatedUser);
-                                             } else {
-                                               print('Edición cancelada.');
-                                             }
-                                           },
-                                         ),
-                                         IconButton(
-                                           icon: Icon(Icons.delete, color: colors.error),
-                                           onPressed: () async {
-                                             final isConfirmed = await showConfirmationDialog(
-                                               context,
-                                               '¿Estás seguro de eliminar a ${user.name}?',
-                                             );
-                                             if (isConfirmed == true) {
-                                               userListController.deleteUser(user.id!);
-                                             }
-                                           },
-                                         ),
-                                       ],
-                                     ),
-                                   ],
-                                 )
-                            )
-                      )
-                    );
+                    if (!userListController.userPermissions.containsKey(user.id)) {
+                      userListController.loadPermissionsForUser(user.id!);
+                    }
+                    return CardWidgetUser(colors: colors, user: user, textTheme: textTheme, userListController: userListController, userEditController: userEditController);
                   },
                 );
               }),
@@ -185,6 +160,8 @@ class UserList extends StatelessWidget {
     );
   }
 }
+
+
 
 
 void ShowUserDetails(BuildContext context,User user) {
@@ -281,10 +258,11 @@ class UserEditDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // Inicializamos el controlador y le pasamos el usuario
     final UserEditController controller = Get.put(UserEditController());
+    final colors = Theme.of(context).colorScheme;
     controller.initialize(user);
 
     return AlertDialog(
-      title: const Text('Editar Usuario'),
+      title: Text('Editar Usuario'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -293,19 +271,51 @@ class UserEditDialog extends StatelessWidget {
               keyboardType: TextInputType.text,
               controller: controller.nameController,
               onChanged: (value) => controller.name.value = value,
-              decoration:  InputDecoration(labelText: 'Nombre',/*hintText: controller.name.value*/),
+              decoration:  InputDecoration(
+                labelText: 'Nombre',
+                prefixIcon: const Icon(Icons.person_outline),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                /*hintText: controller.name.value*/
+              ),
             ),
+            const SizedBox(height: 16),
              TextField(
               keyboardType: TextInputType.emailAddress,
               controller: controller.emailController,//TextEditingController(text: controller.email.value),
               onChanged: (value) => controller.email.value = value,
-              decoration: const InputDecoration(labelText: 'Correo Electrónico'),
+              decoration: InputDecoration(labelText: 'Correo Electrónico',
+                prefixIcon: const Icon(Icons.email_outlined),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
-            Obx(() => SwitchListTile(
-              title: const Text('Activo'),
-              value: controller.isActive.value,
-              onChanged: (value) => controller.isActive.value = value,
-            )),
+            const SizedBox(height: 16),
+            Obx(() => Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: SwitchListTile(
+                title: const Text('Usuario activo'),
+                secondary: Icon(
+                  controller.isActive.value
+                      ? Icons.check_circle_outline
+                      : Icons.remove_circle_outline,
+                  color: controller.isActive.value
+                      ? colors.primary
+                      : colors.error,
+                ),
+                value: controller.isActive.value,
+                onChanged: (value) => controller.isActive.value = value,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),),
+            const SizedBox(height: 16),
             Obx(() {
               return DropdownButtonFormField<String>(
                 //value: controller.rol.value.isNotEmpty ? controller.rol.value : null,
@@ -322,10 +332,17 @@ class UserEditDialog extends StatelessWidget {
                     controller.rol.value = value;
                   }
                 },
-                decoration: const InputDecoration(labelText: 'Rol'),
+                decoration:  InputDecoration(
+                  labelText: 'Rol',
+                  prefixIcon:  Icon(Icons.assignment_ind_outlined),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
                 hint:  Text(controller.rol.value.isNotEmpty ? controller.rol.value : 'Selecciona un rol'),
               );
             }),
+            const SizedBox(height: 16),
             Obx(() => DropdownButtonFormField<String>(
               //value: controller.department.value.isNotEmpty ? controller.department.value : null,
               items: controller.departments.isEmpty
@@ -341,9 +358,16 @@ class UserEditDialog extends StatelessWidget {
                   controller.department.value = value;
                 }
               },
-              decoration: const InputDecoration(labelText: 'Departamento'),
+              decoration:  InputDecoration(
+                labelText: 'Departamento',
+                prefixIcon: const Icon(Icons.business_outlined),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               hint:  Text(controller.department.value.isNotEmpty ? controller.department.value : 'Selecciona un departamento'),
             )),
+            const SizedBox(height: 16),
             Obx(() => DropdownButtonFormField<String>(
               //value: controller.position.value.isNotEmpty ? controller.position.value : null,
               items: controller.positions.isEmpty
@@ -359,25 +383,47 @@ class UserEditDialog extends StatelessWidget {
                   controller.position.value = value;
                 }
               },
-              decoration: const InputDecoration(labelText: 'Cargo'),
+              decoration: InputDecoration(
+                labelText: 'Cargo',
+                prefixIcon: const Icon(Icons.work_outline),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               hint:  Text(controller.position.value.isNotEmpty ? controller.position.value : 'Selecciona un cargo'),
             )),
+            const SizedBox(height: 16),
             Obx(() => Column(
               children: [
                 if (controller.profileImage.value != null)
-                  Image.file(
-                    controller.profileImage.value!,
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      controller.profileImage.value!,
+                      height: 120,
+                      width: 120,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                const SizedBox(height: 10),
-                ElevatedButton(
+                const SizedBox(height: 16),
+                FilledButton.tonal(
                   onPressed: () => controller.pickImage(),
-                  child: const Text('Cargar Imagen de Perfil'),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.camera_alt_outlined, size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        controller.profileImage.value == null
+                            ? 'Agregar foto de perfil'
+                            : 'Cambiar foto',
+                      ),
+                    ],
+                  ),
                 ),
               ],
             )),
+            const SizedBox(height: 16),
           ],
         ),
       ),

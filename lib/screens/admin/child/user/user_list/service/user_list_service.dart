@@ -69,6 +69,41 @@ class UserListService {
     }
   }
 
+
+
+  static Future<dynamic> getFilterUser(String endpoint,String endpoint2, {
+    Map<String, dynamic>? queryParams
+  }) async {
+    final url = Uri.parse('$_baseUrl/$endpoint/$endpoint2').replace(
+      queryParameters: queryParams,
+    );
+
+    try {
+      final response = await http.get(
+        url,
+        headers: await _getHeaders(),
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      throw Exception('Error de red: $e');
+    }
+  }
+
+
+  static Future<dynamic> getUserPermissions(String endpoint,String endpoint2, {required int userId}) async {
+    final url = Uri.parse('$_baseUrl/$endpoint/$userId/$endpoint2');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: await _getHeaders(),
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      throw Exception('Error al obtener permisos del usuario: $e');
+    }
+  }
+
   // Método genérico para GET
   static Future<dynamic> get(String endpoint, {Map<String, String>? queryParams}) async {
     final url = Uri.parse('$_baseUrl/$endpoint').replace(queryParameters: queryParams);
