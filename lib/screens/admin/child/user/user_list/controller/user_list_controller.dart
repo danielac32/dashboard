@@ -146,10 +146,6 @@ class UserEditController extends GetxController {
     await loadInitialData();
   }
 
-
-
-
-
   // Método para cargar datos iniciales
   Future<void> loadInitialData() async {
     try {
