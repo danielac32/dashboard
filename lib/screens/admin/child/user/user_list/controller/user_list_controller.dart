@@ -70,7 +70,7 @@ class UserListController extends GetxController {
     } catch (e) {
       print('Error al filtrar usuarios: $e');
       users.value = [];
-      Get.snackbar('Error', 'No se pudo aplicar el filtro');
+      //Get.snackbar('Error', 'No se pudo aplicar el filtro');
     } finally {
       isLoading.value = false;
     }

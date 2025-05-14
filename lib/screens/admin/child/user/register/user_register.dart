@@ -1,3 +1,4 @@
+import 'package:core_system/screens/admin/child/user/register/service/register_service.dart';
 import 'package:flutter/material.dart';
 
 
@@ -5,6 +6,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../../../../infrastructure/entities/user_response.dart';
+import '../../../../../infrastructure/shared/interface/cargo_response.dart';
+import '../../../../../infrastructure/shared/interface/direccion_response.dart';
+import '../../../../../infrastructure/shared/interface/role_response.dart';
 
 class UserRegisterController extends GetxController {
   // Variables observables para los campos del formulario
@@ -17,16 +23,39 @@ class UserRegisterController extends GetxController {
   final profileImage = Rxn<File>();
 
   // Listas de opciones cargadas desde API
-  final roles = <String>[].obs;
-  final departments = <String>[].obs;
-  final positions = <String>[].obs;
+  final roles = <Roles>[].obs;
+  final departments = <Direcciones>[].obs;
+  final positions = <Cargos>[].obs;
 
   // Estados de carga
   final isLoading = true.obs;
   final errorLoadingData = false.obs;
 
-  late TextEditingController nameController;
-  late TextEditingController emailController;
+
+
+
+
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final direccionController = TextEditingController();
+  final rolController = TextEditingController();
+  final cargoController = TextEditingController();
+
+
+  /*var opcionDir = Rx<String?>(null);
+  var opcionCargo = Rx<String?>(null);
+  var opcionRol = Rx<String?>(null);
+
+  void cambiarRol(String? nuevaSeleccion) {
+    opcionRol.value = nuevaSeleccion;
+  }
+  // Método para actualizar la selección
+  void cambiarDir(String? nuevaSeleccion) {
+    opcionDir.value = nuevaSeleccion;
+  }
+  void cambiarCargo(String? nuevaSeleccion) {
+    opcionCargo.value = nuevaSeleccion;
+  }*/
 
   @override
   Future<void> onInit() async {
@@ -40,19 +69,22 @@ class UserRegisterController extends GetxController {
       isLoading.value = true;
       errorLoadingData.value = false;
 
-      // Simulación de llamadas a la API
-      roles.assignAll(['Admin', 'Editor', 'Viewer']);
-      departments.assignAll(['Ventas', 'Marketing', 'Desarrollo']);
-      positions.assignAll(['Gerente', 'Supervisor', 'Asistente']);
+      // Cargar direcciones
+      final apiGetDirecciones = await RegisterService.get("direccion");
+      final resDir = DireccionResponse.fromJson(apiGetDirecciones);
+      departments.assignAll(resDir.direcciones as Iterable<Direcciones>);
+
+      // Cargar roles
+      final apiGetRoles = await RegisterService.get("role");
+      final resRole = RoleResponse.fromJson(apiGetRoles);
+      roles.assignAll(resRole.roles as Iterable<Roles>);
+
+      // Cargar cargos
+      final apiGetCargos = await RegisterService.get("cargo");
+      final resCargo = CargoResponse.fromJson(apiGetCargos);
+      positions.assignAll(resCargo.cargos as Iterable<Cargos>);
 
       isLoading.value = false;
-
-      nameController = TextEditingController();
-      emailController = TextEditingController();
-
-      // Escuchar cambios en los controladores y sincronizar con las variables reactivas
-      nameController.addListener(() => name.value = nameController.text);
-      emailController.addListener(() => email.value = emailController.text);
 
     } catch (e) {
       isLoading.value = false;
@@ -61,10 +93,58 @@ class UserRegisterController extends GetxController {
     }
   }
 
+
+  String? validateName(String? value) {
+    // Verifica si el valor es null o está vacío
+    if (value == null || value.trim().isEmpty) {
+      return 'Por favor, ingresa tu nombre';
+    }
+
+    // Verifica si el texto tiene al menos un número mínimo de caracteres (ejemplo: 5)
+    if (value.trim().length < 5) {
+      return 'El nombre debe tener al menos 5 caracteres';
+    }
+
+    // Verifica si el texto contiene exactamente dos palabras
+    final words = value.trim().split(RegExp(r'\s+')); // Divide el texto por espacios
+    if (words.length != 2) {
+      return 'El nombre debe contener exactamente dos palabras';
+    }
+
+    // Si pasa todas las validaciones, retorna null (sin errores)
+    return null;
+  }
+
+  // Validación del formulario
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingresa tu email';
+    } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+      return 'Ingresa un email válido';
+    }
+    return null;
+  }
+
+  String? validateString(String value){
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingresa tu ()';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingresa tu contraseña';
+    } else if (value.length < 6) {
+      return 'La contraseña debe tener al menos 6 caracteres';
+    }
+    return null;
+  }
+
+
+
   @override
   void onClose() {
-    nameController.dispose();
-    emailController.dispose();
     super.onClose();
   }
 
@@ -77,17 +157,29 @@ class UserRegisterController extends GetxController {
     }
   }
 
-  // Método para crear un nuevo usuario
-  Map<String, dynamic> createUser() {
-    return {
-      'name': name.value,
-      'email': email.value,
-      'isActive': isActive.value,
-      'role': rol.value.isNotEmpty ? rol.value : null,
-      'department': department.value.isNotEmpty ? department.value : null,
-      'position': position.value.isNotEmpty ? position.value : null,
-      'profileImage': profileImage.value?.path,
-    };
+  Future createUser() async {
+
+
+
+
+
+    final User user=User(
+        name: nameController.text,
+        email: emailController.text,
+        isActive: isActive.value,
+        role: rol.value.isNotEmpty ? rol.value : null,
+        department: department.value.isNotEmpty ? department.value : null,
+        position: position.value.isNotEmpty ? position.value : null,
+        profileImage: profileImage.value?.path,
+        password: '123456'
+    );
+    print(user.toJson());
+    try {
+      final response = await RegisterService.post("auth/register", user.toJson());
+      return response;
+    } catch (e) {
+      throw Exception('Error de red: $e');
+    }
   }
 
   // Método para reintentar carga de datos
@@ -145,7 +237,7 @@ class UserRegister extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             child: Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 500),
+                constraints: const BoxConstraints(maxWidth: 700),
                 child: Card(
                   elevation: 4,
                   shape: RoundedRectangleBorder(
@@ -165,9 +257,11 @@ class UserRegister extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 24),
-                        TextField(
+                        TextFormField(
                           keyboardType: TextInputType.text,
                           controller: controller.nameController,
+                          //onChanged: (value) => controller.name.value = value,
+                          validator: controller.validateName,
                           decoration: InputDecoration(
                             labelText: 'Nombre completo',
                             prefixIcon: const Icon(Icons.person_outline),
@@ -177,9 +271,11 @@ class UserRegister extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        TextField(
+                        TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           controller: controller.emailController,
+                         // onChanged: (value) => controller.email.value = value,
+                          validator: controller.validateEmail,
                           decoration: InputDecoration(
                             labelText: 'Correo electrónico',
                             prefixIcon: const Icon(Icons.email_outlined),
@@ -189,7 +285,7 @@ class UserRegister extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        Container(
+                        /*Container(
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.withOpacity(0.3)),
                             borderRadius: BorderRadius.circular(12),
@@ -210,7 +306,7 @@ class UserRegister extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                        ),
+                        ),*/
                         const SizedBox(height: 16),
                         DropdownButtonFormField<String>(
                           value: controller.rol.value.isEmpty ? null : controller.rol.value,
@@ -218,8 +314,8 @@ class UserRegister extends StatelessWidget {
                               ? [const DropdownMenuItem(value: null, child: Text('Cargando roles...'))]
                               : controller.roles.map((role) {
                             return DropdownMenuItem<String>(
-                              value: role,
-                              child: Text(role),
+                              value: role.name,
+                              child: Text(role.name!),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -237,6 +333,7 @@ class UserRegister extends StatelessWidget {
                           hint: const Text('Selecciona un rol'),
                           borderRadius: BorderRadius.circular(12),
                           icon: const Icon(Icons.arrow_drop_down),
+
                         ),
                         const SizedBox(height: 16),
                         DropdownButtonFormField<String>(
@@ -245,8 +342,8 @@ class UserRegister extends StatelessWidget {
                               ? [const DropdownMenuItem(value: null, child: Text('Cargando departamentos...'))]
                               : controller.departments.map((dept) {
                             return DropdownMenuItem<String>(
-                              value: dept,
-                              child: Text(dept),
+                              value: dept.name,
+                              child: Text(dept.name!),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -270,8 +367,8 @@ class UserRegister extends StatelessWidget {
                               ? [const DropdownMenuItem(value: null, child: Text('Cargando cargos...'))]
                               : controller.positions.map((cargo) {
                             return DropdownMenuItem<String>(
-                              value: cargo,
-                              child: Text(cargo),
+                              value: cargo.name,
+                              child: Text(cargo.name!),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -321,8 +418,8 @@ class UserRegister extends StatelessWidget {
                         )),
                         const SizedBox(height: 32),
                         FilledButton(
-                          onPressed: () {
-                            final newUser = controller.createUser();
+                          onPressed: () async {
+                            final newUser = await controller.createUser();
                             print('Nuevo usuario registrado: $newUser');
                             Get.back(result: newUser);
                           },
