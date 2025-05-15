@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../constat/enum_screen.dart';
 import '../../controller/dashboard_menu.dart';
 
 class ItemsUser extends StatelessWidget {
@@ -19,7 +20,8 @@ class ItemsUser extends StatelessWidget {
           title: Text('Lista de Usuarios'),
           leading: Icon(Icons.people, color: colors.primary),
           onTap: () {
-            menuControllerScreen.currentIndex(1);
+            //menuControllerScreen.currentIndex(1);
+            Get.find<MenuControllerScreen>().goToScreen(AppScreen.userList);
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -27,18 +29,18 @@ class ItemsUser extends StatelessWidget {
           title: Text('Registro'),
           leading: Icon(Icons.account_circle, color: colors.primary),
           onTap: () {
-            menuControllerScreen.currentIndex(2);
+            Get.find<MenuControllerScreen>().goToScreen(AppScreen.userRegister);//menuControllerScreen.currentIndex(2);
             Get.back(); // Cierra el Drawer
           },
         ),
-        ListTile(
+        /*ListTile(
           title: Text('Permisos'),
           leading: Icon(Icons.lock, color: colors.primary),
           onTap: () {
             menuControllerScreen.currentIndex(3);
             Get.back(); // Cierra el Drawer
           },
-        ),
+        ),*/
 
       ],
     );

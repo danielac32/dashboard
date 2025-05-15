@@ -136,10 +136,9 @@ class DashboardAdmin extends StatelessWidget {
         ),
       ),
       body: Obx((){
-        return menuControllerScreen.screens[menuControllerScreen.currentIndex.value];
+       // return menuControllerScreen.screens[menuControllerScreen.currentIndex.value];
+        return Get.find<MenuControllerScreen>().currentView;
       }),
-
-
     );
   }
 }

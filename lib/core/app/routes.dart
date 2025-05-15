@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../screens/admin/dashboard_admin.dart';
 import '../../screens/auth/login.dart';
-import '../../screens/user/dashboard_user.dart';
+//import '../../screens/user/dashboard_user.dart';
 
 //import '../presentation/home/home_screen.dart';
 //import '../presentation/reports/reports_screen.dart';
@@ -12,6 +12,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String dashboardSuperAdmin = '/superAdmin';
   //static const String dashboardAdmin = '/admin';
+  //static const String dashboardUser = '/user';
   //static const String dashboardUser = '/user';
 
   // Rutas para departamentos
