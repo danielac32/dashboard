@@ -6,6 +6,9 @@
 import 'dart:convert';
 
 import 'package:core_system/core/utils/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../../infrastructure/shared/storage.dart';
@@ -128,18 +131,71 @@ class RegisterService {
       case 201: // Created
       case 204: // No Content (para DELETE)
         return jsonDecode(response.body);
+
       case 400:
+        Get.snackbar(
+          'Error en la solicitud',
+          'Datos incorrectos o incompletos',
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+        );
         throw Exception('Bad Request: ${response.body}');
+
       case 401:
-      case 403:
+        Get.snackbar(
+          'Sesión expirada',
+          'Por favor inicie sesión nuevamente',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
         throw Exception('No autorizado: ${response.body}');
+
+      case 403:
+        Get.snackbar(
+          'Acceso denegado',
+          'No tienes permisos para esta acción',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        throw Exception('Prohibido: ${response.body}');
+
       case 404:
+        Get.snackbar(
+          'No encontrado',
+          'El recurso solicitado no existe',
+          backgroundColor: Colors.blue,
+          colorText: Colors.white,
+        );
         throw Exception('Recurso no encontrado');
+
       case 500:
+        Get.snackbar(
+          'Error del servidor',
+          'Por favor intente más tarde',
+          backgroundColor: Colors.red[800],
+          colorText: Colors.white,
+          duration: Duration(seconds: 4),
+        );
         throw Exception('Error del servidor: ${response.body}');
+
       case 409:
+        Get.snackbar(
+          'Usuario existente',
+          'El correo electrónico ya está registrado',
+          backgroundColor: Colors.orange[800],
+          colorText: Colors.white,
+          icon: Icon(Icons.person_off, color: Colors.white),
+        );
         throw Exception('El usuario ya existe: ${response.body}');
+
       default:
+        Get.snackbar(
+          'Error ${response.statusCode}',
+          'Ocurrió un error inesperado',
+          backgroundColor: Colors.grey[800],
+          colorText: Colors.white,
+        );
         throw Exception('Error en la solicitud: ${response.statusCode}');
     }
   }

@@ -8,9 +8,11 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../infrastructure/entities/user_response.dart';
+import '../../../../../infrastructure/shared/alert.dart';
 import '../../../../../infrastructure/shared/interface/cargo_response.dart';
 import '../../../../../infrastructure/shared/interface/direccion_response.dart';
 import '../../../../../infrastructure/shared/interface/role_response.dart';
+import '../../../controller/dashboard_menu.dart';
 
 class UserRegisterController extends GetxController {
   // Variables observables para los campos del formulario
@@ -125,12 +127,13 @@ class UserRegisterController extends GetxController {
     return null;
   }
 
-  String? validateString(String value){
+  String? validateDropdown(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
-      return 'Por favor, ingresa tu ()';
+      return 'Por favor selecciona un $fieldName';
     }
     return null;
   }
+
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
@@ -157,11 +160,57 @@ class UserRegisterController extends GetxController {
     }
   }
 
-  Future createUser() async {
+  Future<void> createUser() async {
+    final emailError = validateEmail(emailController.text);
+    final nameError = validateName(nameController.text);
+    final roleError=validateDropdown(rol.value, "Role");
+    final direccionError = validateDropdown(department.value, "Direccion");
+    final cargoError = validateDropdown(position.value, "Cargo");
 
 
 
+    if(nameError != null){
+      Get.snackbar('Error', '${nameError}',
+        backgroundColor: Colors.orange[800],
+        colorText: Colors.white,
+        icon: Icon(Icons.person_off, color: Colors.white),
+      );
+      return;
+    }
 
+    if(emailError != null){
+      Get.snackbar('Error', '${emailError}',
+        backgroundColor: Colors.orange[800],
+        colorText: Colors.white,
+        icon: Icon(Icons.person_off, color: Colors.white),
+      );
+      return;
+    }
+
+    if(roleError != null){
+      Get.snackbar('Error', '${roleError}',
+        backgroundColor: Colors.orange[800],
+        colorText: Colors.white,
+        icon: Icon(Icons.person_off, color: Colors.white),
+      );
+      return;
+    }
+    if(direccionError != null){
+      Get.snackbar('Error', '${direccionError}',
+        backgroundColor: Colors.orange[800],
+        colorText: Colors.white,
+        icon: Icon(Icons.person_off, color: Colors.white),
+      );
+      return;
+    }
+    if(cargoError != null){
+      Get.snackbar('Error', '${cargoError}',
+        backgroundColor: Colors.orange[800],
+        colorText: Colors.white,
+        icon: Icon(Icons.person_off, color: Colors.white),
+      );
+      return;
+    }
 
     final User user=User(
         name: nameController.text,
@@ -174,8 +223,11 @@ class UserRegisterController extends GetxController {
         password: '123456'
     );
     print(user.toJson());
+
     try {
       final response = await RegisterService.post("auth/register", user.toJson());
+      SnackbarAlert.Success(title: "OK",durationSeconds: 2,message:"Usuario Registrado" );
+      await Get.find<MenuControllerScreen>().currentIndex(1);
       return response;
     } catch (e) {
       throw Exception('Error de red: $e');
@@ -419,9 +471,7 @@ class UserRegister extends StatelessWidget {
                         const SizedBox(height: 32),
                         FilledButton(
                           onPressed: () async {
-                            final newUser = await controller.createUser();
-                            print('Nuevo usuario registrado: $newUser');
-                            Get.back(result: newUser);
+                            await controller.createUser();
                           },
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
