@@ -49,6 +49,24 @@ class Permission {
     canPublish = json['canPublish'];
   }
 
+
+  Permission copyWith({
+    String? section,
+    bool? canCreate,
+    bool? canEdit,
+    bool? canDelete,
+    bool? canPublish,
+  }) {
+    return Permission(
+      section: section ?? this.section,
+      canCreate: canCreate ?? this.canCreate,
+      canEdit: canEdit ?? this.canEdit,
+      canDelete: canDelete ?? this.canDelete,
+      canPublish: canPublish ?? this.canPublish,
+    );
+  }
+
+
   Map<String, dynamic> toJson() {
     return {
       'section': section,

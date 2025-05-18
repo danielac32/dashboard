@@ -199,7 +199,7 @@ class UserListController extends GetxController {
   // Método para refrescar los datos desde la API
   Future<void> refreshUsers() async {
     try {
-      final apiResponse = await UserListService.get("get");
+      final apiResponse = await UserListService.get("user");
       final res = UserListResponse.fromJson(apiResponse);
 
       users.value = res.users ?? [];
@@ -213,6 +213,8 @@ class UserListController extends GetxController {
     }
   }
 }
+
+
 
 class UserEditController extends GetxController {
   // Variables observables para los campos del formulario

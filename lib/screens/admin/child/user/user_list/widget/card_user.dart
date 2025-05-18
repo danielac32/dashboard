@@ -2,7 +2,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../infrastructure/entities/user_response.dart';
+//import '../../permisos/interface/permission.dart';
+import '../../permisos/permission.dart';
 import '../controller/user_list_controller.dart';
+import '../interface/user_permission.dart' show Permission;
 import '../user_list.dart';
 import 'package:get/get.dart';
 
@@ -97,9 +100,45 @@ class CardWidgetUser extends StatelessWidget {
                               children: [
                                 // Botón para gestionar permisos
                                 IconButton(
-                                  onPressed: () {
-                                    //userListController.loadPermissionsForUser(user.id!);
-                                    //_showPermissionsDialog(context, user);
+                                  onPressed: ()async {
+                                    final success = await Get.dialog<bool>(
+                                      DialogAddPermission(id: user.id!),
+                                    );
+
+                                    if (success == true) {
+                                      Get.snackbar(
+                                        'Éxito',
+                                        'Permisos actualizados correctamente',
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        duration: Duration(seconds: 2),
+                                        backgroundColor: Colors.green[100],
+                                      );
+                                    } else if (success == false) {
+                                      Get.snackbar(
+                                        'Error',
+                                        'No se pudieron actualizar todos los permisos',
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        duration: Duration(seconds: 3),
+                                        backgroundColor: Colors.red[100],
+                                      );
+                                    }
+                                    /*final permissions = await Get.dialog<List<Permission>>(
+                                      DialogAddPermission(id: user.id!),
+                                    );
+
+                                     */
+
+                                    /*if (permissions != null) {
+                                      // Procesar los permisos seleccionados
+                                      print(user.id);
+                                      for (var perm in permissions) {
+                                        print('Sección: ${perm.section}');
+                                        print(' - Crear: ${perm.canCreate}');
+                                        print(' - Editar: ${perm.canEdit}');
+                                        print(' - Eliminar: ${perm.canDelete}');
+                                        print(' - Publicar: ${perm.canPublish}');
+                                      }
+                                    }*/
                                   },
                                   icon: Icon(Icons.screen_lock_landscape, color: Color.fromRGBO(10, 200, 10, 1)),
                                   tooltip: 'Gestionar permisos',
@@ -107,41 +146,42 @@ class CardWidgetUser extends StatelessWidget {
 
                                 // Espaciador opcional
                                 const SizedBox(width: 8),
-
-                                if (!isLoading) ...[
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.30,
-                                    child: Card(
-                                      elevation: 4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: ExpansionTile(
-                                          title: Text('Ver permisos (${permissions.length})'),
-                                          children: [
-                                            ...permissions.map((permission) => ListTile(
-                                              title: Text(permission.section ?? ''),
-                                              subtitle: Wrap(
-                                                spacing: 8,
-                                                children: [
-                                                  if (permission.canCreate ?? false)
-                                                    Chip(label: Text('Crear'), backgroundColor: Colors.blue[50]),
-                                                  if (permission.canEdit ?? false)
-                                                    Chip(label: Text('Editar'), backgroundColor: Colors.blue[50]),
-                                                  if (permission.canDelete ?? false)
-                                                    Chip(label: Text('Eliminar'), backgroundColor: Colors.red[50]),
-                                                  if (permission.canPublish ?? false)
-                                                    Chip(label: Text('Publicar'), backgroundColor: Colors.green[50]),
-                                                ],
-                                              ),
-                                            )).toList(),
-                                          ],
+                                /*if (!isLoading) ...[
+                                  if(permissions.isNotEmpty) ...[
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.30,
+                                      child: Card(
+                                        elevation: 4,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: ExpansionTile(
+                                            title: Text('Ver permisos (${permissions.length})'),
+                                            children: [
+                                              ...permissions.map((permission) => ListTile(
+                                                title: Text(permission.section ?? ''),
+                                                subtitle: Wrap(
+                                                  spacing: 8,
+                                                  children: [
+                                                    if (permission.canCreate ?? false)
+                                                      Chip(label: Text('Crear'), backgroundColor: Colors.blue[50]),
+                                                    if (permission.canEdit ?? false)
+                                                      Chip(label: Text('Editar'), backgroundColor: Colors.blue[50]),
+                                                    if (permission.canDelete ?? false)
+                                                      Chip(label: Text('Eliminar'), backgroundColor: Colors.red[50]),
+                                                    if (permission.canPublish ?? false)
+                                                      Chip(label: Text('Publicar'), backgroundColor: Colors.green[50]),
+                                                  ],
+                                                ),
+                                              )).toList(),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  )
+                                    )
+                                  ]
                                 ] else ...[
                                   const CircularProgressIndicator(strokeWidth: 2),
-                                ],
+                                ],*/
 
                                 // Botones de acciones
                                 IconButton(

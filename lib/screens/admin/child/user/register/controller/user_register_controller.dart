@@ -10,6 +10,7 @@ import '../../../../../../infrastructure/shared/interface/direccion_response.dar
 import '../../../../../../infrastructure/shared/interface/role_response.dart';
 import '../../../../constat/enum_screen.dart';
 import '../../../../controller/dashboard_menu.dart';
+import '../../user_list/controller/user_list_controller.dart';
 import '../service/register_service.dart';
 
 class UserRegisterController extends GetxController {
@@ -242,6 +243,7 @@ class UserRegisterController extends GetxController {
       SnackbarAlert.Success(title: "OK",durationSeconds: 2,message:"Usuario Registrado" );
       clearForm();
      // await Get.find<MenuControllerScreen>().currentIndex(1);
+      await Get.find<UserListController>().refreshUsers();//refrescar lista de usuarios --- consultar la api de nuevo y crear la lista y la paginacion
       Get.find<MenuControllerScreen>().goToScreen(AppScreen.userList);
       return response;
     } catch (e) {

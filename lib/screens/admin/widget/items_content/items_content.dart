@@ -26,7 +26,7 @@ class ItemsContent extends StatelessWidget {
           },
         ),*/
         ExpansionTile(
-          title: Text('Páginas'),
+          title: Text('Dirección'),
           leading: Icon(Icons.settings_applications_outlined, color: colors.primary),
           children: [
             ListTile(
