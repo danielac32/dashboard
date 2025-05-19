@@ -6,14 +6,15 @@ import 'package:get/get.dart';
 import '../child/home/home_screen_2.dart';
 import '../child/user/register/user_register.dart';
 import '../child/user/user_list/user_list.dart';
-import '../constat/enum_screen.dart';
+import '../constant/enum_screen.dart';
+import '../widget/media/media_screen.dart';
 
 
 
 
 class MenuControllerScreen extends GetxController {
   // Índice de la pantalla actual
-  var currentIndex = 1.obs;
+  /*var currentIndex = 1.obs;
 
   // Lista de pantallas disponibles
   final List<Widget> screens = [
@@ -27,13 +28,14 @@ class MenuControllerScreen extends GetxController {
   void changeScreen(int index) {
     currentIndex.value = index;
   }
+*/
 
-
-  var currentScreen = AppScreen.userList.obs;
+  var currentScreen = AppScreen.mediaScreen.obs;
   final Map<AppScreen, Widget> screenMap = {
     AppScreen.home: HomeScreen(),
     AppScreen.userList: UserList(),
     AppScreen.userRegister: UserRegister(),
+    AppScreen.mediaScreen: MediaScreen()
   };
 
   // Cambia la pantalla de forma segura

@@ -39,7 +39,7 @@ class DashboardAdmin extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+       /* title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
@@ -104,7 +104,7 @@ class DashboardAdmin extends StatelessWidget {
               },
             )
           ],
-        ),
+        ),*/
         //centerTitle: true,
         leading: Builder(
           builder: (context) => IconButton(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/utils/enum.dart';
+import '../../constant/enum_screen.dart';
+import '../../controller/dashboard_menu.dart';
 
 
 
@@ -64,6 +66,7 @@ class ItemsContent extends StatelessWidget {
         ),
         ListTile(
           title: Text('Publicaciones'),
+          leading: Icon(Icons.image, color: colors.primary),
           onTap: () {
 
             Get.back(); // Cierra el Drawer
@@ -71,18 +74,20 @@ class ItemsContent extends StatelessWidget {
         ),
         ListTile(
           title: Text('Media'),
+          leading: Icon(Icons.file_upload, color: colors.primary),
           onTap: () {
-
             Get.back(); // Cierra el Drawer
+            Get.find<MenuControllerScreen>().goToScreen(AppScreen.mediaScreen);
           },
         ),
-        ListTile(
+        /*ListTile(
           title: Text('Menús'),
+          leading: Icon(Icons.image, color: colors.primary),
           onTap: () {
 
             Get.back(); // Cierra el Drawer
           },
-        ),
+        ),*/
       ],
     );
   }

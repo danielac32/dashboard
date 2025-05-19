@@ -8,7 +8,7 @@ import '../../../../../../infrastructure/shared/alert.dart';
 import '../../../../../../infrastructure/shared/interface/cargo_response.dart';
 import '../../../../../../infrastructure/shared/interface/direccion_response.dart';
 import '../../../../../../infrastructure/shared/interface/role_response.dart';
-import '../../../../constat/enum_screen.dart';
+import '../../../../constant/enum_screen.dart';
 import '../../../../controller/dashboard_menu.dart';
 import '../../user_list/controller/user_list_controller.dart';
 import '../service/register_service.dart';

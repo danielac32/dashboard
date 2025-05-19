@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../constat/enum_screen.dart';
+import '../../constant/enum_screen.dart';
 import '../../controller/dashboard_menu.dart';
 
 class ItemsUser extends StatelessWidget {
