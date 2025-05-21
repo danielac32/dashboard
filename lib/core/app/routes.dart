@@ -1,14 +1,15 @@
 
 import 'package:get/get.dart';
-
 import '../../screens/admin/dashboard_admin.dart';
 import '../../screens/auth/login.dart';
+import '../../vataciones/index.dart';
 //import '../../screens/user/dashboard_user.dart';
 
 //import '../presentation/home/home_screen.dart';
 //import '../presentation/reports/reports_screen.dart';
 
 class AppRoutes {
+  static const String votacion='/votacion';
   static const String login = '/login';
   static const String dashboardSuperAdmin = '/superAdmin';
   //static const String dashboardAdmin = '/admin';
@@ -32,6 +33,7 @@ class AppRoutes {
   static final List<GetPage> routes = [
     GetPage(name: login, page: () => LoginScreen()),
     GetPage(name: dashboardSuperAdmin, page: () => DashboardAdmin()),
+    GetPage(name: votacion, page: () => Index())
     //GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
     //GetPage(name: dashboardUser, page: () => DashboardUser()),
 

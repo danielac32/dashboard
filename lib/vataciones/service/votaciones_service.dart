@@ -1,6 +1,9 @@
 
 
 
+
+
+
 import 'dart:convert';
 
 import 'package:core_system/core/utils/constants.dart';
@@ -8,17 +11,16 @@ import 'package:http/http.dart' as http;
 
 import '../../../../../../infrastructure/shared/storage.dart';
 
-class UserListService {
+class VotacionService {
   static final String _baseUrl = AppStrings.urlApi;
 
-
   static Future<Map<String, String>> _getHeaders() async {
-    final token = await LocalStorage.getToken();
+   /* final token = await LocalStorage.getToken();
     if (token == null) {
       throw Exception('No se encontró un token de autenticación');
-    }
+    }*/
     return {
-      'Authorization': 'Bearer $token',
+     // 'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     };
   }
@@ -39,9 +41,8 @@ class UserListService {
     }
   }
 
-  static Future<dynamic> update(String endpoint, {required int id, required Map<String, dynamic> data}) async {
-    final url = Uri.parse('$_baseUrl/$endpoint/$id'); // Construye la URL con el ID
-    print('url $url');
+  static Future<dynamic> update(String endpoint, { required Map<String, dynamic> data} ) async {
+    final url = Uri.parse('$_baseUrl/$endpoint'); // Construye la URL con el ID
     try {
       final response = await http.patch(
         url,
@@ -68,27 +69,6 @@ class UserListService {
       throw Exception('Error de red: $e');
     }
   }
-
-
-
-  static Future<dynamic> getFilterUser(String endpoint,String endpoint2, {
-    Map<String, dynamic>? queryParams
-  }) async {
-    final url = Uri.parse('$_baseUrl/$endpoint/$endpoint2').replace(
-      queryParameters: queryParams,
-    );
-
-    try {
-      final response = await http.get(
-        url,
-        headers: await _getHeaders(),
-      );
-      return _handleResponse(response);
-    } catch (e) {
-      throw Exception('Error de red: $e');
-    }
-  }
-
 
   static Future<dynamic> getUserPermissions(String endpoint,String endpoint2, {required int userId}) async {
     final url = Uri.parse('$_baseUrl/$endpoint/$userId/$endpoint2');

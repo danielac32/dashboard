@@ -7,7 +7,7 @@ import '../../../core/utils/constants.dart';
 import '../../../infrastructure/entities/user_response.dart';
 
 class ApiService {
-  static const String _baseUrl = AppStrings.urlApi;
+  static final String _baseUrl = AppStrings.urlApi;
 
   // Método genérico para POST
   static Future<dynamic> post(String endpoint, Map<String, dynamic> body) async {

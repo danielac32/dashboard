@@ -44,6 +44,8 @@ dependencies:
   fl_chart: ^0.71.0
   http: ^1.4.0
   shared_preferences: ^2.5.3
+  syncfusion_flutter_charts: ^29.2.4
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -67,8 +69,10 @@ flutter:
     - assets/3.jpeg
     - assets/4.jpeg
     - assets/5.jpeg
+    - assets/config.json
     - assets/fondo.jpeg
     - assets/carousel/
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

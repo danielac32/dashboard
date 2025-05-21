@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 import '../../../../../../infrastructure/shared/storage.dart';
 
 class RegisterService {
-  static const String _baseUrl = AppStrings.urlApi;
+  static final String _baseUrl = AppStrings.urlApi;
 
 
   static Future<Map<String, String>> _getHeaders() async {

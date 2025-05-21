@@ -1,6 +1,10 @@
 
 
 
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
+
 abstract class AppStrings {
   // Roles de usuario
   static const String superAdmin = 'SUPER_ADMIN';
@@ -58,7 +62,21 @@ static const String coordinador="COORDINADOR";
   static const String consultor="CONSULTOR";
   static const String hp="HP";
   static const String otro="OTRO";
-  static const urlApi='http://localhost:8080';
+  static late String urlApi;//=dotenv.env['API_URL'];//'http://localhost:8085';
 }
 
+Future<String> getApiUrl() async {
+  final String jsonString = await rootBundle.loadString('assets/config.json');
+  final Map<String, dynamic> config = jsonDecode(jsonString);
+  return config['api_url'];
+}
 
+class ConfigLoader {
+  static late Map<String, dynamic> config;
+
+  static Future<Map<String, dynamic>> loadConfig() async {
+    final String jsonString = await rootBundle.loadString('assets/config.json');
+    config = json.decode(jsonString);
+    return config;
+  }
+}

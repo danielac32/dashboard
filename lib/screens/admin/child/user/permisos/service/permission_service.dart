@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import '../../../../../../infrastructure/shared/storage.dart';
 
 class PermissionService {
-  static const String _baseUrl = AppStrings.urlApi;
+  static final String _baseUrl = AppStrings.urlApi;
 
 
   static Future<Map<String, String>> _getHeaders() async {
