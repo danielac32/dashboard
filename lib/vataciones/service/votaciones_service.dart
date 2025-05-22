@@ -85,7 +85,7 @@ class VotacionService {
   }
 
   // Método genérico para GET
-  static Future<dynamic> get(String endpoint, {Map<String, String>? queryParams}) async {
+  static Future<dynamic> get(String endpoint, {Map<String, dynamic>? queryParams}) async {
     final url = Uri.parse('$_baseUrl/$endpoint').replace(queryParameters: queryParams);
 
     try {

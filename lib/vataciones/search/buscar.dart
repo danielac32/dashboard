@@ -49,7 +49,151 @@ class BuscarEmpleadoTab extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 20),
+                  Obx(() {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.arrow_back),
+                          onPressed: controller.currentPage.value > 1
+                              ? () => controller.previousPage()
+                              : null,
+                        ),
+                        Text(
+                          'Página ${controller.currentPage.value}',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.arrow_forward),
+                          onPressed: controller.currentPage.value * controller.pageSize <
+                              controller.filteredEmpleados.length
+                              ? () => controller.nextPage()
+                              : null,
+                        ),
+                        Tooltip(
+                          message: "Eliminar todos los usuarios",
+                          child: IconButton(
+                            icon: Icon(Icons.delete,color: Color.fromARGB(255, 255, 0, 0),),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Elimiar?"),
+                                  content: Text("Desea Eliminar la base de datos?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Cancelar'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                          // Cambiar estado
+                                        controller.delete();
+                                      },
+                                      child: Text(
+                                        'Confirmar',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Tooltip(
+                          message: "Todos a SI VOTO",
+                          child: IconButton(
+                            icon: Icon(Icons.update,color: Colors.green),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Cambiar?"),
+                                  content: Text("Desea cambiar todos a SI VOTO?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Cancelar'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        controller.voto(true);// Cambiar estado
+                                      },
+                                      child: Text(
+                                        'Confirmar',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Tooltip(
+                          message: "Todos a NO VOTO",
+                          child: IconButton(
+                            icon: Icon(Icons.update,color: Color.fromARGB(255, 100, 0, 0)),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Cambiar?"),
+                                  content: Text("Desea cambiar todos a NO VOTO?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Cancelar'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        controller.voto(false);// Cambiar estado
+                                      },
+                                      child: Text(
+                                        'Confirmar',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Tooltip(
+                          message: controller.filterStatus.value == FilterStatus.all
+                              ? 'Todos'
+                              : controller.filterStatus.value == FilterStatus.si
+                              ? 'Si'
+                              : 'No',
+                          child: IconButton(
+                            icon: controller.filterStatus.value == FilterStatus.all
+                                ? Icon(Icons.people,color: Colors.blue)
+                                : controller.filterStatus.value == FilterStatus.si
+                                ? Icon(Icons.how_to_vote,color: Colors.green)
+                                : Icon(Icons.block,color: Colors.red),
+                            //Icon(Icons.update,color: Colors.yellow),
+                            onPressed: controller.toggleFilter
+                          ),
+                        ),
+
+
+
+
+                      ],
+                    );
+                  }),
                   /*ElevatedButton(
                     onPressed: controller.loading.value
                         ? null
@@ -73,15 +217,45 @@ class BuscarEmpleadoTab extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 30,),
+
 
             // Mensaje de estado
-            Obx(() => Text(
-              controller.mensaje.value,
-              style: const TextStyle(color: Colors.red, fontSize: 14),
-            )),
+            Obx(() =>
+                SizedBox(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.37,
+                  child: DropdownButtonFormField<String>(
+                                // value: controller.list.value.isEmpty ? null : controller.rol.value,
+                                items: controller.list.isEmpty
+                    ? [const DropdownMenuItem(value: null, child: Text('Cargando Direcciones...'))]
+                    : controller.list.map((role) {
+                      return DropdownMenuItem<String>(
+                        value: role,
+                        child: Text(role),
+                      );
+                    }).toList(),
+                    onChanged: (value) async {
+                      if (value != null) {
+                        await controller.getEmpleadoDireccion(value);
+                      }
+                    },
+                   decoration: InputDecoration(
+                  labelText: 'Direccion',
+                  prefixIcon: const Icon(Icons.assignment_ind_outlined),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                    ),
+                    hint: const Text('Selecciona una Direccion'),
+                    borderRadius: BorderRadius.circular(12),
+                    icon: const Icon(Icons.arrow_drop_down),
 
-            const SizedBox(height: 10),
+                  ),
+                ),
+            ),
+
+            const SizedBox(height: 30),
 
             // Lista de empleados (sin Expanded ni altura infinita)
             Obx(() {

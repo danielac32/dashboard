@@ -98,45 +98,55 @@ class Index extends StatelessWidget {
     );
   }
 
-  Widget _buildCircularStatCard(String title, int count, Color color,IconData ico) {
-    return Container(
-      width: 50,
-      height: 50,
+  Widget _buildCircularStatCard(String title, int count, Color color, IconData ico) {
+    return Tooltip(
+      message: title, // Mensaje del tooltip, por ejemplo "Votaron"
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color.withOpacity(0.1),
-        border: Border.all(color: color.withOpacity(0.3), width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.2),
-            blurRadius: 6,
-            spreadRadius: 1,
-          ),
-        ],
+        color: color.withOpacity(0.8), // Fondo del tooltip
+        borderRadius: BorderRadius.circular(4),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Icono pequeño
-
-          Icon(
-            ico,//title == 'Votaron' ? Icons.how_to_vote : Icons.block,
-            size: 16, // Tamaño reducido para que quepa bien
-            color: color,
-          ),
-
-          const SizedBox(width: 4), // Espacio entre icono y número
-
-          // Número pequeño
-          Text(
-            '$count',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+      textStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+      ),
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color.withOpacity(0.1),
+          border: Border.all(color: color.withOpacity(0.3), width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.2),
+              blurRadius: 6,
+              spreadRadius: 1,
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Icono pequeño
+            Icon(
+              ico,
+              size: 16,
+              color: color,
+            ),
+
+            const SizedBox(width: 4), // Espacio entre icono y número
+
+            // Número pequeño
+            Text(
+              '$count',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

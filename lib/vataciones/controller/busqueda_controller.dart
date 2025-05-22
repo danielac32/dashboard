@@ -1,10 +1,12 @@
 import 'package:core_system/vataciones/service/votaciones_service.dart';
 import 'package:get/get.dart';
 
+
+import '../interface/direccion_response.dart';
 import '../interface/empleado.dart';
 import 'grafica_controller.dart';
 
-
+enum FilterStatus { all, si, no }
 
 class BusquedaController extends GetxController {
   var loading = false.obs;
@@ -18,14 +20,75 @@ class BusquedaController extends GetxController {
   var votaronCount = 0.obs;
   var noVotaronCount = 0.obs;
   var total=0.obs;
+  final filterStatus = FilterStatus.all.obs;
+  var list = <String>[].obs;
+
+
+
 
   @override
   Future<void> onInit() async {
     super.onInit();
+    list.clear();
+
+    try{
+      final dirResponse = await VotacionService.get("votacion/empleado/direccion/");
+      final resDir = DireccionResponse.fromJson(dirResponse);
+     // list.addAll(resDir.direcciones as Iterable<String>);
+      for(final d in resDir.direcciones!){
+        list.add(d.direccion!);
+      }
+    }catch(e){
+       print(e);
+    }
 
     print("cargando usuarios");
     await loadInitialData();
+    //await getEmpleadoDireccion();
   }
+
+
+  Future<void>getEmpleadoDireccion(String dir) async{
+    Map<String, dynamic> params = {};
+    params['status'] = dir;
+    final apiResponse = await VotacionService.get("votacion/empleado/filter",queryParams: params);
+    final res=EmpleadoResponse.fromJson(apiResponse);
+
+    empleados.value = res.empleado ?? [];
+    filteredEmpleados.value = empleados;
+    currentPage.value = 1;
+  }
+
+  Future<void>toggleFilter() async{
+    try{
+      filterStatus.value = FilterStatus.values[
+      (filterStatus.value.index + 1) % FilterStatus.values.length
+      ];
+
+      Map<String, dynamic> params = {};
+
+      switch(filterStatus.value) {
+        case FilterStatus.si:
+          params['status'] = 'si';
+          break;
+        case FilterStatus.no:
+          params['status'] = 'no';
+          break;
+        case FilterStatus.all:
+          params['status'] = 'all';
+          break;
+      }
+      final apiResponse = await VotacionService.get("votacion/empleado/filter",queryParams: params);
+      final res=EmpleadoResponse.fromJson(apiResponse);
+
+      empleados.value = res.empleado ?? [];
+      filteredEmpleados.value = empleados;
+      currentPage.value = 1;
+    }catch(e){
+      print('Error al filtrar usuarios: $e');
+    }
+  }
+
 
   Future<void> loadInitialData() async {
     final apiResponse = await VotacionService.get("votacion/empleado");
@@ -33,7 +96,9 @@ class BusquedaController extends GetxController {
 
     empleados.value = res.empleado ?? [];
     filteredEmpleados.value = empleados;
-   /* for(final em in empleados){
+    currentPage.value = 1;
+
+    /* for(final em in empleados){
        print('${em.cedula} - ${em.voto}');
     }
 
@@ -126,10 +191,6 @@ class BusquedaController extends GetxController {
       final apiResponse = await VotacionService.get("votacion/empleado");
       final res = EmpleadoResponse.fromJson(apiResponse);
 
-
-
-
-
       empleados.value = res.empleado ?? [];
       filteredEmpleados.value = empleados;
       currentPage.value = 1;
@@ -163,6 +224,21 @@ class BusquedaController extends GetxController {
       loading(false);
     }
   }
+
+  Future<void> delete() async{
+
+  }
+  Future<void> voto(bool voto) async{
+    try{
+      await VotacionService.update("votacion/empleado-all/", data: {'voto': voto});
+      refreshEmpleados();
+      Get.find<GraficaController>().refreshData();
+    }catch(e){
+      print('Error en updateVotoStatus: $e');
+      rethrow;
+    }
+  }
+
 
 
   Future<void> updateVotoStatus(int empleadoId, bool voto) async {
