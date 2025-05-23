@@ -217,11 +217,11 @@ class BuscarEmpleadoTab extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 30,),
+            //const SizedBox(height: 30,),
 
 
             // Mensaje de estado
-            Obx(() =>
+            /*Obx(() =>
                 SizedBox(
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.37,
@@ -253,20 +253,39 @@ class BuscarEmpleadoTab extends StatelessWidget {
 
                   ),
                 ),
-            ),
+            ),*/
 
             const SizedBox(height: 30),
 
             // Lista de empleados (sin Expanded ni altura infinita)
+
+            /*if(controller.filteredEmpleados.isEmpty)... [
+
+            ] else ...[
+
+            ],*/
             Obx(() {
-             /* if (controller.loading.value) {
-                return const Center(child: CircularProgressIndicator());
+
+              if (controller.filteredEmpleados.isEmpty) {
+                return Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: const Text(
+                      "No hay usuarios",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
+                );
               }
 
-              if (controller.empleados.isEmpty &&
-                  controller.mensaje.value.isEmpty) {
-                return const SizedBox();
-              }*/
               final paginated = controller.getPaginatedEmpleados();
               return ListView.builder(
                 shrinkWrap: true,
@@ -282,6 +301,7 @@ class BuscarEmpleadoTab extends StatelessWidget {
                 },
               );
             }),
+
           ],
         ),
       ),
