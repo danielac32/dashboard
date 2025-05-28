@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import '../child/alcadias/alcaldias_content.dart';
+import '../child/carrusel/carrusel.dart';
+import '../child/gobernaciones/gobernacion.dart';
 import '../child/noticias/noticias.dart';
 import '../child/organismo/organismo_content.dart';
 import '../child/programacion_financiera/programacion_financiera.dart';
@@ -35,14 +37,33 @@ class SectionManager {
   static List<SectionConfig> get allSections => _sections.values.toList();
 }
 
-
+//donde key es la el nombre que debe hacer match con la lista de secciones
 void registerAppSections() {
+
   SectionManager.registerSection(
     SectionConfig(
-      key: 'ORGANISMOS_GOBERNACION',
+      key: 'CARRUSEL',
+      displayName: 'Carrusel',
+      icon: Icons.image,
+      builder: (context) =>  CarruselContent(),
+    ),
+  );
+
+  SectionManager.registerSection(
+    SectionConfig(
+      key: 'ORGANISMOS',
       displayName: 'Organismos',
       icon: Icons.account_balance,
-      builder: (context) => const OrganismosContent(),
+      builder: (context) =>  OrganismosContent(),
+    ),
+  );
+
+  SectionManager.registerSection(
+    SectionConfig(
+      key: 'GOBERNACION',
+      displayName: 'Gobernaciones',
+      icon: Icons.account_balance,
+      builder: (context) =>  GobernacionContent(),
     ),
   );
 
@@ -51,7 +72,7 @@ void registerAppSections() {
       key: 'ALCALDIAS',
       displayName: 'Alcaldías',
       icon: Icons.location_city,
-      builder: (context) => const AlcaldiasContent(),
+      builder: (context) =>  AlcaldiasContent(),
     ),
   );
 
@@ -69,7 +90,7 @@ void registerAppSections() {
       key: 'RESUMEN_GESTION',
       displayName: 'Resumen de Gestión',
       icon: Icons.summarize,
-      builder: (context) => const ResumenGestionContent(),
+      builder: (context) =>  ResumenGestionContent(),
     ),
   );
 
@@ -78,7 +99,7 @@ void registerAppSections() {
       key: 'NOTICIAS',
       displayName: 'Noticias',
       icon: Icons.newspaper,
-      builder: (context) => const NoticiasContent(),
+      builder: (context) =>  NoticiasContent(),
     ),
   );
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../infrastructure/entities/user_response.dart';
 //import '../../permisos/interface/permission.dart';
+import '../../../../../../infrastructure/shared/constants.dart';
 import '../../permisos/permission.dart';
 import '../controller/user_list_controller.dart';
 import '../interface/user_permission.dart' show Permission;
@@ -209,7 +210,7 @@ class CardWidgetUser extends StatelessWidget {
                                 ),
                                 CircleAvatar(
                                   radius: 20,
-                                  backgroundImage: NetworkImage('http://localhost:8080/avatar/'),///*${user.id}*/
+                                  backgroundImage: NetworkImage(DefaultUrl.avatarUrl),///*${user.id}*/
                                 ),
                               ],
                             );
