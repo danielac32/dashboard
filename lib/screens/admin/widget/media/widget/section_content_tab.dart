@@ -19,7 +19,11 @@ class SectionContent extends StatelessWidget {
       return _buildDefaultContent(context, sectionKey);
     }
 
-    return Padding(
+
+    return Container(
+      child: config.builder(context),
+    );
+    /*return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Card(
         elevation: 4,
@@ -29,7 +33,7 @@ class SectionContent extends StatelessWidget {
         color: colorScheme.surface,
         child: config.builder(context),
       ),
-    );
+    );*/
   }
 
   Widget _buildDefaultContent(BuildContext context, String sectionKey) {

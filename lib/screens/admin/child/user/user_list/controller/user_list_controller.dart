@@ -59,7 +59,6 @@ class UserListController extends GetxController {
       }
 
       final apiResponse = await UserListService.getFilterUser('user','filter', queryParams: params);
-
       final res = UserListResponse.fromJson(apiResponse);
 
       users.value = res.users ?? [];

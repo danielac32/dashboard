@@ -39,6 +39,7 @@ class DashboardAdmin extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        title: Center(child: Text("Dashboard"),),
        /* title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

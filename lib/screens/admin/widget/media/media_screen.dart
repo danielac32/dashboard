@@ -52,10 +52,9 @@ class MediaScreen extends StatelessWidget {
 
           children: [
             // Encabezado moderno
-            NavInfo(colorScheme: colorScheme, theme: theme),
+           // NavInfo(colorScheme: colorScheme, theme: theme),
             const SizedBox(height: 16),
 
-            // Pestañas modernas
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
@@ -67,10 +66,10 @@ class MediaScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     TabBarWidget(colorScheme: colorScheme, theme: theme, mediaController: mediaController),
-
+                    const SizedBox(height: 5),
                     // Contenido de las pestañas
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.95,
                       //width: MediaQuery.of(context).size.width * 0.8,
                       child: TabBarView(
                         children: mediaController.items.map((item) {

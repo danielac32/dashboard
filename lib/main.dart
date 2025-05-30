@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Core',
       debugShowCheckedModeBanner: false,
       theme: AppTheme(selectedColor: 0).theme(),
-      initialRoute: AppRoutes.login,//AppRoutes.login,
+      initialRoute: AppRoutes.login,
       getPages: AppRoutes.routes,
     );
   }

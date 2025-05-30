@@ -71,19 +71,6 @@ class MediaService {
     }
   }
 
-  static Future<dynamic> getUserPermissions(String endpoint,String endpoint2, {required int userId}) async {
-    final url = Uri.parse('$_baseUrl/$endpoint/$userId/$endpoint2');
-
-    try {
-      final response = await http.get(
-        url,
-        headers: await _getHeaders(),
-      );
-      return _handleResponse(response);
-    } catch (e) {
-      throw Exception('Error al obtener permisos del usuario: $e');
-    }
-  }
 
   // Método genérico para GET
   static Future<dynamic> get(String endpoint, {Map<String, String>? queryParams}) async {
