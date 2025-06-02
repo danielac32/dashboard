@@ -42,6 +42,22 @@ class MediaService {
     }
   }
 
+
+  static Future<dynamic> postImage(String endpoint, {required Map<String, Map<String, Object>> body}) async {
+    final url = Uri.parse('$_baseUrl/$endpoint');
+    try {
+      final response = await http.post(
+        url,
+        headers: await _getHeaders(),
+        body: jsonEncode(body),
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      throw Exception('Error de red: $e');
+    }
+  }
+
+
   static Future<dynamic> update(String endpoint, {required int id, required String endpoint2, required Map<String, dynamic> data} ) async {
     final url = Uri.parse('$_baseUrl/$endpoint/$id/$endpoint2'); // Construye la URL con el ID
     try {
@@ -56,8 +72,8 @@ class MediaService {
     }
   }
 
-  static Future<dynamic> delete(String endpoint, {required int id}) async {
-    final url = Uri.parse('$_baseUrl/$endpoint/$id');
+  static Future<dynamic> delete(String endpoint, {Map<String, String>? queryParams}) async {
+    final url = Uri.parse('$_baseUrl/$endpoint').replace(queryParameters: queryParams);
 
     try {
       // Realizar la solicitud DELETE con el token en los encabezados

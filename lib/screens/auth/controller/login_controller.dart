@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../../../core/app/routes.dart';
 import '../../../core/utils/constants.dart';
 import '../../../core/utils/enum.dart';
+
 import '../../../infrastructure/shared/storage.dart';
 import '../service/user_service.dart';
 
@@ -52,6 +53,7 @@ class LoginController extends GetxController {
 
   // Método para enviar el formulario
   Future<void> submitForm() async {
+     LocalStorage.saveStatus(false);
     final emailError = validateEmail(emailController.text);
     final passwordError = validatePassword(passwordController.text);
 
@@ -66,10 +68,10 @@ class LoginController extends GetxController {
 
     try {
       final apiResponse = await AuthService.login(emailController.text, passwordController.text);
-      await LocalStorage.saveToken(apiResponse.token!);
-      await LocalStorage.saveUser(apiResponse.user!);
+       LocalStorage.saveToken(apiResponse.token!);
+       LocalStorage.saveUser(apiResponse.user!);
       print(apiResponse.token);
-
+       LocalStorage.saveStatus(true);
       //definir que layout mostrar
       final userRole = apiResponse.user!.role;
       final userDepartment = apiResponse.user!.department;

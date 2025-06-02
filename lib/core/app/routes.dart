@@ -1,5 +1,7 @@
 
 import 'package:get/get.dart';
+
+import '../../infrastructure/shared/storage.dart';
 import '../../screens/admin/dashboard_admin.dart';
 import '../../screens/auth/login.dart';
 import '../../vataciones/index.dart';
@@ -7,6 +9,20 @@ import '../../vataciones/index.dart';
 
 //import '../presentation/home/home_screen.dart';
 //import '../presentation/reports/reports_screen.dart';
+import 'package:flutter/material.dart';
+
+class AuthMiddleware extends GetMiddleware {
+  @override
+  RouteSettings? redirect(String? route) {
+    final bool? status = LocalStorage.getStatus();
+    if (status == null || status == false) {// sino esta logeado ve alo login
+      return RouteSettings(name: '/login');
+    }
+  //  return RouteSettings(name: route);
+    return null;
+  }
+}
+
 
 class AppRoutes {
   static const String votacion='/votacion';
@@ -32,7 +48,7 @@ class AppRoutes {
   // Lista de rutas para GetPages
   static final List<GetPage> routes = [
     GetPage(name: login, page: () => LoginScreen()),
-    GetPage(name: dashboardSuperAdmin, page: () => DashboardAdmin()),
+    GetPage(name: dashboardSuperAdmin, page: () => DashboardAdmin(),middlewares: [AuthMiddleware()]),
     GetPage(name: votacion, page: () => Index())
     //GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
     //GetPage(name: dashboardUser, page: () => DashboardUser()),

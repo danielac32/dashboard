@@ -5,30 +5,10 @@ import 'package:core_system/screens/admin/widget/media/widget/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/utils/get_name.dart';
-import '../../child/user/permisos/interface/sections_response.dart';
+import 'controller/media_controller.dart';
 
 
-class MediaController extends GetxController {
 
-  RxList<String> items = <String>[].obs;
-
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-    try{
-      final sections = await MediaService.get("sections");
-      final resSections = Sections.fromJson(sections);
-      items.addAll(resSections.sections);//getDisplayName
-      for(final s in items){
-        print(s);
-      }
-    }catch(e){
-      print('Error cargando secciones: $e');
-    }
-  }
-}
 
 
 class MediaScreen extends StatelessWidget {

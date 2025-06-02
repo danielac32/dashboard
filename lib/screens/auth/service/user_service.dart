@@ -75,6 +75,6 @@ class AuthService {
     }
   }
   Future<void> logout() async {
-    await LocalStorage.clear();
+     LocalStorage.clear();
   }
 }

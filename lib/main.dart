@@ -1,13 +1,18 @@
+import 'package:core_system/screens/auth/login.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'core/app/routes.dart';
 import 'core/config/theme/app_theme.dart';
 import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'core/utils/constants.dart';
+import 'infrastructure/shared/storage.dart';
 
 
 Future<void> main() async {
+  await GetStorage.init();
+  LocalStorage.saveStatus(false);
   WidgetsFlutterBinding.ensureInitialized();
   final config=await ConfigLoader.loadConfig();
   //print(config['api_url']);
@@ -27,6 +32,8 @@ class MyApp extends StatelessWidget {
       theme: AppTheme(selectedColor: 0).theme(),
       initialRoute: AppRoutes.login,
       getPages: AppRoutes.routes,
+      unknownRoute: GetPage(name: '/login', page: () => LoginScreen()),
+
     );
   }
 }

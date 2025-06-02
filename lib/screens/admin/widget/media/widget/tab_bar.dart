@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/get_name.dart';
-import '../media_screen.dart';
+import '../controller/media_controller.dart';
+
 
 class TabBarWidget extends StatelessWidget {
   const TabBarWidget({
