@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List, defaultTargetPlatform;
@@ -8,11 +10,13 @@ import 'package:get/get.dart';
 
 import '../../../../../../../core/utils/constants.dart';
 import '../../../service/media_service.dart';
+
+
 import '../constant/url_api.dart';
-import '../interface/carrusel_responde.dart';
+import '../interface/resumen_response.dart';
 
 
-class CarruselController extends GetxController {
+class ResumenController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   var selectedImages = <XFile>[].obs;
   var uploadedImages = <String>[].obs;
@@ -71,8 +75,8 @@ class CarruselController extends GetxController {
           }
         };
         // Usamos el método postImage del MediaService
-        final response = await MediaService.postImage(UrlCarrusel.upload(), body: body);
-        final uploadResponse = CarruselUploadResponse.fromJson(response);
+        final response = await MediaService.postImage(UrlResumen.upload(), body: body);
+        final uploadResponse = ResumenUploadResponse.fromJson(response);
         //uploadedImages.add(uploadResponse.path);
         print(uploadResponse.path);
       } catch (e) {
@@ -90,9 +94,9 @@ class CarruselController extends GetxController {
 
   Future<void> loadUploadedImages() async {
     try {
-      final apiResponse = await MediaService.get(UrlCarrusel.getList());
-      final carruselResponse = CarruselListResponse.fromJson(apiResponse);
-      uploadedImages.assignAll(carruselResponse.list ?? []);
+      final apiResponse = await MediaService.get(UrlResumen.getList());
+      final resumenResponse = ResumenListResponse.fromJson(apiResponse);
+      uploadedImages.assignAll(resumenResponse.list ?? []);
     } catch (e) {
       print('Error al cargar imágenes: $e');
     }
@@ -100,7 +104,7 @@ class CarruselController extends GetxController {
 
 
   String getImage(String name){
-    return "${AppStrings.urlApi}/${UrlCarrusel.get()}${name}";
+    return "${AppStrings.urlApi}/${UrlResumen.get()}${name}";
   }
 
   @override
@@ -111,11 +115,11 @@ class CarruselController extends GetxController {
 
   Future<void> remove(String index)async {
     try {
-      final apiResponse = await MediaService.delete(UrlCarrusel.delete(),queryParams: {
+      final apiResponse = await MediaService.delete(UrlResumen.delete(),queryParams: {
         "name": index
       });
-      final carruselResponse = CarruselDeleteResponse.fromJson(apiResponse);
-      print(carruselResponse.success);
+      final resumenResponse = ResumenDeleteResponse.fromJson(apiResponse);
+      print(resumenResponse.success);
       await loadUploadedImages();
     } catch (e) {
       print('Error al cargar imágenes: $e');

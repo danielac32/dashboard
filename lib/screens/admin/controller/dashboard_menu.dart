@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 
+import '../../../core/app/routes.dart';
+import '../../../infrastructure/shared/storage.dart';
 import '../child/home/home_screen_2.dart';
 import '../child/user/register/user_register.dart';
 import '../child/user/user_list/user_list.dart';
@@ -48,5 +50,11 @@ class MenuControllerScreen extends GetxController {
   }
   // Retorna el widget actual según el screen seleccionado
   Widget get currentView => screenMap[currentScreen.value]!;
+
+  void logout(){
+    LocalStorage.clear();
+    LocalStorage.saveStatus(false);
+    AppRoutes.navigateAndRemoveUntil("/login");
+  }
 }
 

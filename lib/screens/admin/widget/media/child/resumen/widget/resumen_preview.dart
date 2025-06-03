@@ -1,20 +1,19 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:io';
+
+
+import '../controller/resumen_controller.dart';
 
 
 
-import 'package:flutter/foundation.dart' show kIsWeb;
 
-import '../controller/carrusel_controller.dart';
-
-
-class CarruselPreview extends StatelessWidget {
-  final CarruselController controller;
+class ResumenPreview extends StatelessWidget {
+  final ResumenController controller;
   final ScrollController _scrollController = ScrollController();
 
-  CarruselPreview({Key? key, required this.controller}) : super(key: key);
+  ResumenPreview({Key? key, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class CarruselPreview extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Imágenes en el Carrusel',
+              'Imágenes',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -34,7 +33,7 @@ class CarruselPreview extends StatelessWidget {
             const SizedBox(height: 10),
             Obx(() {
               if (controller.uploadedImages.isEmpty) {
-                return const Center(child: Text('No hay imágenes en el carrusel'));
+                return const Center(child: Text('No hay imágenes '));
               }
 
               return Column(
@@ -49,6 +48,7 @@ class CarruselPreview extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final String imageName = controller.uploadedImages[index];
                         final String imageUrl = controller.getImage("?name=${imageName}");//"http://localhost:8085/media/carrusel/?name=$imageName";
+
                         return Stack(
                           alignment: Alignment.topRight,
                           children: [

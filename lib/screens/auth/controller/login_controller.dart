@@ -1,17 +1,11 @@
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
 import '../../../core/app/routes.dart';
 import '../../../core/utils/constants.dart';
 import '../../../core/utils/enum.dart';
-
 import '../../../infrastructure/shared/storage.dart';
 import '../service/user_service.dart';
-
 
 class LoginController extends GetxController {
   // Controladores de texto para los campos
@@ -20,6 +14,9 @@ class LoginController extends GetxController {
 
   // Estado para mostrar/ocultar la contraseña
   var isPasswordVisible = false.obs;
+
+  // Estado para manejar el loading
+  var isLoading = false.obs;
 
   // Método para alternar la visibilidad de la contraseña
   void togglePasswordVisibility() {
@@ -53,32 +50,43 @@ class LoginController extends GetxController {
 
   // Método para enviar el formulario
   Future<void> submitForm() async {
-     LocalStorage.saveStatus(false);
+    // Validar campos antes de proceder
     final emailError = validateEmail(emailController.text);
     final passwordError = validatePassword(passwordController.text);
 
     if(emailError != null){
-      Get.snackbar('Error', '${emailError}');
+      Get.snackbar('Error', emailError);
       return;
     }
     if(passwordError != null){
-      Get.snackbar('Error', '${passwordError}');
+      Get.snackbar('Error', passwordError);
       return;
     }
 
     try {
-      final apiResponse = await AuthService.login(emailController.text, passwordController.text);
-       LocalStorage.saveToken(apiResponse.token!);
-       LocalStorage.saveUser(apiResponse.user!);
-      print(apiResponse.token);
-       LocalStorage.saveStatus(true);
-      //definir que layout mostrar
+      // Activar estado de loading
+      isLoading.value = true;
+
+      // Limpiar cualquier error previo
+      LocalStorage.saveStatus(false);
+
+      final apiResponse = await AuthService.login(
+          emailController.text,
+          passwordController.text
+      );
+
+      // Guardar datos del usuario
+      LocalStorage.saveToken(apiResponse.token!);
+      LocalStorage.saveUser(apiResponse.user!);
+      LocalStorage.saveStatus(true);
+
+      // Definir qué layout mostrar según el rol y departamento
       final userRole = apiResponse.user!.role;
       final userDepartment = apiResponse.user!.department;
 
-      if(userRole==Role.SUPER_ADMIN.label){
-        Get.offNamed(AppRoutes.dashboardSuperAdmin, arguments: { 'user': apiResponse.user});// este layout aunque dice admin es el superadmin global
-      }else{
+      if(userRole == Role.SUPER_ADMIN.label){
+        Get.offNamed(AppRoutes.dashboardSuperAdmin, arguments: { 'user': apiResponse.user});
+      } else {
         switch (userDepartment) {
           case AppStrings.dgTecnologiaInformacion:
             Get.offAllNamed(AppRoutes.dashboardTecnologia, arguments: {'role': userRole});
@@ -98,10 +106,6 @@ class LoginController extends GetxController {
           case AppStrings.dgPlanificacionAnalisisFinanciero:
             Get.offAllNamed(AppRoutes.dashboardPlanificacionAnalisisFinanciero, arguments: {'role': userRole});
             break;
-         /* case AppStrings.dgRecaudacionIngreso:
-            Get.offAllNamed(AppRoutes.dashboardRecaudacionIngreso, arguments: {'role': userRole});
-            break;
-          */
           case AppStrings.dgRecursosHumanos:
             Get.offAllNamed(AppRoutes.dashboardRecursosHumanos, arguments: {'role': userRole});
             break;
@@ -113,14 +117,15 @@ class LoginController extends GetxController {
             break;
           default:
             Get.snackbar('Error', 'Dirección no reconocida');
-            return;
+            break;
         }
       }
-
     } catch (e) {
-      Get.snackbar('error al iniciar sesion','');
+      Get.snackbar('Error', 'Error al iniciar sesión: ${e.toString()}');
       print(e);
-      return;
+    } finally {
+      // Desactivar loading siempre, tanto en éxito como en error
+      isLoading.value = false;
     }
   }
 }

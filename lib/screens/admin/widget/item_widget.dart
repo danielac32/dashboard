@@ -11,13 +11,14 @@ class ItemWidget extends StatelessWidget {
     required this.text,
     //this.menuController,
     required this.icon,
+     this.tap,
   });
   //final VoidCallback? onPress;
   final Color colors;
   final String text;
   //final MenuController? menuController;
   final IconData icon;
-
+  final VoidCallback? tap;
   @override
   Widget build(BuildContext context) {
     // final colors = Theme.of(context).colorScheme;
@@ -25,9 +26,7 @@ class ItemWidget extends StatelessWidget {
       leading: Icon(icon, color: colors),
       title: Text(text),
       // onTap: onPress,
-      onTap: () {
-        Get.back(); // Cierra el Drawer
-      },
+      onTap: tap,
     );
   }
 }

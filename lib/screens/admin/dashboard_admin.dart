@@ -127,12 +127,17 @@ class DashboardAdmin extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             DrawerWidget(colors: colors, user: user,),
-            ItemWidget(icon:Icons.home,colors:colors.primary,text: 'Inicio'),
+            ItemWidget(icon:Icons.home,colors:colors.primary,text: 'Inicio',tap: (){
+               Get.back();
+            }),
             ItemsUser(),
             ItemsContent(),
             ItemsConfig(),
             Divider(),
-            ItemWidget(icon:Icons.logout,colors:colors.error,text: 'Cerrar sesión'),
+            ItemWidget(icon:Icons.logout,colors:colors.error,text: 'Cerrar sesión',tap:(){
+              Get.back();
+              menuControllerScreen.logout();
+            }),
           ],
         ),
       ),
