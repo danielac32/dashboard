@@ -32,7 +32,7 @@ class MenuControllerScreen extends GetxController {
   }
 */
 
-  var currentScreen = AppScreen.mediaScreen.obs;
+  var currentScreen = AppScreen.userList.obs;
   final Map<AppScreen, Widget> screenMap = {
     AppScreen.home: HomeScreen(),
     AppScreen.userList: UserList(),
