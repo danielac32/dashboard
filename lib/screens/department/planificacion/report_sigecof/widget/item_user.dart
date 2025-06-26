@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../constant/enum_screen_planificacion.dart';
 import '../controller/controller_screen.dart';
+import '../shared/controller_shared.dart';
 
 
 
@@ -27,7 +28,7 @@ class ItemsUser extends StatelessWidget {
           onTap: () {
             //menuControllerScreen.currentIndex(1);
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.ordenes_trasmitidas_bcv);
-
+            Get.find<SharedController>().addTitle.value = "- Ordenes Transmitidas BCV";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -36,6 +37,7 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: colors.primary),
           onTap: () {
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.ordenes_pagadas);
+            Get.find<SharedController>().addTitle.value = "- Ordenes Pagadas";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -44,6 +46,7 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: colors.primary),
           onTap: () {
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.ordenes_pendientes);
+            Get.find<SharedController>().addTitle.value = "- Ordenes Pendientes";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -52,6 +55,7 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: colors.primary),
           onTap: () {
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.dolares_a_blivares);
+            Get.find<SharedController>().addTitle.value = "- Ordenes Dolares a Bolivares";
             Get.back(); // Cierra el Drawer
           },
         ),

@@ -1,4 +1,5 @@
 import 'package:core_system/screens/auth/login.dart';
+import 'package:core_system/screens/department/planificacion/report_sigecof/shared/controller_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'core/app/routes.dart';
@@ -17,6 +18,8 @@ Future<void> main() async {
   final config=await ConfigLoader.loadConfig();
   //print(config['api_url']);
   AppStrings.urlApi=config['api_url'];
+  AppStrings.urlApiSigecof=config['api_sigecof'];
+  Get.put(SharedController());
   runApp(const MyApp());
 }
 
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Core',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme(selectedColor: 0).theme(),
+      theme: AppTheme(selectedColor: 1).theme(),
       initialRoute: AppRoutes.login,
       getPages: AppRoutes.routes,
       unknownRoute: GetPage(name: '/login', page: () => LoginScreen()),

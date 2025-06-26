@@ -21,7 +21,6 @@ class ControllerScreenPlanificacion extends GetxController {
     AppScreen.ordenes_pendientes: OrdenesPendientes(),
     AppScreen.ordenes_trasmitidas_bcv: OrdenesBcv(),//ordenes_bcv
   };
-
   // Cambia la pantalla de forma segura
   void goToScreen(AppScreen screen) {
     if (screenMap.containsKey(screen)) {
@@ -32,7 +31,6 @@ class ControllerScreenPlanificacion extends GetxController {
   }
   // Retorna el widget actual según el screen seleccionado
   Widget get currentView => screenMap[currentScreen.value]!;
-
 }
 
 

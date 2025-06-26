@@ -47,6 +47,11 @@ dependencies:
   syncfusion_flutter_charts: ^29.2.4
   flutter_dotenv: ^5.2.1
   get_storage: ^2.1.1
+  intl: ^0.20.2
+  google_fonts: ^6.2.1
+  excel: ^4.0.6
+  file_saver: ^0.2.14
+  syncfusion_flutter_xlsio: ^29.2.11
 
 dev_dependencies:
   flutter_test:

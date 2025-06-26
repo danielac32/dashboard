@@ -64,6 +64,7 @@ static const String coordinador="COORDINADOR";
   static const String hp="HP";
   static const String otro="OTRO";
   static late String urlApi;//=dotenv.env['API_URL'];//'http://localhost:8085';
+  static late String urlApiSigecof;
 }
 
 Future<String> getApiUrl() async {
@@ -71,6 +72,14 @@ Future<String> getApiUrl() async {
   final Map<String, dynamic> config = jsonDecode(jsonString);
   return config['api_url'];
 }
+
+Future<String> getApiUrlSigecof() async {
+  final String jsonString = await rootBundle.loadString('assets/config.json');
+  final Map<String, dynamic> config = jsonDecode(jsonString);
+  return config['api_sigecof'];
+}
+
+
 
 class ConfigLoader {
   static late Map<String, dynamic> config;

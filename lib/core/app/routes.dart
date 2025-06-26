@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../infrastructure/shared/storage.dart';
 import '../../screens/admin/dashboard_admin.dart';
 import '../../screens/auth/login.dart';
+import '../../screens/department/egreso/egreso.dart';
 import '../../screens/department/planificacion/planificacion.dart';
 import '../../vataciones/index.dart';
 //import '../../screens/user/dashboard_user.dart';
@@ -40,6 +41,7 @@ class AppRoutes {
   static const String dashboardIngreso = '/ingreso';
   static const String dashboardCuentaUnica = '/cuentaunica';
   static const String dashboardPlanificacionAnalisisFinanciero = '/planificacionanalisisfinanciero';
+
   //static const String dashboardRecaudacionIngreso = '/recaudacioningreso';
   static const String dashboardRecursosHumanos = '/recursoshumanos';
   static const String dashboardInversionesValores = '/inversionesvalores';
@@ -52,6 +54,8 @@ class AppRoutes {
     GetPage(name: dashboardSuperAdmin, page: () => DashboardAdmin(),middlewares: [AuthMiddleware()]),
     GetPage(name: votacion, page: () => Index()),
     GetPage(name: dashboardPlanificacionAnalisisFinanciero, page: () => Planificacion(),middlewares: [AuthMiddleware()]),
+    GetPage(name: dashboardEgreso, page: () => Egreso()),
+
 
     //GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
     //GetPage(name: dashboardUser, page: () => DashboardUser()),
@@ -59,7 +63,7 @@ class AppRoutes {
   // Dashboards por departamento
     /*GetPage(name: dashboardTecnologia, page: () => DashboardTecnologia()),
     GetPage(name: dashboardAdministracion, page: () => DashboardAdministracion()),
-    GetPage(name: dashboardEgreso, page: () => DashboardEgreso()),
+
     GetPage(name: dashboardIngreso, page: () => DashboardIngreso()),
     GetPage(name: dashboardCuentaUnica, page: () => DashboardCuentaUnica()),
 

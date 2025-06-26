@@ -1,6 +1,7 @@
 
 
 import 'package:core_system/screens/department/planificacion/report_sigecof/controller/controller_screen.dart';
+import 'package:core_system/screens/department/planificacion/report_sigecof/shared/controller_shared.dart';
 import 'package:core_system/screens/department/planificacion/report_sigecof/widget/item_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,13 +13,11 @@ import '../../admin/widget/drawer_header.dart';
 import '../../admin/widget/item_widget.dart';
 
 class Planificacion extends StatelessWidget {
-
   final  controllerScreen = Get.put(MenuControllerScreen());
   final  controllerPlanificacion = Get.put(ControllerScreenPlanificacion());
+  final  controllerShared = Get.find<SharedController>();
 
-   Planificacion({super.key});
-
-
+  Planificacion({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,9 @@ class Planificacion extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Dashboard"),),
+        title: Center(
+          child: Obx(() => Text("${controllerShared.Titulo} ${controllerShared.addTitle.value}"),),
+        ),
 
         leading: Builder(
           builder: (context) => IconButton(
