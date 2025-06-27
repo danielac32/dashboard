@@ -89,31 +89,31 @@ class LoginController extends GetxController {
       } else {
         switch (userDepartment) {
           case AppStrings.dgTecnologiaInformacion:
-            Get.offNamed(AppRoutes.dashboardTecnologia, arguments: {'role': userRole});
+            Get.offNamed(AppRoutes.dashboardTecnologia, arguments: {'user': apiResponse.user});
             break;
           case AppStrings.dgAdministracion:
-            Get.offNamed(AppRoutes.dashboardAdministracion, arguments: {'role': userRole});
+            Get.offNamed(AppRoutes.dashboardAdministracion, arguments: {'user': apiResponse.user});
             break;
           case AppStrings.dgEgreso:
-            Get.offNamed(AppRoutes.dashboardEgreso, arguments: {'role': userRole});
+            Get.offNamed(AppRoutes.dashboardEgreso, arguments: {'user': apiResponse.user});
             break;
           case AppStrings.dgIngreso:
-            Get.offNamed(AppRoutes.dashboardIngreso, arguments: {'role': userRole});
+            Get.offNamed(AppRoutes.dashboardIngreso, arguments: {'user': apiResponse.user});
             break;
           case AppStrings.dgCuentaUnica:
-            Get.offNamed(AppRoutes.dashboardCuentaUnica, arguments: {'role': userRole});
+            Get.offNamed(AppRoutes.dashboardCuentaUnica, arguments: {'user': apiResponse.user});
             break;
           case AppStrings.dgPlanificacionAnalisisFinanciero:
             Get.offNamed(AppRoutes.dashboardPlanificacionAnalisisFinanciero, arguments: { 'user': apiResponse.user});
             break;
           case AppStrings.dgRecursosHumanos:
-            Get.offNamed(AppRoutes.dashboardRecursosHumanos, arguments: {'role': userRole});
+            Get.offNamed(AppRoutes.dashboardRecursosHumanos, arguments: {'user': apiResponse.user});
             break;
           case AppStrings.dgInversionesYValores:
-            Get.offNamed(AppRoutes.dashboardInversionesValores, arguments: {'role': userRole});
+            Get.offNamed(AppRoutes.dashboardInversionesValores, arguments: {'user': apiResponse.user});
             break;
           case AppStrings.dgConsultoriaJuridica:
-            Get.offNamed(AppRoutes.dashboardConsultoriaJuridica, arguments: {'role': userRole});
+            Get.offNamed(AppRoutes.dashboardConsultoriaJuridica, arguments: {'user': apiResponse.user});
             break;
           default:
             Get.snackbar('Error', 'Dirección no reconocida');

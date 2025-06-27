@@ -1,4 +1,5 @@
 import 'package:core_system/screens/auth/login.dart';
+import 'package:core_system/screens/department/egreso/report_sigecof/shared/controller_shared.dart';
 import 'package:core_system/screens/department/planificacion/report_sigecof/shared/controller_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,7 +20,8 @@ Future<void> main() async {
   //print(config['api_url']);
   AppStrings.urlApi=config['api_url'];
   AppStrings.urlApiSigecof=config['api_sigecof'];
-  Get.put(SharedController());
+  Get.put(SharedController());//planificacion
+  Get.put(SharedEgresoController());
   runApp(const MyApp());
 }
 
