@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
+import '../../../../../../../core/config/theme/app_theme.dart';
 import '../controller/controller.dart';
 
 
@@ -55,7 +56,7 @@ class ConsultarWidget extends StatelessWidget {
                     height: 40,
                     width: 40,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF1e3d7a),
+                      color: AppTheme.goldColor,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: const Icon(

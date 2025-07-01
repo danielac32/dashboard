@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
+import '../../../../../../../core/config/theme/app_theme.dart';
 import '../controller/controller.dart';
 
 
@@ -20,7 +21,7 @@ class DescargarWidget extends StatelessWidget {
         return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(' ', style: TextStyle(fontSize: 12, color: Colors.grey)),
+              const Text(' ', style: TextStyle(fontSize: 12)),
 
               if(isLoading) ...[
                   Padding(
@@ -46,7 +47,7 @@ class DescargarWidget extends StatelessWidget {
                         height: 40,
                         width: 40,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1e3d7a),
+                          color: AppTheme.goldColor,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: const Icon(

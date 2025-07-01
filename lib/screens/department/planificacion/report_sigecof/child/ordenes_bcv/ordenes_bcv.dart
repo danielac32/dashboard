@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../../core/config/theme/app_theme.dart';
 import 'controller/controller.dart';
 
 class OrdenesBcv extends StatelessWidget {
@@ -33,11 +34,11 @@ class OrdenesBcv extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.35,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.black12,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: AppTheme.goldColor.withOpacity(0.1),
                     spreadRadius: 1,
                     blurRadius: 3,
                   ),
@@ -84,7 +85,7 @@ class OrdenesBcv extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
+                        color: AppTheme.goldColor.withOpacity(0.1),
                         spreadRadius: 1,
                         blurRadius: 3,
                       ),
@@ -112,22 +113,22 @@ class OrdenesBcv extends StatelessWidget {
                                 horizontalMargin: 12,
                                 showCheckboxColumn: false,
                                 dataRowColor: MaterialStateProperty.all(Colors.white),
-                                headingRowColor: MaterialStateProperty.all(const Color(0xFF1e3d7a)),
+                                headingRowColor: MaterialStateProperty.all(AppTheme.goldColor),
                                 columns: const [
-                                  DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Monto Total", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Denominación", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Pago Id", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Organismo ", style: TextStyle(color: Colors.white))),
+                                  DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Monto Total", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Denominación", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Pago Id", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Organismo ", style: TextStyle(color: Colors.black))),
                                 ],
                                 rows: controller.paginatedResults.map((bcv) {
                                   return DataRow(
                                     cells: [
-                                      DataCell(Text(controller.formatDate(bcv.fechaValor?? ""))),
-                                      DataCell(Text(bcv.montoTotal.toString())),
-                                      DataCell(Text(bcv.denominacion?? "")),
-                                      DataCell(Text(bcv.pagoId.toString())),
-                                      DataCell(Text(bcv.orgaId.toString())),
+                                      DataCell(Text(controller.formatDate(bcv.fechaValor?? ""), style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(bcv.montoTotal.toString(), style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(bcv.denominacion?? "", style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(bcv.pagoId.toString(), style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(bcv.orgaId.toString(), style: TextStyle(color: Colors.black))),
                                     ],
                                   );
                                 }).toList(),

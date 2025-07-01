@@ -5,6 +5,7 @@ import 'package:core_system/screens/department/planificacion/report_sigecof/shar
 import 'package:core_system/screens/department/planificacion/report_sigecof/widget/item_user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/config/theme/app_theme.dart';
 import '../../../infrastructure/entities/user_response.dart';
 
 
@@ -51,8 +52,8 @@ class Planificacion extends StatelessWidget {
             },
           ),
         ),
-        backgroundColor: colors.primary,
-        foregroundColor: colors.onPrimary,
+        backgroundColor: AppTheme.goldColor,//colors.primary,
+        foregroundColor: Colors.black,//colors.onPrimary,
         actions: <Widget>[
 
 
@@ -63,12 +64,12 @@ class Planificacion extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             DrawerWidget(colors: colors, user: user,),
-            ItemWidget(icon:Icons.account_circle,colors:colors.primary,text: 'Perfil',tap: (){
+            ItemWidget(icon:Icons.account_circle,colors:AppTheme.goldColor,text: 'Perfil',tap: (){
               Get.back();
             }),
             ItemsUser(),
             Divider(),
-            ItemWidget(icon:Icons.logout,colors:colors.error,text: 'Cerrar sesión',tap:(){
+            ItemWidget(icon:Icons.logout,colors:Colors.red,text: 'Cerrar sesión',tap:(){
               Get.back();
               controllerScreen.logout();
             }),

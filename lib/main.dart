@@ -34,7 +34,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Core',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme(selectedColor: 1).theme(),
+      //theme: AppTheme(selectedColor: 0).theme(),
+      //darkTheme: AppTheme(selectedColor: 4, isDarkMode: true).theme(),
+      theme: ThemeData.dark(), // 👈 Aquí se activa el modo oscuro global
+      darkTheme: ThemeData.dark(), // Opcional: define un darkTheme explícito
+      themeMode: ThemeMode.dark,   //
       initialRoute: AppRoutes.login,
       getPages: AppRoutes.routes,
       unknownRoute: GetPage(name: '/login', page: () => LoginScreen()),

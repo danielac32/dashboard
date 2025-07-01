@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
+import '../../../../../../../core/config/theme/app_theme.dart';
 import '../controller/controller.dart';
 
 class DesdeWidget extends StatelessWidget {
@@ -24,7 +25,7 @@ class DesdeWidget extends StatelessWidget {
           children: [
             const Text(
               'Desde',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              style: TextStyle(fontSize: 12, color: AppTheme.goldColor),
             ),
             const SizedBox(height: 4),
             Stack(
@@ -52,7 +53,7 @@ class DesdeWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         filled: isLoading,
-                        fillColor: Colors.grey.withOpacity(0.1),
+                        fillColor: AppTheme.goldColor.withOpacity(0.1),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,13 +61,13 @@ class DesdeWidget extends StatelessWidget {
                           Text(
                             DateFormat('dd/MM/yyyy').format(controller.fechaDesde.value),
                             style: TextStyle(
-                              color: isLoading ? Colors.grey[600] : Colors.black,
+                              color: isLoading ? Colors.white : AppTheme.goldColor,
                             ),
                           ),
                           Icon(
                             Icons.calendar_today,
                             size: 18,
-                            color: isLoading ? Colors.grey[400] : Colors.grey[700],
+                            color: isLoading ? Colors.white : AppTheme.goldColor,
                           ),
                         ],
                       ),

@@ -2,28 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:core_system/screens/auth/controller/login_controller.dart';
 
+import '../../core/config/theme/app_theme.dart';
+
 class LoginScreen extends StatelessWidget {
   final LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/fondo.jpeg'),
+            fit: BoxFit.cover,
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: isDarkMode
-                ? [
-              Colors.deepPurple.shade900,
-              Colors.indigo.shade900,
-            ]
-                : [
-              Colors.blue.shade50,
-              Colors.white,
+            colors: [
+              Colors.grey.shade900,
+              Colors.grey.shade800,
             ],
           ),
         ),
@@ -34,7 +36,7 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Logo y título
-                _buildHeader(context),
+                //_buildHeader(context),
                 const SizedBox(height: 40),
 
                 // Card con el formulario
@@ -42,13 +44,11 @@ class LoginScreen extends StatelessWidget {
                   width: double.infinity,
                   constraints: const BoxConstraints(maxWidth: 400),
                   decoration: BoxDecoration(
-                    color: isDarkMode
-                        ? Colors.grey.shade900.withOpacity(0.8)
-                        : Colors.white.withOpacity(0.95),
+                    color: Colors.grey.shade800.withOpacity(0.9),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withOpacity( 0.3 ),
                         blurRadius: 20,
                         spreadRadius: 5,
                         offset: const Offset(0, 10),
@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                           child: Text(
                             '¿Olvidaste tu contraseña?',
                             style: TextStyle(
-                              color: theme.colorScheme.primary,
+                              color: AppTheme.goldColor,
                               fontSize: 14,
                             ),
                           ),
@@ -106,25 +106,26 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+
     return Column(
       children: [
-        /*Image.asset(
-          'assets/logo.png', // Reemplaza con tu logo
-          height: 100,
-          width: 100,
+        Icon(
+          Icons.account_circle,
+          size: 80,
+          color: Colors.blue.shade200,
         ),
-        const SizedBox(height: 20),*/
+        const SizedBox(height: 20),
         Text(
           'Bienvenido',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onBackground,
+            color:  Colors.white,
           ),
         ),
         Text(
           'Inicia sesión para continuar',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+            color: Colors.grey.shade400,
           ),
         ),
       ],
@@ -132,13 +133,14 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildEmailField(BuildContext context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Correo electrónico',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+            color: Colors.grey.shade300,
             fontSize: 14,
           ),
         ),
@@ -147,20 +149,23 @@ class LoginScreen extends StatelessWidget {
           controller: loginController.emailController,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.email_outlined,
-                color: Theme.of(context).colorScheme.primary),
+                color: AppTheme.goldColor),
             hintText: 'tucorreo@example.com',
+            hintStyle: TextStyle(
+              color: Colors.grey.shade500,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
             ),
             filled: true,
-            fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+            fillColor: Colors.grey.shade700.withOpacity(0.7),
             contentPadding: const EdgeInsets.symmetric(
                 vertical: 16, horizontal: 16),
           ),
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface,
+            color: Colors.white,
           ),
         ),
       ],
@@ -168,13 +173,14 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildPasswordField(BuildContext context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Contraseña',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+            color: Colors.grey.shade300,
             fontSize: 14,
           ),
         ),
@@ -184,28 +190,31 @@ class LoginScreen extends StatelessWidget {
           obscureText: !loginController.isPasswordVisible.value,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.lock_outline,
-                color: Theme.of(context).colorScheme.primary),
+                color: AppTheme.goldColor),
             suffixIcon: IconButton(
               icon: Icon(
                 loginController.isPasswordVisible.value
                     ? Icons.visibility_outlined
                     : Icons.visibility_off_outlined,
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
+                color: AppTheme.goldColor.withOpacity(0.8),
               ),
               onPressed: loginController.togglePasswordVisibility,
             ),
             hintText: '••••••••',
+            hintStyle: TextStyle(
+              color: Colors.grey.shade500,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
             ),
             filled: true,
-            fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+            fillColor: Colors.grey.shade700.withOpacity(0.7),
             contentPadding: const EdgeInsets.symmetric(
                 vertical: 16, horizontal: 16),
           ),
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface,
+            color: Colors.white,
           ),
         )),
       ],
@@ -213,6 +222,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildLoginButton(BuildContext context) {
+
     return Obx(() {
       if (loginController.isLoading.value) {
         return const CircularProgressIndicator();
@@ -220,13 +230,14 @@ class LoginScreen extends StatelessWidget {
       return ElevatedButton(
         onPressed: loginController.submitForm,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          backgroundColor: AppTheme.goldColor,
+          foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          elevation: 0,
+          elevation: 3,
+          //shadowColor: Colors.blue.shade900,
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),
         child: const Text(
@@ -238,11 +249,12 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildDivider(BuildContext context) {
+
     return Row(
       children: [
         Expanded(
           child: Divider(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+            color: Colors.grey.shade600,
           ),
         ),
         Padding(
@@ -250,13 +262,13 @@ class LoginScreen extends StatelessWidget {
           child: Text(
             'o',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+              color: Colors.grey.shade400,
             ),
           ),
         ),
         Expanded(
           child: Divider(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+            color: Colors.grey.shade600,
           ),
         ),
       ],
@@ -264,11 +276,12 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildRegisterButton(BuildContext context) {
+
     return OutlinedButton(
       onPressed: loginController.register,
       style: OutlinedButton.styleFrom(
         side: BorderSide(
-          color: Theme.of(context).colorScheme.primary,
+          color: AppTheme.goldColor,
           width: 1.5,
         ),
         minimumSize: const Size(double.infinity, 50),
@@ -276,11 +289,12 @@ class LoginScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         padding: const EdgeInsets.symmetric(vertical: 16),
+        backgroundColor: Colors.transparent,
       ),
       child: Text(
         'Crear una cuenta',
         style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
+          color: AppTheme.goldColor,
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/config/theme/app_theme.dart';
 import '../../../infrastructure/shared/constants.dart';
 
 class AvatarWidget extends StatelessWidget {
@@ -16,7 +17,7 @@ class AvatarWidget extends StatelessWidget {
     return CircleAvatar(
       backgroundImage: NetworkImage(DefaultUrl.avatarUrl),//AssetImage('assets/1.jpeg'),
       radius: 30,
-      backgroundColor: colors.secondary,
+      backgroundColor: AppTheme.goldColor,
       //child: Icon(Icons.person, size: 40, color: colors.onSecondary),
     );
   }

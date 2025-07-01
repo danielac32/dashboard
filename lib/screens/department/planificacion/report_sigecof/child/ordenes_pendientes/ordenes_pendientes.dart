@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../../core/config/theme/app_theme.dart';
+
 
 class OrdenesPendientes extends StatelessWidget {
    OrdenesPendientes({super.key});
@@ -31,11 +33,11 @@ class OrdenesPendientes extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.35,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.black12,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: AppTheme.goldColor.withOpacity(0.1),
                     spreadRadius: 1,
                     blurRadius: 3,
                   ),
@@ -82,7 +84,7 @@ class OrdenesPendientes extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
+                        color: AppTheme.goldColor.withOpacity(0.1),
                         spreadRadius: 1,
                         blurRadius: 3,
                       ),
@@ -110,30 +112,30 @@ class OrdenesPendientes extends StatelessWidget {
                                 horizontalMargin: 12,
                                 showCheckboxColumn: false,
                                 dataRowColor: MaterialStateProperty.all(Colors.white),
-                                headingRowColor: MaterialStateProperty.all(const Color(0xFF1e3d7a)),
+                                headingRowColor: MaterialStateProperty.all(AppTheme.goldColor),
                                 columns: const [
-                                  DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Estado", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Orden", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Monto", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Fuente", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Año", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Partida", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Cuenta", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Observación", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Beneficiario", style: TextStyle(color: Colors.white))),
-                                  DataColumn(label: Text("Fondo", style: TextStyle(color: Colors.white))),
+                                  DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Estado", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Orden", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Monto", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Fuente", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Año", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Partida", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Cuenta", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Observación", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Beneficiario", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Fondo", style: TextStyle(color: Colors.black))),
                                 ],
                                 rows: controller.paginatedResults.map((pendiente) {
                                   return DataRow(
                                     cells: [
-                                      DataCell(Text(controller.formatDate(pendiente.fechaModificacion?? ""))),
-                                      DataCell(Text(pendiente.estado.toString())),
-                                      DataCell(Text(pendiente.orden.toString())),
-                                      DataCell(Text('\$${pendiente.monto.toStringAsFixed(2) ?? '0.00'}')),
-                                      DataCell(Text(pendiente.fuente)),
-                                      DataCell(Text(pendiente.anho.toString())),
+                                      DataCell(Text(controller.formatDate(pendiente.fechaModificacion?? ""), style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(pendiente.estado.toString(), style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(pendiente.orden.toString(), style: TextStyle(color: Colors.black))),
+                                      DataCell(Text('\$${pendiente.monto.toStringAsFixed(2) ?? '0.00'}', style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(pendiente.fuente, style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(pendiente.anho.toString(), style: TextStyle(color: Colors.black))),
                                       DataCell(
                                         ConstrainedBox(
                                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
@@ -143,12 +145,12 @@ class OrdenesPendientes extends StatelessWidget {
                                               pendiente.partida.length > 30
                                                   ? '${pendiente.partida!.substring(0, 30)}...'
                                                   : pendiente.partida ?? '',
-                                              overflow: TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
                                             ),
                                           ),
                                         ),
                                       ),
-                                      DataCell(Text(pendiente.cuenta ?? '')),
+                                      DataCell(Text(pendiente.cuenta ?? '', style: TextStyle(color: Colors.black))),
                                       DataCell(
                                         ConstrainedBox(
                                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
@@ -158,7 +160,7 @@ class OrdenesPendientes extends StatelessWidget {
                                               pendiente.observacion.length > 30
                                                   ? '${pendiente.observacion.substring(0, 30)}...'
                                                   : pendiente.observacion ?? '',
-                                              overflow: TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
                                             ),
                                           ),
                                         ),
@@ -172,7 +174,7 @@ class OrdenesPendientes extends StatelessWidget {
                                               pendiente.organismo.length > 30
                                                   ? '${pendiente.organismo.substring(0, 30)}...'
                                                   : pendiente.organismo ?? '',
-                                              overflow: TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
                                             ),
                                           ),
                                         ),
@@ -186,12 +188,12 @@ class OrdenesPendientes extends StatelessWidget {
                                               pendiente.beneficiario.length > 30
                                                   ? '${pendiente.beneficiario.substring(0, 30)}...'
                                                   : pendiente.beneficiario ?? '',
-                                              overflow: TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
                                             ),
                                           ),
                                         ),
                                       ),
-                                      DataCell(Text(pendiente.fondo ?? '-')),
+                                      DataCell(Text(pendiente.fondo ?? '-', style: TextStyle(color: Colors.black))),
                                     ],
                                   );
                                 }).toList(),

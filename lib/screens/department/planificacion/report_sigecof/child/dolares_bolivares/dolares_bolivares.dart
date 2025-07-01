@@ -5,6 +5,7 @@ import 'package:core_system/screens/department/planificacion/report_sigecof/chil
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../../../core/config/theme/app_theme.dart';
 import 'controller/controller.dart';
 
 
@@ -30,11 +31,11 @@ class DolaresBolivares extends StatelessWidget {
                width: MediaQuery.of(context).size.width * 0.35,
                padding: const EdgeInsets.all(12),
                decoration: BoxDecoration(
-                 color: Colors.white,
+                 color: Colors.black12,//Colors.white,
                  borderRadius: BorderRadius.circular(8),
                  boxShadow: [
                    BoxShadow(
-                     color: Colors.grey.withOpacity(0.1),
+                     color: AppTheme.goldColor.withOpacity(0.1),//Colors.grey.withOpacity(0.1),
                      spreadRadius: 1,
                      blurRadius: 3,
                    ),
@@ -81,7 +82,7 @@ class DolaresBolivares extends StatelessWidget {
                      borderRadius: BorderRadius.circular(8),
                      boxShadow: [
                        BoxShadow(
-                         color: Colors.grey.withOpacity(0.1),
+                         color: AppTheme.goldColor.withOpacity(0.1),
                          spreadRadius: 1,
                          blurRadius: 3,
                        ),
@@ -109,27 +110,27 @@ class DolaresBolivares extends StatelessWidget {
                                  horizontalMargin: 12,
                                  showCheckboxColumn: false,
                                  dataRowColor: MaterialStateProperty.all(Colors.white),
-                                 headingRowColor: MaterialStateProperty.all(const Color(0xFF1e3d7a)),
+                                 headingRowColor: MaterialStateProperty.all(AppTheme.goldColor),
                                  columns: const [
-                                   DataColumn(label: Text("Año", style: TextStyle(color: Colors.white))),
-                                   DataColumn(label: Text("Estado", style: TextStyle(color: Colors.white))),
-                                   DataColumn(label: Text("Estado 2", style: TextStyle(color: Colors.white))),
-                                   DataColumn(label: Text("Pagada", style: TextStyle(color: Colors.white))),
-                                   DataColumn(label: Text("Orden", style: TextStyle(color: Colors.white))),
-                                   DataColumn(label: Text("Monto Pagado", style: TextStyle(color: Colors.white))),
-                                   DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.white))),
-                                   DataColumn(label: Text("Beneficiario", style: TextStyle(color: Colors.white))),
-                                   DataColumn(label: Text("Observación", style: TextStyle(color: Colors.white))),
+                                   DataColumn(label: Text("Año", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Estado", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Estado 2", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Pagada", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Orden", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Monto Pagado", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Beneficiario", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Observación", style: TextStyle(color: Colors.black))),
                                  ],
                                  rows: controller.paginatedResults.map((dolarbolivar) {
                                    return DataRow(
                                      cells: [
-                                       DataCell(Text(dolarbolivar.anho.toString())),
-                                       DataCell(Text(dolarbolivar.estado.toString())),
-                                       DataCell(Text(dolarbolivar.estado2.toString())),
-                                       DataCell(Text(controller.formatDate(dolarbolivar.pagada))),
-                                       DataCell(Text(dolarbolivar.orden.toString())),
-                                       DataCell(Text('\$${dolarbolivar.montoPagado.toStringAsFixed(2)}')),
+                                       DataCell(Text(dolarbolivar.anho.toString(), style: TextStyle(color: Colors.black))),
+                                       DataCell(Text(dolarbolivar.estado.toString(), style: TextStyle(color: Colors.black))),
+                                       DataCell(Text(dolarbolivar.estado2.toString(), style: TextStyle(color: Colors.black))),
+                                       DataCell(Text(controller.formatDate(dolarbolivar.pagada), style: TextStyle(color: Colors.black))),
+                                       DataCell(Text(dolarbolivar.orden.toString(), style: TextStyle(color: Colors.black))),
+                                       DataCell(Text('\$${dolarbolivar.montoPagado.toStringAsFixed(2)}', style: TextStyle(color: Colors.black))),
                                        DataCell(
                                          ConstrainedBox(
                                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.2),
@@ -139,7 +140,7 @@ class DolaresBolivares extends StatelessWidget {
                                                dolarbolivar.organismo.length > 20
                                                    ? '${dolarbolivar.organismo.substring(0, 20)}...'
                                                    : dolarbolivar.organismo,
-                                               overflow: TextOverflow.ellipsis,
+                                               overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
                                              ),
                                            ),
                                          ),
@@ -153,7 +154,7 @@ class DolaresBolivares extends StatelessWidget {
                                                dolarbolivar.beneficiario.length > 20
                                                    ? '${dolarbolivar.beneficiario.substring(0, 20)}...'
                                                    : dolarbolivar.beneficiario,
-                                               overflow: TextOverflow.ellipsis,
+                                               overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
                                              ),
                                            ),
                                          ),
@@ -167,7 +168,7 @@ class DolaresBolivares extends StatelessWidget {
                                                dolarbolivar.observacion.length > 30
                                                    ? '${dolarbolivar.observacion.substring(0, 30)}...'
                                                    : dolarbolivar.observacion,
-                                               overflow: TextOverflow.ellipsis,
+                                               overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
                                              ),
                                            ),
                                          ),
