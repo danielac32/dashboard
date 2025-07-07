@@ -1,10 +1,12 @@
-class PagoRetenciones {
+class RetencionesPartidas {
   int? presupuesto;
   double? monto1x500Ant;
-  int? montoOrden;
+  String? fuente;
+  double? montoOrden;
   double? monto1x500;
+  String? observacion;
   String? organismo;
-  int? montoOrdenAnt;
+  double? montoOrdenAnt;
   String? beneficiario;
   String? rif;
   String? descUnidadAdministradora;
@@ -12,13 +14,15 @@ class PagoRetenciones {
   String? denominacion;
   String? codUnidadAdministradora;
   String? fechaPago;
-  String? observacion;
+  String? partida;
 
-  PagoRetenciones({
+  RetencionesPartidas({
     this.presupuesto,
     this.monto1x500Ant,
+    this.fuente,
     this.montoOrden,
     this.monto1x500,
+    this.observacion,
     this.organismo,
     this.montoOrdenAnt,
     this.beneficiario,
@@ -28,17 +32,19 @@ class PagoRetenciones {
     this.denominacion,
     this.codUnidadAdministradora,
     this.fechaPago,
-    this.observacion
+    this.partida,
   });
 
-  factory PagoRetenciones.fromJson(Map<String, dynamic> json) {
-    return PagoRetenciones(
+  factory RetencionesPartidas.fromJson(Map<String, dynamic> json) {
+    return RetencionesPartidas(
       presupuesto: json['PRESUPUESTO'] != null ? int.tryParse(json['PRESUPUESTO'].toString()) : null,
       monto1x500Ant: json['MONTO_1_X_500_ANT'] != null ? double.tryParse(json['MONTO_1_X_500_ANT'].toString()) : null,
-      montoOrden: json['MONTO_ORDEN'] != null ? int.tryParse(json['MONTO_ORDEN'].toString()) : null,
+      fuente: json['FUENTE']?.toString(),
+      montoOrden: json['MONTO_ORDEN'] != null ? double.tryParse(json['MONTO_ORDEN'].toString()) : null,
       monto1x500: json['MONTO_1_X_500'] != null ? double.tryParse(json['MONTO_1_X_500'].toString()) : null,
+      observacion: json['OBSERVACION']?.toString(),
       organismo: json['ORGANISMO']?.toString(),
-      montoOrdenAnt: json['MONTO_ORDEN_ANT'] != null ? int.tryParse(json['MONTO_ORDEN_ANT'].toString()) : null,
+      montoOrdenAnt: json['MONTO_ORDEN_ANT'] != null ? double.tryParse(json['MONTO_ORDEN_ANT'].toString()) : null,
       beneficiario: json['BENEFICIARIO']?.toString(),
       rif: json['RIF']?.toString(),
       descUnidadAdministradora: json['DESC_UNIDAD_ADMINISTRADORA']?.toString(),
@@ -46,7 +52,7 @@ class PagoRetenciones {
       denominacion: json['DENOMINACION']?.toString(),
       codUnidadAdministradora: json['COD_UNIDAD_ADMINISTRADORA']?.toString(),
       fechaPago: json['FECHA_PAGO']?.toString(),
-      observacion: json['OBSERVACION']?.toString(),
+      partida: json['PARTIDA']?.toString(),
     );
   }
 
@@ -65,7 +71,7 @@ class PagoRetenciones {
     data['DENOMINACION'] = denominacion;
     data['COD_UNIDAD_ADMINISTRADORA'] = codUnidadAdministradora;
     data['FECHA_PAGO'] = fechaPago;
-    data['OBSERVACION'] = observacion;
+    data['PARTIDA'] = partida;
     return data;
   }
 }

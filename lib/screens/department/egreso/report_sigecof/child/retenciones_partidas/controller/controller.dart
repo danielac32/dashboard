@@ -1,6 +1,5 @@
 
 
-
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -10,10 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 
-import '../../../service/service.dart';
-import '../model/pago_retenciones.dart';
-//import '../service/Service.dart';
-
 
 import 'package:excel/excel.dart';
 
@@ -21,17 +16,22 @@ import 'package:file_saver/file_saver.dart'; // Para FileSaver
 import 'package:path_provider/path_provider.dart'; // Para getDownloadsDirectory
 import 'package:universal_html/html.dart' as html;
 
+import '../../../service/service.dart';
+import '../model/retencionesPartidas.dart';
+//import '../service/service.dart';
 
 
 
-class EgresoOrdenesPagadasRetencionesController extends GetxController {
+
+
+class EgresoRetencionesPartidasController extends GetxController {
   var filtro = ''.obs;
-  var datos = <PagoRetenciones>[].obs;
-  var resultados = <PagoRetenciones>[].obs;
+  var datos = <RetencionesPartidas>[].obs;
+  var resultados = <RetencionesPartidas>[].obs;
   var cargando = false.obs;
   final currentPage = 0.obs;
   final itemsPerPage = 20.obs;
-  final paginatedResults = <PagoRetenciones>[].obs;
+  final paginatedResults = <RetencionesPartidas>[].obs;
   final horizontalScrollController = ScrollController();
   final verticalScrollController = ScrollController();
   var botonCargando = false.obs;
@@ -53,16 +53,15 @@ class EgresoOrdenesPagadasRetencionesController extends GetxController {
   }
 
 
-  Future<void> cargarPagadas(DateTime desde, DateTime hasta) async {
+  Future<void> cargarRetencionesPartidas(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
-
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
-      final jsonData = await ServiceEgreso.post('api/query/pagadas-retenciones', {}, queryParams: queryParams);
-      final List<PagoRetenciones> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => PagoRetenciones.fromJson(item)).toList();
+      final jsonData = await ServiceEgreso.post('api/query/retenciones-partidas', {}, queryParams: queryParams);
+      final List<RetencionesPartidas> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => RetencionesPartidas.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();
     } catch (e) {
@@ -104,6 +103,8 @@ class EgresoOrdenesPagadasRetencionesController extends GetxController {
     }
   }
 
+
+
   Future<void> descargarReporte() async {
     try {
       cargando(true);
@@ -112,59 +113,60 @@ class EgresoOrdenesPagadasRetencionesController extends GetxController {
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];
 
+      // Encabezados con TextCellValue
       sheet.appendRow([
         TextCellValue("PRESUPUESTO"),
-        TextCellValue("MONTO 1X500 ANT"),
-        TextCellValue("MONTO ORDEN"),
-        TextCellValue("MONTO 1X500"),
+        TextCellValue("MONTO_1_X_500_ANT"),
+        TextCellValue("FUENTE"),
+        TextCellValue("MONTO_ORDEN"),
+        TextCellValue("MONTO_1_X_500"),
+        TextCellValue("OBSERVACION"),
         TextCellValue("ORGANISMO"),
-        TextCellValue("MONTO ORDEN ANT"),
+        TextCellValue("MONTO_ORDEN_ANT"),
         TextCellValue("BENEFICIARIO"),
         TextCellValue("RIF"),
-        TextCellValue("DESC. UNIDAD ADMIN"),
         TextCellValue("ORDEN"),
-        TextCellValue("DENOMINACIÓN"),
-        TextCellValue("COD. UNIDAD ADMIN"),
-        TextCellValue("FECHA PAGO"),
-        TextCellValue("OBSERVACIÓN"),
+        TextCellValue("DENOMINACION"),
+        TextCellValue("FECHA_PAGO"),
+        TextCellValue("PARTIDA"),
       ]);
 
-// Datos con tipos correctos para todos los campos
+      // Datos con tipos correctos
       for (var row in resultados) {
         sheet.appendRow([
-          IntCellValue(row.presupuesto ?? 0),
-          DoubleCellValue(row.monto1x500Ant ?? 0.0),
-          IntCellValue(row.montoOrden ?? 0),
-          DoubleCellValue(row.monto1x500 ?? 0.0),
-          TextCellValue(row.organismo ?? ""),
-          IntCellValue(row.montoOrdenAnt ?? 0),
-          TextCellValue(row.beneficiario ?? ""),
-          TextCellValue(row.rif ?? ""),
-          TextCellValue(row.descUnidadAdministradora ?? ""),
-          IntCellValue(row.orden ?? 0),
-          TextCellValue(row.denominacion ?? ""),
-          TextCellValue(row.codUnidadAdministradora ?? ""),
-          TextCellValue(row.fechaPago ?? ""),
-          TextCellValue(row.observacion ?? ""),
+          IntCellValue(row.presupuesto ?? 0),         // int? presupuesto
+          DoubleCellValue(row.monto1x500Ant ?? 0.0),  // double? monto1x500Ant
+          TextCellValue(row.fuente ?? ""),            // String? fuente
+          DoubleCellValue(row.montoOrden ?? 0.0),     // double? montoOrden
+          DoubleCellValue(row.monto1x500 ?? 0.0),     // double? monto1x500
+          TextCellValue(row.observacion ?? ""),       // String? observacion
+          TextCellValue(row.organismo ?? ""),         // String? organismo
+          DoubleCellValue(row.montoOrdenAnt ?? 0.0),  // double? montoOrdenAnt
+          TextCellValue(row.beneficiario ?? ""),      // String? beneficiario
+          TextCellValue(row.rif ?? ""),               // String? rif
+          IntCellValue(row.orden ?? 0),               // int? orden
+          TextCellValue(row.denominacion ?? ""),      // String? denominacion
+          TextCellValue(row.fechaPago ?? ""),         // String? fechaPago
+          TextCellValue(row.partida ?? ""),           // String? partida
         ]);
       }
 
-// Ajuste de anchos de columnas para todos los campos
+      // Ancho de columnas
       final columnWidths = {
-        0: 12.0,   // PRESUPUESTO
-        1: 15.0,   // MONTO 1X500 ANT
-        2: 12.0,   // MONTO ORDEN
-        3: 12.0,   // MONTO 1X500
-        4: 25.0,   // ORGANISMO
-        5: 15.0,   // MONTO ORDEN ANT
-        6: 30.0,   // BENEFICIARIO
-        7: 15.0,   // RIF
-        8: 25.0,   // DESC. UNIDAD ADMIN
-        9: 10.0,   // ORDEN
-        10: 40.0,  // DENOMINACIÓN
-        11: 15.0,  // COD. UNIDAD ADMIN
-        12: 15.0,  // FECHA PAGO
-        13: 15.0,  // FECHA PAGO
+        0: 8.0,
+        1: 10.0,
+        2: 15.0,
+        3: 15.0,
+        4: 15.0,
+        5: 20.0,
+        6: 25.0,
+        7: 30.0,
+        8: 15.0,
+        9: 15.0,
+        10: 18.0,
+        11: 18.0,
+        12: 25.0,
+        13: 15.0,
       };
 
       columnWidths.forEach((colIndex, width) {
@@ -172,7 +174,7 @@ class EgresoOrdenesPagadasRetencionesController extends GetxController {
       });
 
       final bytes = excel.encode()!;
-      final fileName = 'reporte_pagadas_retencion${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      final fileName = 'reporte_rentenciones_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
 
       final blob = html.Blob([bytes]);
       final url = html.Url.createObjectUrlFromBlob(blob);

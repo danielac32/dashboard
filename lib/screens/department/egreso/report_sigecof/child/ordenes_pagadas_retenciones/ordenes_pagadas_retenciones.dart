@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:core_system/screens/department/egreso/report_sigecof/child/ordenes_pagadas_retenciones/widget/consultar.dart';
-import 'package:core_system/screens/department/egreso/report_sigecof/child/ordenes_pagadas_retenciones/widget/descargar.dart';
-import 'package:core_system/screens/department/egreso/report_sigecof/child/ordenes_pagadas_retenciones/widget/hasta.dart';
-import 'package:core_system/screens/department/egreso/report_sigecof/child/ordenes_pagadas_retenciones/widget/desde.dart';
+
 
 import '../../../../../../core/config/theme/app_theme.dart';
+import '../../../../shared_widget/date.dart';
+import '../../../../shared_widget/generic_consult.dart';
+import '../../../../shared_widget/generic_download.dart';
 import 'controller/ordenes_pagadas_retenciones_controller.dart';
 
 
@@ -40,13 +40,43 @@ class OrdenesPagadasRetenciones extends StatelessWidget {
                child: Row(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [
-                   DesdeWidget(controller: controller),
+                   Obx(() => GenericDatePickerField(
+                     primaryColor: AppTheme.goldColor,
+                     initialDate: controller.fechaDesde.value,
+                     onDateSelected: (date) {
+                       controller.fechaDesde.value = date;
+                       // Puedes llamar a cualquier función adicional aquí
+                     },
+                     isLoading: controller.cargando.value,
+                     label: 'Desde',
+                   )),
                    const SizedBox(width: 8),
-                   HastaWidget(controller: controller),
+                   Obx(() =>GenericDatePickerField(
+                     initialDate: controller.fechaHasta.value,
+                     onDateSelected: (date) {
+                       controller.fechaHasta.value = date;
+                     },
+                     isLoading: controller.cargando.value,
+                     label: 'Hasta',
+                     primaryColor: AppTheme.goldColor,
+                   )),
                    const SizedBox(width: 12),
-                   ConsultarWidget(controller: controller),
+                    Obx(() =>GenericConsultButton(
+                     isLoading: controller.cargando.value,
+                     onConsult: () async {
+                       await controller.cargarPagadas(
+                         controller.fechaDesde.value,
+                         controller.fechaHasta.value,
+                       );
+                     },
+                   )),
                    const SizedBox(width: 12),
-                   DescargarWidget(controller: controller),
+                    Obx(() =>GenericDownloadButton(
+                     isLoading: controller.cargando.value,
+                     onDownload: () async {
+                       await controller.descargarReporte();
+                     },
+                   ))
                  ],
                ),
              ),
@@ -95,22 +125,26 @@ class OrdenesPagadasRetenciones extends StatelessWidget {
                          ),
 
                          SizedBox(
-                           width: MediaQuery.of(context).size.width * 0.95,
+                           //width: MediaQuery.of(context).size.width,
                            child: SingleChildScrollView(
                              //scrollDirection: Axis.vertical,
                              //controller: controller.verticalScrollController,
+                             scrollDirection: Axis.horizontal,
                              child: Padding(
                                padding: const EdgeInsets.all(5),
                                child: DataTable(
-                                 columnSpacing: 20,
-                                 horizontalMargin: 12,
+                                 /*columnSpacing: 20,
+                                horizontalMargin: 12,*/
+                                 columnSpacing: 4, // Reducir este valor
+                                 horizontalMargin: 4, // Reducir este valor
                                  showCheckboxColumn: false,
-                                 dataRowColor: MaterialStateProperty.all(Colors.white),
-                                 headingRowColor: MaterialStateProperty.all(AppTheme.goldColor),
+                                 dataRowColor: WidgetStateProperty.all(Colors.white),
+                                 headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
                                  columns: const [
                                    DataColumn(label: Text("Presupuesto", style: TextStyle(color: Colors.black))),
                                    DataColumn(label: Text("Monto 1x500 ant", style: TextStyle(color: Colors.black))),
                                    DataColumn(label: Text("monto orden", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Monto 1x500", style: TextStyle(color: Colors.black))),
                                    DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.black))),
                                    DataColumn(label: Text("Monto orden ant", style: TextStyle(color: Colors.black))),
                                    DataColumn(label: Text("Beneficiario", style: TextStyle(color: Colors.black))),
@@ -120,6 +154,7 @@ class OrdenesPagadasRetenciones extends StatelessWidget {
                                    DataColumn(label: Text("Denominacion", style: TextStyle(color: Colors.black))),
                                    DataColumn(label: Text("Cod. Unidad Admin", style: TextStyle(color: Colors.black))),
                                    DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.black))),
+                                   DataColumn(label: Text("Observacion", style: TextStyle(color: Colors.black))),
                                  ],
                                  rows: controller.paginatedResults.map((pago) {
                                    return DataRow(
@@ -134,6 +169,7 @@ class OrdenesPagadasRetenciones extends StatelessWidget {
                                        // Monto orden (formato numérico grande)
                                        DataCell(Text(pago.montoOrden?.toString() ?? "-", style: TextStyle(color: Colors.black))),
 
+                                       DataCell(Text(pago.monto1x500?.toString() ?? "-", style: TextStyle(color: Colors.black))),
                                        // Organismo (con tooltip para texto largo)
                                        DataCell(
                                          ConstrainedBox(
@@ -212,6 +248,21 @@ class OrdenesPagadasRetenciones extends StatelessWidget {
 
                                        // Fecha (formateada)
                                        DataCell(Text(controller.formatDate(pago.fechaPago?? "-"),style: TextStyle(color: Colors.black))),
+
+                                       DataCell(
+                                         ConstrainedBox(
+                                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
+                                           child: Tooltip(
+                                             message: pago.observacion ?? "",
+                                             child: Text(
+                                                 pago.observacion != null && pago.observacion!.length > 30
+                                                     ? '${pago.observacion!.substring(0, 30)}...'
+                                                     : pago.observacion ?? "-",
+                                                 overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.black)
+                                             ),
+                                           ),
+                                         ),
+                                       ),
                                      ],
                                    );
                                  }).toList(),

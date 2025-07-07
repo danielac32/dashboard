@@ -53,6 +53,15 @@ class ItemsUser extends StatelessWidget {
             Get.back(); // Cierra el Drawer
           },
         ),
+        ListTile(
+          title: Text(controller.sections[3]),
+          leading: Icon(Icons.report, color: AppTheme.goldColor),
+          onTap: () {
+            Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.retenciones_partidas);
+            Get.find<SharedEgresoController>().addTitle.value = "- Retenciones por Partidas";
+            Get.back(); // Cierra el Drawer
+          },
+        ),
         /*ListTile(
           title: Text('Permisos'),
           leading: Icon(Icons.lock, color: colors.primary),

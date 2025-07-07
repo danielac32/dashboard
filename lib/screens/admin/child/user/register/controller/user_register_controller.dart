@@ -184,51 +184,57 @@ class UserRegisterController extends GetxController {
     final cargoError = validateDropdown(position.value, "Cargo");
 
     if(nameError != null){
-      Get.snackbar('Error', '${nameError}',
+      SnackbarAlert.error(title: "Error!", message: nameError, durationSeconds: 3);
+
+      /*Get.snackbar('Error', '${nameError}',
         backgroundColor: Colors.orange[800],
         colorText: Colors.white,
         icon: Icon(Icons.person_off, color: Colors.white),
-      );
+      );*/
       return;
     }
 
     if(emailError != null){
-      Get.snackbar('Error', '${emailError}',
+      SnackbarAlert.error(title: "Error!", message: emailError, durationSeconds: 3);
+      /*Get.snackbar('Error', '${emailError}',
         backgroundColor: Colors.orange[800],
         colorText: Colors.white,
         icon: Icon(Icons.person_off, color: Colors.white),
-      );
+      );*/
       return;
     }
 
     if(roleError != null){
-      Get.snackbar('Error', '${roleError}',
+      SnackbarAlert.error(title: "Error!", message: roleError, durationSeconds: 3);
+      /*Get.snackbar('Error', '${roleError}',
         backgroundColor: Colors.orange[800],
         colorText: Colors.white,
         icon: Icon(Icons.person_off, color: Colors.white),
-      );
+      );*/
       return;
     }
     if(direccionError != null){
-      Get.snackbar('Error', '${direccionError}',
+      SnackbarAlert.error(title: "Error!", message: direccionError, durationSeconds: 3);
+      /*Get.snackbar('Error', '${direccionError}',
         backgroundColor: Colors.orange[800],
         colorText: Colors.white,
         icon: Icon(Icons.person_off, color: Colors.white),
-      );
+      );*/
       return;
     }
     if(cargoError != null){
-      Get.snackbar('Error', '${cargoError}',
+      SnackbarAlert.error(title: "Error!", message: cargoError, durationSeconds: 3);
+     /* Get.snackbar('Error', '${cargoError}',
         backgroundColor: Colors.orange[800],
         colorText: Colors.white,
         icon: Icon(Icons.person_off, color: Colors.white),
-      );
+      );*/
       return;
     }
 
     final User user=User(
-        name: nameController.text,
-        email: emailController.text,
+        name: nameController.text.toLowerCase(),
+        email: emailController.text.toLowerCase(),
         isActive: isActive.value,
         role: rol.value.isNotEmpty ? rol.value : null,
         department: department.value.isNotEmpty ? department.value : null,
@@ -236,17 +242,25 @@ class UserRegisterController extends GetxController {
         profileImage: profileImage.value?.path,
         password: '123456'
     );
-    print(user.toJson());
+    //print(user.toJson());
 
     try {
       final response = await RegisterService.post("auth/register", user.toJson());
-      SnackbarAlert.Success(title: "OK",durationSeconds: 2,message:"Usuario Registrado" );
+     // SnackbarAlert.Success(title: "OK",durationSeconds: 2,message:"Usuario Registrado" );
+      SnackbarAlert.success(message: "Usuario Registrado");
       clearForm();
      // await Get.find<MenuControllerScreen>().currentIndex(1);
       await Get.find<UserListController>().refreshUsers();//refrescar lista de usuarios --- consultar la api de nuevo y crear la lista y la paginacion
       Get.find<MenuControllerScreen>().goToScreen(AppScreen.userList);
       return response;
     } catch (e) {
+      //throw Exception('Error de red: $e');
+      /*Get.snackbar('Error', 'Error al registrar',
+        backgroundColor: Colors.red[800],
+        colorText: Colors.white,
+        icon: Icon(Icons.person_off, color: Colors.white),
+      );*/
+      SnackbarAlert.error(title: "Error!", message: 'Error al registrar', durationSeconds: 3);
       throw Exception('Error de red: $e');
     }
   }

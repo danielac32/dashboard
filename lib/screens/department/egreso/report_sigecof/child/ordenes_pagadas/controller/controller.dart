@@ -9,8 +9,9 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 
+import '../../../service/service.dart';
 import '../model/pago.dart';
-import '../service/Service.dart';
+//import '../service/Service.dart';
 
 
 import 'package:excel/excel.dart';
@@ -59,12 +60,15 @@ class EgresoPagoController extends GetxController {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
-      final jsonData = await PlanificacionService.post('api/query/pagadas', {}, queryParams: queryParams);
+
+      print("pagadas ${desde} - ${hasta}");
+      final jsonData = await ServiceEgreso.post('api/query/pagadas', {}, queryParams: queryParams);
+      //print(jsonData);
       final List<Pago> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => Pago.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();
     } catch (e) {
-      print('Error: $e');
+      print('Error aqui : $e');
       resultados([]);
     }
     cargando(false);

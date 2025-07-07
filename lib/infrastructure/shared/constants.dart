@@ -1,5 +1,5 @@
 
 
 class DefaultUrl{
-  static const String avatarUrl='http://localhost:8085/avatar/';
+  static const String avatarUrl='http://10.78.30.46:8070/avatar/';
 }

@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../service/service.dart';
 import '../model/dolar_bolivar.dart';
-import '../service/service.dart';
+//import '../service/service.dart';
 
 import 'package:excel/excel.dart';
 
@@ -53,7 +54,7 @@ class DolarBolivarController extends GetxController {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
-      final jsonData = await DolarBolivarService.post('api/query/ordenes-divisas-bolivares', {}, queryParams: queryParams);
+      final jsonData = await ServicePlanificacion.post('api/query/ordenes-divisas-bolivares', {}, queryParams: queryParams);
       final List<DolarBolivar> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => DolarBolivar.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();

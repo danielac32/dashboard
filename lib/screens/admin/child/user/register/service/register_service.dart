@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../../infrastructure/shared/handle_response.dart';
 import '../../../../../../infrastructure/shared/storage.dart';
 
 class RegisterService {
@@ -38,24 +39,24 @@ class RegisterService {
         headers: await _getHeaders(),
         body: jsonEncode(body),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
   static Future<dynamic> update(String endpoint, {required int id, required Map<String, dynamic> data}) async {
     final url = Uri.parse('$_baseUrl/$endpoint/$id'); // Construye la URL con el ID
-    print('url $url');
+    //print('url $url');
     try {
       final response = await http.patch(
         url,
         headers: await _getHeaders(),
         body: jsonEncode(data), // Codifica los datos en JSON
       );
-      return _handleResponse(response); // Maneja la respuesta
+      return Handle.Response(response);//return _handleResponse(response); // Maneja la respuesta
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
@@ -68,9 +69,9 @@ class RegisterService {
         url,
         headers: await _getHeaders(),
       );
-      return _handleResponse(response); // Manejar la respuesta
+      return Handle.Response(response);//return _handleResponse(response); // Manejar la respuesta
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
@@ -88,9 +89,9 @@ class RegisterService {
         url,
         headers: await _getHeaders(),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
@@ -103,9 +104,9 @@ class RegisterService {
         url,
         headers: await _getHeaders(),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error al obtener permisos del usuario: $e');
+      throw e;//throw Exception('Error al obtener permisos del usuario: $e');
     }
   }
 
@@ -118,9 +119,9 @@ class RegisterService {
         url,
         headers: await _getHeaders(),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 

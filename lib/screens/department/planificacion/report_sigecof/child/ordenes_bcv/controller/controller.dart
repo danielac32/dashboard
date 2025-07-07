@@ -6,8 +6,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 
+import '../../../service/service.dart';
 import '../model/bcv.dart';
-import '../service/service.dart';
+
 
 import 'package:excel/excel.dart';
 import 'package:file_saver/file_saver.dart'; // Para FileSaver
@@ -52,7 +53,7 @@ class BCVController extends GetxController {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
-      final jsonData = await BCVService.post('api/query/transmisiones', {}, queryParams: queryParams);
+      final jsonData = await ServicePlanificacion.post('api/query/transmisiones', {}, queryParams: queryParams);
       final List<Bcv> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => Bcv.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();

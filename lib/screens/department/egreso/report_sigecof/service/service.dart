@@ -1,11 +1,14 @@
 
+
 import 'dart:convert';
 
 import 'package:core_system/core/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../infrastructure/shared/handle_response.dart';
 
-class PendienteService {
+
+class ServiceEgreso {
   static final String _baseUrl = AppStrings.urlApiSigecof;
 
   static Future<Map<String, String>> _getHeaders() async {
@@ -33,9 +36,10 @@ class PendienteService {
         headers: await _getHeaders(),
         body: jsonEncode(body),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//
+      //throw Exception('Error de red: $e');
     }
   }
 
@@ -48,9 +52,9 @@ class PendienteService {
         url,
         headers: await _getHeaders(),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 

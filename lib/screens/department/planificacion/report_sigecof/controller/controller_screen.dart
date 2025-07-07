@@ -1,4 +1,5 @@
 
+import 'package:core_system/screens/department/planificacion/report_sigecof/service/service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +13,7 @@ import '../constant/enum_screen_planificacion.dart';
 
 
 class ControllerScreenPlanificacion extends GetxController {
-
+  var hasConnection = false.obs;
   var currentScreen = AppScreen.home.obs;
   final Map<AppScreen, Widget> screenMap = {
     AppScreen.home: Home(),
@@ -31,6 +32,18 @@ class ControllerScreenPlanificacion extends GetxController {
   }
   // Retorna el widget actual según el screen seleccionado
   Widget get currentView => screenMap[currentScreen.value]!;
+
+  @override
+  Future<void> onInit() async {
+    try {
+      final res = await ServicePlanificacion.get("api/query/connection");
+      hasConnection.value = res['status'] ?? false;
+    } catch (e) {
+      hasConnection.value = false;
+    }
+    super.onInit();
+  }
+
 }
 
 

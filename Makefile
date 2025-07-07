@@ -8,7 +8,6 @@ run:
 
 build:
 	flutter build web
-
 runweb:
 		@echo "Building Flutter web app..."
 		flutter build web

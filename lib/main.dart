@@ -18,8 +18,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final config=await ConfigLoader.loadConfig();
   //print(config['api_url']);
-  AppStrings.urlApi=config['api_url'];
-  AppStrings.urlApiSigecof=config['api_sigecof'];
+  AppStrings.urlApi=config['api_url'];//carga la url de la api el backend de dart
+  AppStrings.urlApiSigecof=config['api_sigecof'];// carga la url de la api de oracle en java
+
+  /*
+  ests controladores se usan para cada vista , para tener un titulo mientras el drawer al darle a cada opcion
+  cambia el titulo
+   */
   Get.put(SharedController());//planificacion
   Get.put(SharedEgresoController());
   runApp(const MyApp());

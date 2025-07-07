@@ -1,28 +1,16 @@
 
 
-
-
-
 import 'dart:convert';
 
 import 'package:core_system/core/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../infrastructure/shared/handle_response.dart';
 
-class BCVService {
+
+class ServicePlanificacion {
   static final String _baseUrl = AppStrings.urlApiSigecof;
 
-
-  /*static Future<Map<String, String>> _getHeaders() async {
-    final token = await LocalStorage.getToken();
-    if (token == null) {
-      throw Exception('No se encontró un token de autenticación');
-    }
-    return {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-    };
-  }*/
   static Future<Map<String, String>> _getHeaders() async {
     /* final token = await LocalStorage.getToken();
     if (token == null) {
@@ -48,9 +36,9 @@ class BCVService {
         headers: await _getHeaders(),
         body: jsonEncode(body),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;// throw Exception('Error de red: $e');
     }
   }
 
@@ -63,9 +51,9 @@ class BCVService {
         url,
         headers: await _getHeaders(),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 

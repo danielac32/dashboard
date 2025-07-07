@@ -1,10 +1,16 @@
 
 import 'dart:convert';
 import 'package:core_system/infrastructure/shared/storage.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/utils/constants.dart';
 import '../../../infrastructure/entities/user_response.dart';
+import 'package:get/get.dart';
+
+import '../../../infrastructure/shared/alert.dart';
+import '../../../infrastructure/shared/handle_response.dart';
+
 
 class ApiService {
   static final String _baseUrl = AppStrings.urlApi;
@@ -20,9 +26,10 @@ class ApiService {
         body: jsonEncode(body),
       );
 
-      return _handleResponse(response);
+     // return _handleResponse(response);
+      return Handle.Response(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
@@ -32,27 +39,71 @@ class ApiService {
 
     try {
       final response = await http.get(url);
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
   // Manejar la respuesta
   static dynamic _handleResponse(http.Response response) {
+    final Map<String, dynamic>? jsonResponse = jsonDecode(response.body) as Map<String, dynamic>?;
+
     switch (response.statusCode) {
       case 200:
-        return jsonDecode(response.body);
+        return jsonResponse;
+
       case 400:
-        throw Exception('Bad Request: ${response.body}');
+       // Get.snackbar('Error', 'Solicitud incorrecta');
+        SnackbarAlert.error(title: "HTTP", message: jsonResponse?['error'], durationSeconds: 5);
+        /*Get.snackbar('Error', "Solicitud incorrecta",
+          backgroundColor: Colors.red[800],
+          colorText: Colors.white,
+          icon: Icon(Icons.person_off, color: Colors.white),
+        );*/
+        throw Exception('Bad Request');
+
       case 401:
       case 403:
-        throw Exception('No autorizado: ${response.body}');
+
+        final errorMessage = (jsonResponse?['error'] ?? 'Credenciales inválidas') as String;
+        SnackbarAlert.error(title: "HTTP", message: jsonResponse?['error'], durationSeconds: 5);
+        //Get.snackbar('Error', errorMessage);
+       /* Get.snackbar('Error', errorMessage,
+          backgroundColor: Colors.red[800],
+          colorText: Colors.white,
+          icon: Icon(Icons.person_off, color: Colors.white),
+        );*/
+        throw Exception(errorMessage);
+
       case 404:
-        throw Exception('Recurso no encontrado');
+        //Get.snackbar('Error', 'Usuario no encontrado');
+       /*Get.snackbar('Error', 'Usuario no encontrado',
+          backgroundColor: Colors.red[800],
+          colorText: Colors.white,
+          icon: Icon(Icons.person_off, color: Colors.white),
+        );*/
+        SnackbarAlert.error(title: "HTTP", message: jsonResponse?['error'], durationSeconds: 5);
+        throw Exception('Usuario no encontrado');
+
       case 500:
-        throw Exception('Error del servidor: ${response.body}');
+        //Get.snackbar('Error', 'Error del servidor');
+        /*Get.snackbar('Error', 'Error del servidor',
+          backgroundColor: Colors.red[800],
+          colorText: Colors.white,
+          icon: Icon(Icons.person_off, color: Colors.white),
+        );*/
+        SnackbarAlert.error(title: "HTTP", message: jsonResponse?['error'], durationSeconds: 5);
+        throw Exception('Error del servidor');
+
       default:
+        //Get.snackbar('Error', 'Ocurrió un problema inesperado');
+        /*Get.snackbar('Error', 'Ocurrió un problema inesperado',
+          backgroundColor: Colors.red[800],
+          colorText: Colors.white,
+          icon: Icon(Icons.person_off, color: Colors.white),
+        );*/
+        SnackbarAlert.error(title: "HTTP", message: 'Error en la solicitud', durationSeconds: 5);
         throw Exception('Error en la solicitud: ${response.statusCode}');
     }
   }

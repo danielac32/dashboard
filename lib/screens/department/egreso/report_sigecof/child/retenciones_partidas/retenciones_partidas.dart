@@ -1,28 +1,23 @@
-import 'package:core_system/screens/department/egreso/report_sigecof/child/ordenes_pendientes/controller/controller.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 
 import '../../../../../../core/config/theme/app_theme.dart';
 import '../../../../shared_widget/date.dart';
 import '../../../../shared_widget/generic_consult.dart';
 import '../../../../shared_widget/generic_download.dart';
+import 'controller/controller.dart';
 
 
-class OrdenesPendientes extends StatelessWidget {
-   OrdenesPendientes({super.key});
-  final controller = Get.put(EgresoPendienteController());
 
+class RetencionesPartidas extends StatelessWidget {
+  RetencionesPartidas({super.key});
+  final controller = Get.put(EgresoRetencionesPartidasController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: const Color(0xfff4f6f9),
-      /*appBar: AppBar(
-        backgroundColor: const Color(0xFF1e3d7a),
-        title: const Text("Sistema de Consulta SIGECOF"),
-        centerTitle: true,
-      ),*/
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -70,14 +65,14 @@ class OrdenesPendientes extends StatelessWidget {
                   Obx(() =>GenericConsultButton(
                     isLoading: controller.cargando.value,
                     onConsult: () async {
-                      await controller.cargarPendientes(
+                      await controller.cargarRetencionesPartidas(
                         controller.fechaDesde.value,
                         controller.fechaHasta.value,
                       );
                     },
                   )),
                   const SizedBox(width: 12),
-                    Obx(() =>GenericDownloadButton(
+                   Obx(() =>GenericDownloadButton(
                     isLoading: controller.cargando.value,
                     onDownload: () async {
                       await controller.descargarReporte();
@@ -121,8 +116,8 @@ class OrdenesPendientes extends StatelessWidget {
                     ],
                   ),
                   child: SingleChildScrollView(
-                    //controller: controller.horizontalScrollController,
-                    // scrollDirection: Axis.horizontal,
+                   // controller: controller.horizontalScrollController,
+                     //scrollDirection: Axis.horizontal,
                     child: Column(
                       children: [
                         Center(
@@ -131,83 +126,61 @@ class OrdenesPendientes extends StatelessWidget {
                         ),
 
                         SizedBox(
-                          //width: MediaQuery.of(context).size.width,
+                          //width: MediaQuery.of(context).size.width ,
                           child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
                             //scrollDirection: Axis.vertical,
                             //controller: controller.verticalScrollController,
-                            scrollDirection: Axis.horizontal,
                             child: Padding(
                               padding: const EdgeInsets.all(5),
                               child: DataTable(
-                                /*columnSpacing: 20,
-                                horizontalMargin: 12,*/
                                 columnSpacing: 8, // Reducir este valor
                                 horizontalMargin: 8, // Reducir este valor
                                 showCheckboxColumn: false,
                                 dataRowColor: WidgetStateProperty.all(Colors.white),
                                 headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
                                 columns: const [
-                                  DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Estado", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Orden", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Monto", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Presupuesto", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Monto 1x500 Ant", style: TextStyle(color: Colors.black))),
                                   DataColumn(label: Text("Fuente", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Año", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Partida", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Cuenta", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Monto Orden", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Monto 1x500", style: TextStyle(color: Colors.black))),
                                   DataColumn(label: Text("Observación", style: TextStyle(color: Colors.black))),
                                   DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Monto Orden Ant", style: TextStyle(color: Colors.black))),
                                   DataColumn(label: Text("Beneficiario", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Fondo", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("RIF", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Orden", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Denominación", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Fecha Pago", style: TextStyle(color: Colors.black))),
+                                  DataColumn(label: Text("Partida", style: TextStyle(color: Colors.black))),
                                 ],
-                                rows: controller.paginatedResults.map((pendiente) {
+
+                                rows: controller.paginatedResults.map((pago) {
                                   return DataRow(
                                     cells: [
-                                      DataCell(Text(controller.formatDate(pendiente.fechaModificacion?? ""), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(pendiente.estado.toString(), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(pendiente.orden.toString(), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text('\$${pendiente.monto.toStringAsFixed(2) ?? '0.00'}', style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(pendiente.fuente, style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(pendiente.anho.toString(), style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(pago.presupuesto?.toString() ?? "-", style: TextStyle(color: Colors.black))),
+
+                                      // Monto 1x500 ant (formato monetario)
+                                      DataCell(Text(pago.monto1x500Ant != null
+                                          ? '\$${pago.monto1x500Ant!.toStringAsFixed(2)}'
+                                          : "-", style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(pago.fuente?.toString() ?? "-",style: TextStyle(color: Colors.black))),
+                                      // Monto orden (formato numérico grande)
+                                      DataCell(Text(pago.montoOrden?.toString() ?? "-", style: TextStyle(color: Colors.black))),
+                                      DataCell(Text(pago.monto1x500 != null
+                                          ? '\$${pago.monto1x500!.toStringAsFixed(2)}'
+                                          : "-", style: TextStyle(color: Colors.black))),
                                       DataCell(
                                         ConstrainedBox(
-                                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
+                                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.2),
                                           child: Tooltip(
-                                            message: pendiente.partida,
+                                            message: pago.observacion ?? "",
                                             child: Text(
-                                              pendiente.partida.length > 30
-                                                  ? '${pendiente.partida!.substring(0, 30)}...'
-                                                  : pendiente.partida ?? '',
-                                              overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(Text(pendiente.cuenta ?? '', style: TextStyle(color: Colors.black))),
-                                      DataCell(
-                                        ConstrainedBox(
-                                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
-                                          child: Tooltip(
-                                            message: pendiente.observacion,
-                                            child: Text(
-                                              pendiente.observacion.length > 30
-                                                  ? '${pendiente.observacion.substring(0, 30)}...'
-                                                  : pendiente.observacion ?? '',
-                                              overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(
-                                        ConstrainedBox(
-                                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
-                                          child: Tooltip(
-                                            message: pendiente.organismo,
-                                            child: Text(
-                                              pendiente.organismo.length > 30
-                                                  ? '${pendiente.organismo.substring(0, 30)}...'
-                                                  : pendiente.organismo ?? '',
-                                              overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
+                                                pago.observacion != null && pago.observacion!.length > 20
+                                                    ? '${pago.observacion!.substring(0, 20)}...'
+                                                    : pago.observacion ?? "-",
+                                                overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.black)
                                             ),
                                           ),
                                         ),
@@ -216,17 +189,77 @@ class OrdenesPendientes extends StatelessWidget {
                                         ConstrainedBox(
                                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.2),
                                           child: Tooltip(
-                                            message: pendiente.beneficiario,
+                                            message: pago.organismo ?? "",
                                             child: Text(
-                                              pendiente.beneficiario.length > 30
-                                                  ? '${pendiente.beneficiario.substring(0, 30)}...'
-                                                  : pendiente.beneficiario ?? '',
-                                              overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
+                                                pago.organismo != null && pago.organismo!.length > 20
+                                                    ? '${pago.organismo!.substring(0, 20)}...'
+                                                    : pago.organismo ?? "-",
+                                                overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.black)
                                             ),
                                           ),
                                         ),
                                       ),
-                                      DataCell(Text(pendiente.fondo ?? '-', style: TextStyle(color: Colors.black))),
+                                      // Monto orden ant
+                                      DataCell(Text(pago.montoOrdenAnt?.toString() ?? "-", style: TextStyle(color: Colors.black))),
+
+                                      // Beneficiario (con tooltip)
+                                      DataCell(
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.25),
+                                          child: Tooltip(
+                                            message: pago.beneficiario ?? "",
+                                            child: Text(
+                                                pago.beneficiario != null && pago.beneficiario!.length > 25
+                                                    ? '${pago.beneficiario!.substring(0, 25)}...'
+                                                    : pago.beneficiario ?? "-",
+                                                overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.black)
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      // RIF
+                                      DataCell(Text(pago.rif ?? "-" ,style: TextStyle(color: Colors.black))),
+
+                                      // Desc. Unidad Administradora (con tooltip)
+
+
+                                      // Orden
+                                      DataCell(Text(pago.orden?.toString() ?? "-",style: TextStyle(color: Colors.black))),
+
+                                      // Denominacion (con tooltip)
+                                      DataCell(
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
+                                          child: Tooltip(
+                                            message: pago.denominacion ?? "",
+                                            child: Text(
+                                                pago.denominacion != null && pago.denominacion!.length > 30
+                                                    ? '${pago.denominacion!.substring(0, 30)}...'
+                                                    : pago.denominacion ?? "-",
+                                                overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.black)
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+// Fecha (formateada)
+                                      DataCell(Text(controller.formatDate(pago.fechaPago?? "-"),style: TextStyle(color: Colors.black))),
+                                      // Cod. Unidad Administradora
+
+                                      DataCell(
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
+                                          child: Tooltip(
+                                            message: pago.partida ?? "",
+                                            child: Text(
+                                                pago.partida != null && pago.partida!.length > 20
+                                                    ? '${pago.partida!.substring(0, 20)}...'
+                                                    : pago.partida ?? "-",
+                                                overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.black)
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   );
                                 }).toList(),
@@ -244,29 +277,29 @@ class OrdenesPendientes extends StatelessWidget {
             // Paginación
             Obx(() => controller.resultados.isNotEmpty
                 ? Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.chevron_left),
-                          onPressed: controller.currentPage.value > 0
-                              ? () => controller.previousPage()
-                              : null,
-                        ),
-                        Text(
-                          'Página ${controller.currentPage.value + 1} de ${controller.totalPages}',
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.chevron_right),
-                          onPressed: (controller.currentPage.value + 1) < controller.totalPages
-                              ? () => controller.nextPage()
-                              : null,
-                        ),
-                      ],
-                    ),
-                  )
+              padding: const EdgeInsets.only(top: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.chevron_left),
+                    onPressed: controller.currentPage.value > 0
+                        ? () => controller.previousPage()
+                        : null,
+                  ),
+                  Text(
+                    'Página ${controller.currentPage.value + 1} de ${controller.totalPages}',
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.chevron_right),
+                    onPressed: (controller.currentPage.value + 1) < controller.totalPages
+                        ? () => controller.nextPage()
+                        : null,
+                  ),
+                ],
+              ),
+            )
                 : const SizedBox(),
             ),
           ],
@@ -275,4 +308,3 @@ class OrdenesPendientes extends StatelessWidget {
     );
   }
 }
-

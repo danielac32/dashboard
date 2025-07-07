@@ -64,6 +64,19 @@ class Planificacion extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             DrawerWidget(colors: colors, user: user,),
+            Obx(() {
+              if (!controllerPlanificacion.hasConnection.value) {
+                return ItemWidget(
+                  icon: Icons.signal_wifi_statusbar_connected_no_internet_4,
+                  colors: Colors.red,
+                  text: 'Sin conexión',
+                  tap: Get.back,
+                );
+              } else {
+                return SizedBox.shrink(); // No muestra nada
+              }
+            }),
+            //ItemWidget(icon: Icons.home, colors: AppTheme.goldColor/*colors.primary*/, text: 'Home', tap: Get.back),
             ItemWidget(icon:Icons.account_circle,colors:AppTheme.goldColor,text: 'Perfil',tap: (){
               Get.back();
             }),

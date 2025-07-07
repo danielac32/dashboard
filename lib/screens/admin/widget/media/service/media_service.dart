@@ -10,6 +10,7 @@ import 'package:core_system/core/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../../infrastructure/shared/storage.dart';
+import '../../../../../infrastructure/shared/handle_response.dart';
 
 class MediaService {
   static final String _baseUrl = AppStrings.urlApi;
@@ -36,9 +37,9 @@ class MediaService {
         headers: await _getHeaders(),
         body: jsonEncode(body),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
@@ -51,9 +52,9 @@ class MediaService {
         headers: await _getHeaders(),
         body: jsonEncode(body),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;// throw Exception('Error de red: $e');
     }
   }
 
@@ -66,9 +67,9 @@ class MediaService {
         headers: await _getHeaders(),
         body: jsonEncode(data), // Codifica los datos en JSON
       );
-      return _handleResponse(response); // Maneja la respuesta
+      return Handle.Response(response);//return _handleResponse(response); // Maneja la respuesta
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
@@ -81,9 +82,9 @@ class MediaService {
         url,
         headers: await _getHeaders(),
       );
-      return _handleResponse(response); // Manejar la respuesta
+      return Handle.Response(response);//return _handleResponse(response); // Manejar la respuesta
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 
@@ -97,9 +98,9 @@ class MediaService {
         url,
         headers: await _getHeaders(),
       );
-      return _handleResponse(response);
+      return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw Exception('Error de red: $e');
+      throw e;//throw Exception('Error de red: $e');
     }
   }
 

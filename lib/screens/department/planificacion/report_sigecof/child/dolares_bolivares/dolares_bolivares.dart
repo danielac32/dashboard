@@ -1,11 +1,11 @@
-import 'package:core_system/screens/department/planificacion/report_sigecof/child/dolares_bolivares/widget/consultar.dart';
-import 'package:core_system/screens/department/planificacion/report_sigecof/child/dolares_bolivares/widget/descargar.dart';
-import 'package:core_system/screens/department/planificacion/report_sigecof/child/dolares_bolivares/widget/desde.dart';
-import 'package:core_system/screens/department/planificacion/report_sigecof/child/dolares_bolivares/widget/hasta.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../core/config/theme/app_theme.dart';
+import '../../../../shared_widget/date.dart';
+import '../../../../shared_widget/generic_consult.dart';
+import '../../../../shared_widget/generic_download.dart';
 import 'controller/controller.dart';
 
 
@@ -44,13 +44,43 @@ class DolaresBolivares extends StatelessWidget {
                child: Row(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [
-                   DesdeWidget(controller: controller),
+                   Obx(() =>GenericDatePickerField(
+                     primaryColor: AppTheme.goldColor,
+                     initialDate: controller.fechaDesde.value,
+                     onDateSelected: (date) {
+                       controller.fechaDesde.value = date;
+                       // Puedes llamar a cualquier función adicional aquí
+                     },
+                     isLoading: controller.cargando.value,
+                     label: 'Desde',
+                   )),
                    const SizedBox(width: 8),
-                   HastaWidget(controller: controller),
+                     Obx(() =>GenericDatePickerField(
+                     initialDate: controller.fechaHasta.value,
+                     onDateSelected: (date) {
+                       controller.fechaHasta.value = date;
+                     },
+                     isLoading: controller.cargando.value,
+                     label: 'Hasta',
+                     primaryColor: AppTheme.goldColor,
+                   )),
                    const SizedBox(width: 12),
-                   ConsultarWidget(controller: controller),
+                       Obx(() =>GenericConsultButton(
+                     isLoading: controller.cargando.value,
+                     onConsult: () async {
+                       await controller.cargar(
+                         controller.fechaDesde.value,
+                         controller.fechaHasta.value,
+                       );
+                     },
+                   )),
                    const SizedBox(width: 12),
-                   DescargarWidget(controller: controller),
+                         Obx(() =>GenericDownloadButton(
+                     isLoading: controller.cargando.value,
+                     onDownload: () async {
+                       await controller.descargarReporte();
+                     },
+                   ))
                  ],
                ),
              ),
@@ -99,18 +129,21 @@ class DolaresBolivares extends StatelessWidget {
                          ),
 
                          SizedBox(
-                           width: MediaQuery.of(context).size.width * 0.95,
+                           //width: MediaQuery.of(context).size.width,
                            child: SingleChildScrollView(
                              //scrollDirection: Axis.vertical,
                              //controller: controller.verticalScrollController,
+                             scrollDirection: Axis.horizontal,
                              child: Padding(
                                padding: const EdgeInsets.all(5),
                                child: DataTable(
-                                 columnSpacing: 20,
-                                 horizontalMargin: 12,
+                                 /*columnSpacing: 20,
+                                horizontalMargin: 12,*/
+                                 columnSpacing: 8, // Reducir este valor
+                                 horizontalMargin: 8, // Reducir este valor
                                  showCheckboxColumn: false,
-                                 dataRowColor: MaterialStateProperty.all(Colors.white),
-                                 headingRowColor: MaterialStateProperty.all(AppTheme.goldColor),
+                                 dataRowColor: WidgetStateProperty.all(Colors.white),
+                                 headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
                                  columns: const [
                                    DataColumn(label: Text("Año", style: TextStyle(color: Colors.black))),
                                    DataColumn(label: Text("Estado", style: TextStyle(color: Colors.black))),
