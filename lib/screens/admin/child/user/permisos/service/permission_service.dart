@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:core_system/core/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../../infrastructure/shared/handle_exceptions.dart';
 import '../../../../../../infrastructure/shared/handle_response.dart';
 import '../../../../../../infrastructure/shared/storage.dart';
 
@@ -29,7 +30,7 @@ class PermissionService {
   // Método genérico para POST
   static Future<dynamic> post(String endpoint, Map<String, dynamic> body) async {
     final url = Uri.parse('$_baseUrl/$endpoint');
-    try {
+    /*try {
       final response = await http.post(
         url,
         headers: await _getHeaders(),
@@ -38,12 +39,20 @@ class PermissionService {
       return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
       throw e;//throw Exception('Error de red: $e');
-    }
+    }*/
+    return await ErrorExceptions.handleRequest(() async {
+    final response = await http.post(
+      url,
+      headers: await _getHeaders(),
+      body: jsonEncode(body), // Codifica los datos en JSON
+    ).timeout(const Duration(seconds: 30));
+    return Handle.Response(response);
+  });
   }
 
   static Future<dynamic> update(String endpoint, {required int id, required String endpoint2, required Map<String, dynamic> data} ) async {
     final url = Uri.parse('$_baseUrl/$endpoint/$id/$endpoint2'); // Construye la URL con el ID
-    try {
+    /*try {
       final response = await http.patch(
         url,
         headers: await _getHeaders(),
@@ -52,13 +61,21 @@ class PermissionService {
       return Handle.Response(response);//return _handleResponse(response); // Maneja la respuesta
     } catch (e) {
       throw e;//throw Exception('Error de red: $e');
-    }
+    }*/
+    return await ErrorExceptions.handleRequest(() async {
+      final response = await http.patch(
+        url,
+        headers: await _getHeaders(),
+        body: jsonEncode(data), // Codifica los datos en JSON
+      ).timeout(const Duration(seconds: 30));
+      return Handle.Response(response);
+    });
   }
 
   static Future<dynamic> delete(String endpoint, {required int id}) async {
     final url = Uri.parse('$_baseUrl/$endpoint/$id');
 
-    try {
+    /*try {
       // Realizar la solicitud DELETE con el token en los encabezados
       final response = await http.delete(
         url,
@@ -67,13 +84,20 @@ class PermissionService {
       return Handle.Response(response);//return _handleResponse(response); // Manejar la respuesta
     } catch (e) {
       throw e;//throw Exception('Error de red: $e');
-    }
+    }*/
+    return await ErrorExceptions.handleRequest(() async {
+      final response = await http.delete(
+        url,
+        headers: await _getHeaders(),
+      ).timeout(const Duration(seconds: 30));
+      return Handle.Response(response);
+    });
   }
 
   static Future<dynamic> getUserPermissions(String endpoint,String endpoint2, {required int userId}) async {
     final url = Uri.parse('$_baseUrl/$endpoint/$userId/$endpoint2');
 
-    try {
+    /*try {
       final response = await http.get(
         url,
         headers: await _getHeaders(),
@@ -81,14 +105,21 @@ class PermissionService {
       return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
       throw e;//throw Exception('Error al obtener permisos del usuario: $e');
-    }
+    }*/
+    return await ErrorExceptions.handleRequest(() async {
+      final response = await http.get(
+        url,
+        headers: await _getHeaders(),
+      ).timeout(const Duration(seconds: 30));
+      return Handle.Response(response);
+    });
   }
 
   // Método genérico para GET
   static Future<dynamic> get(String endpoint, {Map<String, String>? queryParams}) async {
     final url = Uri.parse('$_baseUrl/$endpoint').replace(queryParameters: queryParams);
 
-    try {
+    /*try {
       final response = await http.get(
         url,
         headers: await _getHeaders(),
@@ -96,7 +127,14 @@ class PermissionService {
       return Handle.Response(response);// return _handleResponse(response);
     } catch (e) {
       throw e;//throw Exception('Error de red: $e');
-    }
+    }*/
+    return await ErrorExceptions.handleRequest(() async {
+      final response = await http.get(
+        url,
+        headers: await _getHeaders(),
+      ).timeout(const Duration(seconds: 30));
+      return Handle.Response(response);
+    });
   }
 
   // Manejar la respuesta

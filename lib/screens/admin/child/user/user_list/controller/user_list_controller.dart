@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../../core/utils/enum.dart';
 import '../../../../../../infrastructure/entities/update_response.dart';
 import '../../../../../../infrastructure/entities/user_response.dart';
+import '../../../../../../infrastructure/shared/alert.dart';
 import '../../../../../../infrastructure/shared/interface/cargo_response.dart';
 import '../../../../../../infrastructure/shared/interface/direccion_response.dart';
 import '../../../../../../infrastructure/shared/interface/role_response.dart';
@@ -290,7 +291,8 @@ class UserEditController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       errorLoadingData.value = true;
-      print('Error al cargar datos iniciales: $e');
+      //print('Error al cargar datos iniciales: $e');
+      SnackbarAlert.error(title: "Oops!", message: 'Error al cargar datos iniciales: $e', durationSeconds: 2);//Get.snackbar('Error', 'Usuario no Actualizado');
     }
   }
 
@@ -357,11 +359,11 @@ class UserEditController extends GetxController {
     final apiResponse = await UserListService.update("user",id: user.id!,data: user.toJson());
     final res = UpdateResponse.fromJson(apiResponse);
     if(res.success == true){
-      Get.snackbar('Ok', 'Usuario Actualizado');
+      SnackbarAlert.success(message:"OK Usuario Actualizado");//Get.snackbar('Ok', 'Usuario Actualizado');
       await Get.find<UserListController>().refreshUsers();
       Get.back();
     }else {
-      Get.snackbar('Error', 'Usuario no Actualizado');
+      SnackbarAlert.error(title: "Oops!", message: "Usuario no Actualizado", durationSeconds: 2);//Get.snackbar('Error', 'Usuario no Actualizado');
     }
   }
 }
