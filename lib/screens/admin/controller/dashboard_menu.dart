@@ -51,10 +51,10 @@ class MenuControllerScreen extends GetxController {
   // Retorna el widget actual según el screen seleccionado
   Widget get currentView => screenMap[currentScreen.value]!;
 
-  void logout(){
+  /*void logout(){
     LocalStorage.clear();
     LocalStorage.saveStatus(false);
     AppRoutes.navigateAndRemoveUntil("/login");
-  }
+  }*/
 }
 

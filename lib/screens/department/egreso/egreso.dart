@@ -7,11 +7,12 @@ import '../../../infrastructure/entities/user_response.dart';
 import '../../admin/controller/dashboard_menu.dart';
 import '../../admin/widget/drawer_header.dart';
 import '../../admin/widget/item_widget.dart';
+import '../../auth/controller/login_controller.dart';
 import './report_sigecof/shared/controller_shared.dart';
 import './report_sigecof/widget/item_user.dart';
 
 class Egreso extends StatelessWidget {
-  final controllerScreen = Get.put(MenuControllerScreen());
+  //final controllerScreen = Get.put(MenuControllerScreen());
   final controllerEgreso = Get.put(ControllerScreenEgreso());
   final controllerShared = Get.find<SharedEgresoController>();
 
@@ -73,7 +74,7 @@ class Egreso extends StatelessWidget {
                   Divider(),
                   ItemWidget(icon: Icons.logout, colors: Colors.red, text: 'Cerrar sesión', tap: () {
                     Get.back();
-                    controllerScreen.logout();
+                    Get.find<LoginController>().logout();//controllerScreen.logout();
                   }),
                 ],
               ),

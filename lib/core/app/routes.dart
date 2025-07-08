@@ -54,7 +54,7 @@ class AppRoutes {
     GetPage(name: dashboardSuperAdmin, page: () => DashboardAdmin(),middlewares: [AuthMiddleware()]),
     GetPage(name: votacion, page: () => Index()),
     GetPage(name: dashboardPlanificacionAnalisisFinanciero, page: () => Planificacion(),middlewares: [AuthMiddleware()]),
-    GetPage(name: dashboardEgreso, page: () => Egreso()),
+    GetPage(name: dashboardEgreso, page: () => Egreso(),middlewares: [AuthMiddleware()]),
 
 
     //GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),

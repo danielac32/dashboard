@@ -5,7 +5,8 @@ import 'package:core_system/screens/auth/controller/login_controller.dart';
 import '../../core/config/theme/app_theme.dart';
 
 class LoginScreen extends StatelessWidget {
-  final LoginController loginController = Get.put(LoginController());
+  //final LoginController loginController = Get.put(LoginController());
+final LoginController loginController =  Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {

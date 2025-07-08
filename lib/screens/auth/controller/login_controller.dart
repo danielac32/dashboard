@@ -140,4 +140,9 @@ class LoginController extends GetxController {
       isLoading.value = false;
     }
   }
+  void logout(){
+    LocalStorage.clear();
+    LocalStorage.saveStatus(false);
+    AppRoutes.navigateAndRemoveUntil("/login");
+  }
 }

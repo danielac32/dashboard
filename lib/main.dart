@@ -1,3 +1,4 @@
+import 'package:core_system/screens/auth/controller/login_controller.dart';
 import 'package:core_system/screens/auth/login.dart';
 import 'package:core_system/screens/department/egreso/report_sigecof/shared/controller_shared.dart';
 import 'package:core_system/screens/department/planificacion/report_sigecof/shared/controller_shared.dart';
@@ -43,6 +44,7 @@ Future<void> main() async {
    */
   Get.put(SharedController());//planificacion
   Get.put(SharedEgresoController());
+  Get.put(LoginController());//para llamar a logout en todos lados
   runApp(const MyApp());
 }
 

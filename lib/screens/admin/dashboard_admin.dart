@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../infrastructure/entities/user_response.dart';
+import '../auth/controller/login_controller.dart';
 import 'controller/dashboard_menu.dart';
 import 'widget/drawer_header.dart';
 
@@ -136,7 +137,7 @@ class DashboardAdmin extends StatelessWidget {
             Divider(),
             ItemWidget(icon:Icons.logout,colors:colors.error,text: 'Cerrar sesión',tap:(){
               Get.back();
-              menuControllerScreen.logout();
+              Get.find<LoginController>().logout();//menuControllerScreen.logout();
             }),
           ],
         ),

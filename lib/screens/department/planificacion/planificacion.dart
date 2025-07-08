@@ -12,9 +12,10 @@ import '../../../infrastructure/entities/user_response.dart';
 import '../../admin/controller/dashboard_menu.dart';
 import '../../admin/widget/drawer_header.dart';
 import '../../admin/widget/item_widget.dart';
+import '../../auth/controller/login_controller.dart';
 
 class Planificacion extends StatelessWidget {
-  final  controllerScreen = Get.put(MenuControllerScreen());
+  //final  controllerScreen = Get.put(MenuControllerScreen());
   final  controllerPlanificacion = Get.put(ControllerScreenPlanificacion());
   final  controllerShared = Get.find<SharedController>();
 
@@ -84,7 +85,7 @@ class Planificacion extends StatelessWidget {
             Divider(),
             ItemWidget(icon:Icons.logout,colors:Colors.red,text: 'Cerrar sesión',tap:(){
               Get.back();
-              controllerScreen.logout();
+              Get.find<LoginController>().logout();//controllerScreen.logout();
             }),
           ],
         ),
