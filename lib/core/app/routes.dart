@@ -26,6 +26,7 @@ class AuthMiddleware extends GetMiddleware {
 }
 
 
+
 class AppRoutes {
   static const String votacion='/votacion';
   static const String login = '/login';

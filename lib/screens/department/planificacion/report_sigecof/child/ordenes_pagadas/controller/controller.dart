@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../../../../../infrastructure/shared/alert.dart';
 import '../../../service/service.dart';
 import '../../../shared/excel_export_service.dart';
 import '../model/pago.dart';
@@ -161,9 +162,13 @@ class PagoController extends GetxController {
   }
 
   Future<void> descargarReporte() async {
+    if (resultados.isEmpty) {
+      SnackbarAlert.error(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
+      return;
+    }
     try {
       cargando(true);
-      await Future.delayed(Duration(microseconds: 50));
+      await Future.delayed(Duration(milliseconds: 100));
 
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];

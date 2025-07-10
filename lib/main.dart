@@ -19,12 +19,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final config=await ConfigLoader.loadConfig();
   //print(config['api_url']);
-  AppStrings.urlApi=config['api_url'];//carga la url de la api el backend de dart
-  AppStrings.urlApiSigecof=config['api_sigecof'];// carga la url de la api de oracle en java
+  //AppStrings.urlApi=config['api_url'];//carga la url de la api el backend de dart
+  //AppStrings.urlApiSigecof=config['api_sigecof'];// carga la url de la api de oracle en java
 
 
 
-  /*if (kIsWeb) {
+  if (kIsWeb) {
     AppStrings.urlApi = 'http://10.78.30.46:8070';
     AppStrings.urlApiSigecof = 'http://10.78.30.46:7000';
   } else {
@@ -33,7 +33,7 @@ Future<void> main() async {
     //final config = await ConfigLoader.loadConfig();
     AppStrings.urlApi = config['api_url'];
     AppStrings.urlApiSigecof = config['api_sigecof'];
-  }*/
+  }
 
   print( "${AppStrings.urlApi} - ${AppStrings.urlApiSigecof}");
 

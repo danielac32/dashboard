@@ -1,5 +1,6 @@
 
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 
+import '../../../../../../../infrastructure/shared/alert.dart';
 import '../../../service/service.dart';
 import '../model/pago.dart';
 //import '../service/Service.dart';
@@ -68,7 +70,8 @@ class EgresoPagoController extends GetxController {
       resultados(datosLista);
       updatePagination();
     } catch (e) {
-      print('Error aqui : $e');
+      print('Error egreso ordenes pagadas : $e');
+      SnackbarAlert.error(title: "Oops!", message: "Error cargando registros", durationSeconds: 1);
       resultados([]);
     }
     cargando(false);
@@ -86,41 +89,6 @@ class EgresoPagoController extends GetxController {
 
 
 
-  void aplicarFiltro(String nuevoFiltro) async {
-    cargando(true);
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    filtro(nuevoFiltro);
-    List<Pago> resultadosFiltrados = [];
-
-    if (nuevoFiltro.isEmpty) {
-      resultadosFiltrados = datos;
-    } else {
-      switch (nuevoFiltro.toLowerCase()) {
-        case 'pendientes':
-          resultadosFiltrados = datos.where((p) => p.estado.toString().toLowerCase().contains('pendiente')).toList();
-          break;
-        case 'pagadas':
-          resultadosFiltrados = datos.where((p) => p.estado.toString().toLowerCase().contains('pagada')).toList();
-          break;
-        case 'retenciones':
-          resultadosFiltrados = datos.where((p) => p.monto > 1000).toList();
-          break;
-        default:
-        // Búsqueda flexible si no coincide con los casos anteriores
-          resultadosFiltrados = datos.where((p) =>
-          p.organismo.toLowerCase().contains(nuevoFiltro.toLowerCase()) ||
-              p.beneficiario.toLowerCase().contains(nuevoFiltro.toLowerCase()) ||
-              p.observacion.toLowerCase().contains(nuevoFiltro.toLowerCase())
-          ).toList();
-      }
-    }
-
-    resultados(resultadosFiltrados);
-    currentPage(0);
-    updatePagination();
-    cargando(false);
-  }
 
   void updatePagination() {
     final startIndex = currentPage.value * itemsPerPage.value;
@@ -142,10 +110,138 @@ class EgresoPagoController extends GetxController {
     }
   }
 
+
+
+/*
   Future<void> descargarReporte() async {
+    if (resultados.isEmpty) {
+      Get.snackbar('Advertencia', 'No hay datos para generar el reporte');
+      return;
+    }
+    try {
+      cargando(true);
+      final totalRegistros = resultados.length;
+      const registrosPorArchivo = 10000; // Ajusta este valor según necesidades
+      final totalArchivos = (totalRegistros / registrosPorArchivo).ceil();
+
+
+      print(" totalRegistros: ${totalRegistros} registrosPorArchivo: ${registrosPorArchivo} totalArchivos: ${totalArchivos} ");
+
+      for (var archivo = 0; archivo < totalArchivos; archivo++) {
+        final inicio = archivo * registrosPorArchivo;
+        final fin = min(inicio + registrosPorArchivo, totalRegistros);
+        final lote = resultados.sublist(inicio, fin);
+
+        // Permitir que la UI se actualice entre archivos
+        await Future.delayed(Duration(milliseconds: 100));
+
+        // Generar y descargar cada archivo
+        await _generarArchivoExcel(
+            lote,
+            'reporte_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}_parte${archivo + 1}.xlsx'
+        );
+      }
+
+      Get.snackbar('Éxito', 'Se generaron $totalArchivos archivos correctamente');
+    } catch (e) {
+      Get.snackbar('Error', 'Error al generar reportes: ${e.toString()}');
+    } finally {
+      cargando(false);
+    }
+  }
+
+  Future<void> _generarArchivoExcel(List<Pago> datos, String fileName) async {
     try {
       cargando(true);
       await Future.delayed(Duration(microseconds: 50));
+
+      final excel = Excel.createExcel();
+      final sheet = excel['Sheet1'];
+
+      // Encabezados con TextCellValue
+      sheet.appendRow([
+        TextCellValue("FECHA PAGO"),
+        TextCellValue("ESTADO"),
+        TextCellValue("ORDEN"),
+        TextCellValue("MONTO"),
+        TextCellValue("FUENTE"),
+        TextCellValue("AÑO"),
+        TextCellValue("PARTIDA"),
+        TextCellValue("CUENTA"),
+        TextCellValue("ORGANISMO"),
+        TextCellValue("BENEFICIARIO"),
+        TextCellValue("OBSERVACIÓN"),
+        TextCellValue("FONDO"),
+      ]);
+
+      // Datos con tipos correctos
+      for (var row in datos) {
+        sheet.appendRow([
+          TextCellValue(formatDate(row.pagada) ?? ""),
+          IntCellValue(row.estado ?? 0),
+          IntCellValue(row.orden ?? 0),
+          DoubleCellValue(row.monto ?? 0.0),
+          TextCellValue(row.fuente ?? ""),
+          IntCellValue(row.anho ?? 0),
+          TextCellValue(row.partida ?? ""),
+          TextCellValue(row.cuenta ?? ""),
+          TextCellValue(row.organismo ?? ""),
+          TextCellValue(row.beneficiario ?? ""),
+          TextCellValue(row.observacion ?? ""),
+          TextCellValue(row.fondo ?? "") ,
+        ]);
+      }
+
+      // Ancho de columnas
+      final columnWidths = {
+        0: 15.0,
+        1: 10.0,
+        2: 10.0,
+        3: 12.0,
+        4: 15.0,
+        5: 8.0,
+        6: 10.0,
+        7: 12.0,
+        8: 20.0,
+        9: 25.0,
+        10: 30.0,
+        11: 15.0,
+      };
+
+      columnWidths.forEach((colIndex, width) {
+        sheet.setColumnWidth(colIndex, width);
+      });
+
+      final bytes = excel.encode()!;
+     // final fileName = 'reporte_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+
+      final blob = html.Blob([bytes]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      final anchor = html.AnchorElement(href: url)
+        ..setAttribute('download', fileName)
+        ..click();
+
+      html.Url.revokeObjectUrl(url);
+      Get.snackbar('Éxito', 'Reporte generado correctamente');
+
+    } catch (e) {
+      print('Error al generar Excel: $e');
+      Get.snackbar('Error', 'No se pudo generar el reporte en Excel');
+    } finally {
+      cargando(false);
+    }
+  }
+  */
+
+
+  Future<void> descargarReporte() async {
+    if (resultados.isEmpty) {
+      SnackbarAlert.error(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
+      return;
+    }
+    try {
+      cargando(true);
+      await Future.delayed(Duration(milliseconds: 100));
 
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];
@@ -223,6 +319,9 @@ class EgresoPagoController extends GetxController {
       cargando(false);
     }
   }
+
+
+
 
   int get totalPages => (resultados.length / itemsPerPage.value).ceil();
 }

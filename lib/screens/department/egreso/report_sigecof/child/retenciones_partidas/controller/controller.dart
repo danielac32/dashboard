@@ -16,6 +16,7 @@ import 'package:file_saver/file_saver.dart'; // Para FileSaver
 import 'package:path_provider/path_provider.dart'; // Para getDownloadsDirectory
 import 'package:universal_html/html.dart' as html;
 
+import '../../../../../../../infrastructure/shared/alert.dart';
 import '../../../service/service.dart';
 import '../model/retencionesPartidas.dart';
 //import '../service/service.dart';
@@ -106,9 +107,13 @@ class EgresoRetencionesPartidasController extends GetxController {
 
 
   Future<void> descargarReporte() async {
+    if (resultados.isEmpty) {
+      SnackbarAlert.error(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
+      return;
+    }
     try {
       cargando(true);
-      await Future.delayed(Duration(microseconds: 50));
+      await Future.delayed(Duration(milliseconds: 100));
 
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];

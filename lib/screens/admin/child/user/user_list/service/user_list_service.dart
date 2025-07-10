@@ -44,7 +44,7 @@ class UserListService {
         url,
         headers: await _getHeaders(),
         body: jsonEncode(body),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
@@ -68,7 +68,7 @@ class UserListService {
         url,
         headers: await _getHeaders(),
         body: jsonEncode(data),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
@@ -90,7 +90,7 @@ class UserListService {
       final response = await http.delete(
         url,
         headers: await _getHeaders(),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
 
@@ -118,7 +118,7 @@ class UserListService {
       final response = await http.get(
         url,
         headers: await _getHeaders(),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
@@ -140,7 +140,7 @@ class UserListService {
       final response = await http.get(
         url,
         headers: await _getHeaders(),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
@@ -162,29 +162,8 @@ class UserListService {
       final response = await http.get(
         url,
         headers: await _getHeaders(),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
-  }
-
-  // Manejar la respuesta
-  static dynamic _handleResponse(http.Response response) {
-    switch (response.statusCode) {
-      case 200: // OK
-      case 201: // Created
-      case 204: // No Content (para DELETE)
-        return jsonDecode(response.body);
-      case 400:
-        throw Exception('Bad Request: ${response.body}');
-      case 401:
-      case 403:
-        throw Exception('No autorizado: ${response.body}');
-      case 404:
-        throw Exception('Recurso no encontrado');
-      case 500:
-        throw Exception('Error del servidor: ${response.body}');
-      default:
-        throw Exception('Error en la solicitud: ${response.statusCode}');
-    }
   }
 }

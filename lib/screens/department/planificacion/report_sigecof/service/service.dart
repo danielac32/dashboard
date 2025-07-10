@@ -54,7 +54,7 @@ class ServicePlanificacion {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
@@ -76,7 +76,7 @@ class ServicePlanificacion {
       final response = await http.get(
         url,
         headers: {'Content-Type': 'application/json'},
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
 
       return Handle.Response(response);
     });

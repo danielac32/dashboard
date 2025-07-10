@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../../../infrastructure/shared/alert.dart';
 import '../../../service/service.dart';
 import '../model/pendiente.dart';
 //import '../service/service.dart';
@@ -93,9 +94,13 @@ class EgresoPendienteController extends GetxController {
   }
 
   Future<void> descargarReporte() async {
+    if (resultados.isEmpty) {
+      SnackbarAlert.error(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
+      return;
+    }
     try {
       cargando(true);
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(Duration(milliseconds: 100));
 
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];

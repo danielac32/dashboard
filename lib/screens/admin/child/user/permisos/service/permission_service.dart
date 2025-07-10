@@ -45,7 +45,7 @@ class PermissionService {
       url,
       headers: await _getHeaders(),
       body: jsonEncode(body), // Codifica los datos en JSON
-    ).timeout(const Duration(seconds: 30));
+    );//.timeout(const Duration(seconds: 30));
     return Handle.Response(response);
   });
   }
@@ -67,7 +67,7 @@ class PermissionService {
         url,
         headers: await _getHeaders(),
         body: jsonEncode(data), // Codifica los datos en JSON
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
@@ -89,7 +89,7 @@ class PermissionService {
       final response = await http.delete(
         url,
         headers: await _getHeaders(),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
@@ -110,7 +110,7 @@ class PermissionService {
       final response = await http.get(
         url,
         headers: await _getHeaders(),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
@@ -132,7 +132,7 @@ class PermissionService {
       final response = await http.get(
         url,
         headers: await _getHeaders(),
-      ).timeout(const Duration(seconds: 30));
+      );//.timeout(const Duration(seconds: 30));
       return Handle.Response(response);
     });
   }
