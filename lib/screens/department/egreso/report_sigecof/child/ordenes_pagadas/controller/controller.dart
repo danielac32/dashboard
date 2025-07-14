@@ -40,10 +40,13 @@ class EgresoPagoController extends GetxController {
   var fechaDesde = DateTime.now().obs;
   var fechaHasta = DateTime.now().obs;
   var selected = ''.obs;
+  late List<dynamic> jsonDataAlmacenado;
+
+
+
 
   @override
   void onInit() {
-
     super.onInit();
   }
 
@@ -62,10 +65,9 @@ class EgresoPagoController extends GetxController {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
-
       print("pagadas ${desde} - ${hasta}");
       final jsonData = await ServiceEgreso.post('api/query/pagadas', {}, queryParams: queryParams);
-      //print(jsonData);
+      jsonDataAlmacenado = jsonData as List<dynamic>;
       final List<Pago> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => Pago.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();
@@ -234,6 +236,66 @@ class EgresoPagoController extends GetxController {
   */
 
 
+
+  Future<void> descargarReporte() async {
+    cargando(true);
+
+    if (resultados.isEmpty) {
+      SnackbarAlert.warning(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
+      return;
+    }
+    await Future.microtask(() {});
+    await Future.delayed(Duration(seconds: 2));
+    //await Future.delayed(Duration.zero);
+    try {
+      // Crear el worker
+      final completer = Completer<void>();
+      final worker = html.Worker('worker.js');
+
+
+      // Nombre del archivo
+      final fileName = 'reporte_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+
+      // Escuchar respuesta del worker
+      worker.onMessage.listen((event) {
+        try {
+          final response = event.data as Map;
+          final blob = response['blob'] as html.Blob;
+          final filename = response['filename'] as String;
+
+          final url = html.Url.createObjectUrlFromBlob(blob);
+          final anchor = html.AnchorElement()
+            ..href = url
+            ..download = filename
+            ..click();
+          html.Url.revokeObjectUrl(url);
+
+          SnackbarAlert.success(message: "Reporte generado correctamente");
+          completer.complete(); // Indicar que el proceso ha terminado
+        } catch (e) {
+          completer.completeError(e); // Pasar cualquier error
+        }
+      });
+
+      worker.onError.listen((error) {
+        completer.completeError(error);
+      });
+      // Enviar mensaje al worker
+      worker.postMessage(<String, dynamic>{
+        'data': jsonDataAlmacenado,
+        'filename': fileName,
+      });
+      await completer.future;
+    } catch (e, stackTrace) {
+      print('Error generando reporte: $e\n$stackTrace');
+      SnackbarAlert.error(title: "Oops!", message: "No se pudo generar el reporte en Excel", durationSeconds: 1);
+    }finally{
+      cargando(false);
+    }
+  }
+
+
+/*
   Future<void> descargarReporte() async {
     if (resultados.isEmpty) {
       SnackbarAlert.error(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
@@ -319,6 +381,8 @@ class EgresoPagoController extends GetxController {
       cargando(false);
     }
   }
+
+ */
 
 
 

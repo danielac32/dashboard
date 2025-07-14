@@ -24,7 +24,7 @@ class GenericDownloadButton extends StatelessWidget {
           ' ',
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
-        if (isLoading)
+        if (isLoading) ...[
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: SizedBox(
@@ -36,7 +36,7 @@ class GenericDownloadButton extends StatelessWidget {
               ),
             ),
           )
-        else ...[
+        ] else ...[
           Tooltip(
             message: 'Descargar reporte',
             child: InkWell(
