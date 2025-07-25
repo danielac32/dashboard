@@ -13,6 +13,9 @@ class LocalStorage {
   static const String _keyToken = 'auth_token';
   static const String _keyUser = 'user_data';
   static const String _status = 'user_status';
+  static const String _savedEmail = 'saved_email';
+  static const String _savedPass = 'saved_pass';
+
 
   // Guardar el estado (bool)
   static void saveStatus(bool status) {

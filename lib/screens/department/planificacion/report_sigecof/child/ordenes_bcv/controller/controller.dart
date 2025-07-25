@@ -32,7 +32,7 @@ class BCVController extends GetxController {
   var fechaDesde = DateTime.now().obs;
   var fechaHasta = DateTime.now().obs;
   var selected = ''.obs;
-  late List<dynamic> jsonDataAlmacenado;
+  List<dynamic> jsonDataAlmacenado=[];// late List<dynamic> jsonDataAlmacenado;
 
 
 
@@ -59,6 +59,7 @@ class BCVController extends GetxController {
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
       final jsonData = await ServicePlanificacion.post('api/query/transmisiones', {}, queryParams: queryParams);
+      jsonDataAlmacenado = jsonData as List<dynamic>;
       final List<Bcv> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => Bcv.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();

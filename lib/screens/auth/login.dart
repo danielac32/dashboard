@@ -92,7 +92,16 @@ final LoginController loginController =  Get.find<LoginController>();
                       // Divider
                       _buildDivider(context),
                       const SizedBox(height: 30),
-
+                      Obx(() {
+                        return CheckboxListTile(
+                          title: Text('Recordar usuario',style: TextStyle(color: AppTheme.goldColor),),
+                          value: loginController.rememberMe.value,
+                          onChanged: (value) {
+                            loginController.rememberMe.value = value!;
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        );
+                      }),
                       // Botón de registro
                       _buildRegisterButton(context),
                     ],

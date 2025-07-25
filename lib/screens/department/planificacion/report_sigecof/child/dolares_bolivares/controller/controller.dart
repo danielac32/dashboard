@@ -34,15 +34,24 @@ class DolarBolivarController extends GetxController {
   var fechaDesde = DateTime.now().obs;
   var fechaHasta = DateTime.now().obs;
   var selected = ''.obs;
-  late List<dynamic> jsonDataAlmacenado;
+  List<dynamic> jsonDataAlmacenado=[];//late List<dynamic> jsonDataAlmacenado;
+
+
+  void clearValue(){
+    paginatedResults.clear();
+    resultados.clear();
+    jsonDataAlmacenado.clear();
+  }
+  
   @override
   void onInit() {
-
+    clearValue();
     super.onInit();
   }
 
   @override
   void onClose() {
+    clearValue();
     horizontalScrollController.dispose();
     verticalScrollController.dispose();
     super.onClose();
@@ -57,6 +66,7 @@ class DolarBolivarController extends GetxController {
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
       final jsonData = await ServicePlanificacion.post('api/query/ordenes-divisas-bolivares', {}, queryParams: queryParams);
+      jsonDataAlmacenado = jsonData as List<dynamic>;
       final List<DolarBolivar> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => DolarBolivar.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();

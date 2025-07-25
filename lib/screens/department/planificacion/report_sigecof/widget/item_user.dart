@@ -60,6 +60,15 @@ class ItemsUser extends StatelessWidget {
             Get.back(); // Cierra el Drawer
           },
         ),
+        ListTile(
+          title: Text(controller.sections[4]),
+          leading: Icon(Icons.report, color: AppTheme.goldColor),
+          onTap: () {
+            Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.ordenes_pagadas_partidas);
+            Get.find<SharedController>().addTitle.value = "- Ordenes Pagadas por Partidas";
+            Get.back(); // Cierra el Drawer
+          },
+        ),
         /*ListTile(
           title: Text('Permisos'),
           leading: Icon(Icons.lock, color: colors.primary),

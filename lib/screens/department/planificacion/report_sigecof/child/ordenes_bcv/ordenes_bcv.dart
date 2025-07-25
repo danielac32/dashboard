@@ -109,68 +109,55 @@ class OrdenesBcv extends StatelessWidget {
                   );
                 }
 
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.goldColor.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 3,
+                return SingleChildScrollView(
+                  //controller: controller.horizontalScrollController,
+                  // scrollDirection: Axis.horizontal,
+                  child: Column(
+                    children: [
+                      Center(
+                          child: Text("Registros: ${controller.resultados.length} en paginas de ${controller.itemsPerPage}",
+                              style: const TextStyle(color: Colors.grey, fontSize: 16))
                       ),
-                    ],
-                  ),
-                  child: SingleChildScrollView(
-                    //controller: controller.horizontalScrollController,
-                    // scrollDirection: Axis.horizontal,
-                    child: Column(
-                      children: [
-                        Center(
-                            child: Text("Registros: ${controller.resultados.length} en paginas de ${controller.itemsPerPage}",
-                                style: const TextStyle(color: Colors.grey, fontSize: 16))
-                        ),
 
-                        SizedBox(
-                          //width: MediaQuery.of(context).size.width ,
-                          child: SingleChildScrollView(
-                            //scrollDirection: Axis.vertical,
-                            //controller: controller.verticalScrollController,
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: DataTable(
-                                /*columnSpacing: 20,
-                                horizontalMargin: 12,*/
-                                columnSpacing: 8, // Reducir este valor
-                                horizontalMargin: 8, // Reducir este valor
-                                showCheckboxColumn: false,
-                                dataRowColor: WidgetStateProperty.all(Colors.white),
-                                headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
-                                columns: const [
-                                  DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Monto Total", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Denominación", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Pago Id", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Organismo ", style: TextStyle(color: Colors.black))),
-                                ],
-                                rows: controller.paginatedResults.map((bcv) {
-                                  return DataRow(
-                                    cells: [
-                                      DataCell(Text(controller.formatDate(bcv.fechaValor?? ""), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(bcv.montoTotal.toString(), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(bcv.denominacion?? "", style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(bcv.pagoId.toString(), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(bcv.orgaId.toString(), style: TextStyle(color: Colors.black))),
-                                    ],
-                                  );
-                                }).toList(),
-                              ),
+                      SizedBox(
+                        //width: MediaQuery.of(context).size.width ,
+                        child: SingleChildScrollView(
+                          //scrollDirection: Axis.vertical,
+                          //controller: controller.verticalScrollController,
+                          scrollDirection: Axis.horizontal,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: DataTable(
+                              /*columnSpacing: 20,
+                              horizontalMargin: 12,*/
+                              columnSpacing: 8, // Reducir este valor
+                              horizontalMargin: 8, // Reducir este valor
+                              showCheckboxColumn: false,
+                              dataRowColor: WidgetStateProperty.all(Colors.white),
+                              headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
+                              columns: const [
+                                DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Monto Total", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Denominación", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Pago Id", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Organismo ", style: TextStyle(color: Colors.black))),
+                              ],
+                              rows: controller.paginatedResults.map((bcv) {
+                                return DataRow(
+                                  cells: [
+                                    DataCell(Text(controller.formatDate(bcv.fechaValor?? ""), style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(bcv.montoTotal.toString(), style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(bcv.denominacion?? "", style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(bcv.pagoId.toString(), style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(bcv.orgaId.toString(), style: TextStyle(color: Colors.black))),
+                                  ],
+                                );
+                              }).toList(),
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               }),

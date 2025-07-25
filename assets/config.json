@@ -1,5 +1,5 @@
 
 {
-  "api_url": "http://localhost:8085",
-  "api_sigecof": "http://localhost:9000"
+  "api_url": "http://10.78.30.46:8070",
+  "api_sigecof": "http://10.78.30.46:7000"
 }

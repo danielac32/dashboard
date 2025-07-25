@@ -40,7 +40,9 @@ class EgresoRetencionesPartidasController extends GetxController {
   var fechaDesde = DateTime.now().obs;
   var fechaHasta = DateTime.now().obs;
   var selected = ''.obs;
-  late List<dynamic> jsonDataAlmacenado;
+  List<dynamic> jsonDataAlmacenado=[];//late List<dynamic> jsonDataAlmacenado;
+
+
   @override
   void onInit() {
 
@@ -63,6 +65,7 @@ class EgresoRetencionesPartidasController extends GetxController {
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
       final jsonData = await ServiceEgreso.post('api/query/retenciones-partidas', {}, queryParams: queryParams);
+      jsonDataAlmacenado = jsonData as List<dynamic>;
       final List<RetencionesPartidas> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => RetencionesPartidas.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();

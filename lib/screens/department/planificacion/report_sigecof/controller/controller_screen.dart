@@ -7,6 +7,7 @@ import '../child/dolares_bolivares/dolares_bolivares.dart';
 import '../child/home/home.dart';
 import '../child/ordenes_bcv/ordenes_bcv.dart';
 import '../child/ordenes_pagadas/ordenes_pagadas.dart';
+import '../child/ordenes_pagadas_partidas/ordenes_pagadas_partidas.dart';
 import '../child/ordenes_pendientes/ordenes_pendientes.dart';
 import '../constant/enum_screen_planificacion.dart';
 
@@ -21,6 +22,7 @@ class ControllerScreenPlanificacion extends GetxController {
     AppScreen.dolares_a_blivares: DolaresBolivares(),
     AppScreen.ordenes_pendientes: OrdenesPendientes(),
     AppScreen.ordenes_trasmitidas_bcv: OrdenesBcv(),//ordenes_bcv
+    AppScreen.ordenes_pagadas_partidas: OrdenesPagadasPartidas()
   };
   // Cambia la pantalla de forma segura
   void goToScreen(AppScreen screen) {
@@ -54,6 +56,7 @@ class ControllerUser extends GetxController {
     "ORDENES PAGADAS",
     "ORDENES PENDIENTES",
     "DOLARES A BOLIVARES",
+    "ORDENES PAGADAS POR PARTIDAS"
   ].obs;
 
 

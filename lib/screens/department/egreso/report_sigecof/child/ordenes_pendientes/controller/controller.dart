@@ -31,7 +31,7 @@ class EgresoPendienteController extends GetxController {
   var fechaDesde = DateTime.now().obs;
   var fechaHasta = DateTime.now().obs;
   var selected = ''.obs;
-  late List<dynamic> jsonDataAlmacenado;
+  List<dynamic> jsonDataAlmacenado=[];//late List<dynamic> jsonDataAlmacenado;
 
 
 
@@ -58,6 +58,7 @@ class EgresoPendienteController extends GetxController {
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
       final jsonData = await ServiceEgreso.post('api/query/pendientes', {}, queryParams: queryParams);
+      jsonDataAlmacenado = jsonData as List<dynamic>;
       final List<Pendiente> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => Pendiente.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();

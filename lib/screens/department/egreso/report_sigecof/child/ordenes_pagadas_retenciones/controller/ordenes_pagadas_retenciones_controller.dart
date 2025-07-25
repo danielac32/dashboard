@@ -40,7 +40,7 @@ class EgresoOrdenesPagadasRetencionesController extends GetxController {
   var fechaDesde = DateTime.now().obs;
   var fechaHasta = DateTime.now().obs;
   var selected = ''.obs;
-  late List<dynamic> jsonDataAlmacenado;
+  List<dynamic> jsonDataAlmacenado=[];
 
 
   @override
@@ -66,6 +66,7 @@ class EgresoOrdenesPagadasRetencionesController extends GetxController {
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
       final jsonData = await ServiceEgreso.post('api/query/pagadas-retenciones', {}, queryParams: queryParams);
+      jsonDataAlmacenado = jsonData; // Almacena los datos aquí jsonDataAlmacenado = jsonData as List<dynamic>;
       final List<PagoRetenciones> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => PagoRetenciones.fromJson(item)).toList();
       resultados(datosLista);
       updatePagination();
@@ -111,9 +112,9 @@ class EgresoOrdenesPagadasRetencionesController extends GetxController {
 
   Future<void> descargarReporte() async {
     cargando(true);
-
-    if (resultados.isEmpty) {
+    if (resultados.isEmpty || jsonDataAlmacenado == null) { // Verifica null
       SnackbarAlert.warning(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
+      cargando(false);
       return;
     }
     await Future.microtask(() {});

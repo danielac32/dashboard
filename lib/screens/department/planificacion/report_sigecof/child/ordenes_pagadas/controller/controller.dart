@@ -3,76 +3,52 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../../../../../infrastructure/shared/alert.dart';
 import '../../../service/service.dart';
-import '../../../shared/excel_export_service.dart';
-import '../model/pago.dart';
+
+import '../model/pagadas.dart';
 
 
 
-import 'package:excel/excel.dart';
 
-import 'package:file_saver/file_saver.dart'; // Para FileSaver
-import 'package:path_provider/path_provider.dart'; // Para getDownloadsDirectory
 import 'package:universal_html/html.dart' as html;
 
 
-
-
-class ReportsController extends GetxController {
-  final RxList<String> list = <String>[].obs;
-
-  /*Future<void> loadListReports() async {
-    try {
-      final jsonData = await PlanificacionService.get('api/query/available-reports');
-      final res = AvailableReports.fromJson(jsonData);
-      list.assignAll(res.availableReports ?? []);
-    } catch (e) {
-      list.assignAll([]); // Asigna lista vacía en caso de error
-      print('Error loading reports: $e');
-    }
-  }*/
-
-  @override
-  Future<void> onInit() async {
-    //await loadListReports();
-    super.onInit();
-  }
-}
-
-class PagoController extends GetxController {
+class PagadasController extends GetxController {
   var filtro = ''.obs;
-  var datos = <Pago>[].obs;
-  var resultados = <Pago>[].obs;
+  var datos = <PagoPagadas>[].obs;
+  var resultados = <PagoPagadas>[].obs;
   var cargando = false.obs;
   final currentPage = 0.obs;
   final itemsPerPage = 20.obs;
-  final paginatedResults = <Pago>[].obs;
+  final paginatedResults = <PagoPagadas>[].obs;
   final horizontalScrollController = ScrollController();
   final verticalScrollController = ScrollController();
   var botonCargando = false.obs;
   var fechaDesde = DateTime.now().obs;
   var fechaHasta = DateTime.now().obs;
   var selected = ''.obs;
-  late List<dynamic> jsonDataAlmacenado;
+  List<dynamic> jsonDataAlmacenado=[];//late List<dynamic> jsonDataAlmacenado;
 
 
-
-
+  void clearValue(){
+    paginatedResults.clear();
+    resultados.clear();
+    jsonDataAlmacenado.clear();
+  }
   @override
   void onInit() {
-
+    clearValue();
     super.onInit();
   }
 
   @override
   void onClose() {
+    clearValue();
     horizontalScrollController.dispose();
     verticalScrollController.dispose();
     super.onClose();
@@ -87,9 +63,11 @@ class PagoController extends GetxController {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
         'hasta': DateFormat('dd/MM/yyyy').format(hasta),
       };
-      final jsonData = await ServicePlanificacion.post('api/query/pagadas', {}, queryParams: queryParams);
-      final List<Pago> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => Pago.fromJson(item)).toList();
+      final jsonData = await ServicePlanificacion.post('api/query/pagadas2', {}, queryParams: queryParams);
+      jsonDataAlmacenado = jsonData as List<dynamic>;
+      final List<PagoPagadas> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => PagoPagadas.fromJson(item)).toList();
       resultados(datosLista);
+      //print(resultados);
       updatePagination();
     } catch (e) {
       print('Error: $e');
@@ -110,41 +88,6 @@ class PagoController extends GetxController {
 
 
 
-  void aplicarFiltro(String nuevoFiltro) async {
-    cargando(true);
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    filtro(nuevoFiltro);
-    List<Pago> resultadosFiltrados = [];
-
-    if (nuevoFiltro.isEmpty) {
-      resultadosFiltrados = datos;
-    } else {
-      switch (nuevoFiltro.toLowerCase()) {
-        case 'pendientes':
-          resultadosFiltrados = datos.where((p) => p.estado.toString().toLowerCase().contains('pendiente')).toList();
-          break;
-        case 'pagadas':
-          resultadosFiltrados = datos.where((p) => p.estado.toString().toLowerCase().contains('pagada')).toList();
-          break;
-        case 'retenciones':
-          resultadosFiltrados = datos.where((p) => p.monto > 1000).toList();
-          break;
-        default:
-        // Búsqueda flexible si no coincide con los casos anteriores
-          resultadosFiltrados = datos.where((p) =>
-          p.organismo.toLowerCase().contains(nuevoFiltro.toLowerCase()) ||
-              p.beneficiario.toLowerCase().contains(nuevoFiltro.toLowerCase()) ||
-              p.observacion.toLowerCase().contains(nuevoFiltro.toLowerCase())
-          ).toList();
-      }
-    }
-
-    resultados(resultadosFiltrados);
-    currentPage(0);
-    updatePagination();
-    cargando(false);
-  }
 
   void updatePagination() {
     final startIndex = currentPage.value * itemsPerPage.value;
@@ -184,7 +127,7 @@ class PagoController extends GetxController {
 
 
       // Nombre del archivo
-      final fileName = 'reporte_bcv_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      final fileName = 'ordenes_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
 
       // Escuchar respuesta del worker
       worker.onMessage.listen((event) {

@@ -40,7 +40,7 @@ class EgresoPagoController extends GetxController {
   var fechaDesde = DateTime.now().obs;
   var fechaHasta = DateTime.now().obs;
   var selected = ''.obs;
-  late List<dynamic> jsonDataAlmacenado;
+  List<dynamic> jsonDataAlmacenado=[];//late List<dynamic> jsonDataAlmacenado;
 
 
 
