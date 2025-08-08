@@ -73,17 +73,17 @@ ResumenOrganismoPartida(
   factory ResumenOrganismoPartida.fromJson(Map<String, dynamic> json) {
     return ResumenOrganismoPartida(
       organismo: json['organismo'] as String,
-      partida401: json['partida401'] as double?,
-      partida402: json['partida402'] as double?,
-      partida403: json['partida403'] as double?,
-      partida404: json['partida404'] as double?,
-      partida405: json['partida405'] as double?,
-      partida406: json['partida406'] as double?,
-      partida407: json['partida407'] as double?,
-      partida408: json['partida408'] as double?,
-      partida409: json['partida409'] as double?,
-      partida410: json['partida410'] as double?,
-      partida411: json['partida411'] as double?,
+      partida401: (json['partida401'] as double?)?.toDouble() ?? 0.0,
+      partida402: (json['partida402'] as double?)?.toDouble() ?? 0.0,
+      partida403: (json['partida403'] as double?)?.toDouble() ?? 0.0,
+      partida404: (json['partida404'] as double?)?.toDouble() ?? 0.0,
+      partida405: (json['partida405'] as double?)?.toDouble() ?? 0.0,
+      partida406: (json['partida406'] as double?)?.toDouble() ?? 0.0,
+      partida407: (json['partida407'] as double?)?.toDouble() ?? 0.0,
+      partida408: (json['partida408'] as double?)?.toDouble() ?? 0.0,
+      partida409: (json['partida409'] as double?)?.toDouble() ?? 0.0,
+      partida410: (json['partida410'] as double?)?.toDouble() ?? 0.0,
+      partida411: (json['partida411'] as double?)?.toDouble() ?? 0.0,
       total: json['total'] as double,
     );
   }

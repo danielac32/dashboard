@@ -1,6 +1,7 @@
 
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ class PagadasPartidasController extends GetxController {
   var selected = ''.obs;
   List<dynamic> jsonDataAlmacenado=[];//late List<dynamic> jsonDataAlmacenado;
   var res=[].obs;
+  late String jsonString;
+
 
   final Map<int, String> ministerios = {
      1:	'Asamblea Nacional',
@@ -114,6 +117,7 @@ class PagadasPartidasController extends GetxController {
 
   int get_alias_partida(int num){
     List<int> list = [401,402,403,404,405,406,407,408,409,410,411];
+    if(num==0) return -1;//este caso es si la partida viene nula
     for (int i=0;i<list.length;i++ ) {
       if(list[i]==num)return i;
     }
@@ -126,50 +130,51 @@ class PagadasPartidasController extends GetxController {
     List<double> partidas = List.filled(11, 0.0);
     List<ResumenOrganismoPartida> resumen=[];
 
-    for(var org in ministerios.entries) //recorrer los organismos
-    {
-      for (final pago in list) {
-        if (org.key == int.parse(pago.organismo)) {
-          int index = get_alias_partida(int.parse(pago.partida));
-          if (index != -1 && pago.montoNeto.isFinite) {
-            partidas[index] += pago.montoNeto;
-          }
-          count++;
-        }
-      }
 
-      if(count > 0){
-        //print('${org.value} - $count');
-        double total=0;
-        for (int i = 0; i < partidas.length; i++) {
+      for(var org in ministerios.entries) //recorrer los organismos
+          {
+        for (final pago in list) {
+          if (org.key == int.parse(pago.organismo)) {
+            int index = get_alias_partida(int.parse(pago.partida));
+            if (index != -1 && pago.montoNeto.isFinite) {
+              partidas[index] += pago.montoNeto;
+            }
+            count++;
+          }
+        }
+
+        if(count > 0){
+          //print('${org.value} - $count');
+          double total=0;
+          for (int i = 0; i < partidas.length; i++) {
             //if(partidas[i] > 0) print('Partida ${400 + i*1}: ${partidas[i]}');
-          if (partidas[i].isFinite) {
-            total += partidas[i];
+            if (partidas[i].isFinite) {
+              total += partidas[i];
+            }
           }
-        }
 
-        final orga=ResumenOrganismoPartida( organismo: org.key.toString(),
-                                            partida401: partidas[0].isFinite ? partidas[0] : 0.0,
-                                            partida402: partidas[1].isFinite ? partidas[1] : 0.0,
-                                            partida403: partidas[2].isFinite ? partidas[2] : 0.0,
-                                            partida404: partidas[3].isFinite ? partidas[3] : 0.0,
-                                            partida405: partidas[4].isFinite ? partidas[4] : 0.0,
-                                            partida406: partidas[5].isFinite ? partidas[5] : 0.0,
-                                            partida407: partidas[6].isFinite ? partidas[6] : 0.0,
-                                            partida408: partidas[7].isFinite ? partidas[7] : 0.0,
-                                            partida409: partidas[8].isFinite ? partidas[8] : 0.0,
-                                            partida410: partidas[9].isFinite ? partidas[9] : 0.0,
-                                            partida411: partidas[10].isFinite ? partidas[10] : 0.0,
-                                            total: total.isFinite ? total : 0.0);
-        resumen.add(orga);
-      }
-      //borrar variables
-      for(int i = 0; i < partidas.length; i++) {
+          final orga=ResumenOrganismoPartida( organismo: org.key.toString(),
+              partida401: partidas[0].isFinite ? partidas[0] : 0.0,
+              partida402: partidas[1].isFinite ? partidas[1] : 0.0,
+              partida403: partidas[2].isFinite ? partidas[2] : 0.0,
+              partida404: partidas[3].isFinite ? partidas[3] : 0.0,
+              partida405: partidas[4].isFinite ? partidas[4] : 0.0,
+              partida406: partidas[5].isFinite ? partidas[5] : 0.0,
+              partida407: partidas[6].isFinite ? partidas[6] : 0.0,
+              partida408: partidas[7].isFinite ? partidas[7] : 0.0,
+              partida409: partidas[8].isFinite ? partidas[8] : 0.0,
+              partida410: partidas[9].isFinite ? partidas[9] : 0.0,
+              partida411: partidas[10].isFinite ? partidas[10] : 0.0,
+              total: total.isFinite ? total : 0.0);
+          resumen.add(orga);
+        }
+        //borrar variables
+        for(int i = 0; i < partidas.length; i++) {
           partidas[i] = 0.0;
+        }
+        count=0;
       }
-      count=0;
-    }
-    return resumen;
+      return resumen;
   }
 
 
@@ -184,12 +189,19 @@ class PagadasPartidasController extends GetxController {
       final jsonData = await ServicePlanificacion.post('api/query/pagadas2', {}, queryParams: queryParams);
       final List<PagoPagadas> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => PagoPagadas.fromJson(item)).toList();
 
+      /*datosLista.forEach((part){
+        print("-> $part");
+      });*/
       /*List<ResumenOrganismoPartida>*/
       res(process_pagadas_partidas(datosLista));
-      res.forEach((org) {
+      /*res.forEach((org) {
          print('-> $org');
-      });
+      });*/
 
+      final listaJson = res.map((item) => item.toJson()).toList();
+      jsonDataAlmacenado = listaJson;//final List<Map<String, dynamic>> listaJson = res.map((item) => item.toJson()).toList();
+      //jsonString = jsonEncode(listaJson);
+      //print(jsonString);
     } catch (e) {
       print('Error aqui: $e');
       res([]);
@@ -223,9 +235,8 @@ class PagadasPartidasController extends GetxController {
       final completer = Completer<void>();
       final worker = html.Worker('worker.js');
 
-
       // Nombre del archivo
-      final fileName = 'ordenes_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      final fileName = 'ordenes_pagadas_partidas${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
 
       // Escuchar respuesta del worker
       worker.onMessage.listen((event) {

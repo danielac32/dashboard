@@ -37,8 +37,7 @@ class GraficaController extends GetxController {
         direcciones.value = listaDirecciones;
 
         for (var dir in direcciones) {
-          final apiResponse =
-          await VotacionService.get("votacion/empleado/count/${dir.direccion}");
+          final apiResponse = await VotacionService.get("votacion/empleado/count/${dir.direccion}");
           if (apiResponse != null) {
             final resNum = VotoDireccion.fromJson(apiResponse);
             votosData.add(resNum);

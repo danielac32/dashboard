@@ -27,14 +27,14 @@ class PagoPagadas {
 
   factory PagoPagadas.fromJson(Map<String, dynamic> json) {
     return PagoPagadas(
-      montoNeto: (json['MONTO_NETO'] as num?)?.toDouble() ?? 0.0,
+      montoNeto: double.tryParse(json['MONTO_NETO'].toString()) ?? 0.0,//(json['MONTO_NETO'] as num?)?.toDouble() ?? 0.0,
       estado: (json['ESTADO'] as int?) ?? 0,
       moneda: (json['MONEDA'] as String?) ?? "-",
       orden: (json['ORDEN'] as int?) ?? 0,
       presupuesto: (json['PRESUPUESTO'] as int?) ?? 0,
       lugar: (json['LUGAR'] as String?) ?? "-",
       fechaPago: (json['FECHA_PAGO'] as String?) ?? "-",
-      partida: (json['PARTIDA'] as String?) ?? "-",
+      partida: (json['PARTIDA'] as String?) ?? "0",//este caso es si la partida viene nula
       observacion: (json['OBSERVACION'] as String?) ?? "-",
       organismo: (json['ORGANISMO'] as String?) ?? "-",
       beneficiario: (json['BENEFICIARIO'] as String?) ?? "-",
@@ -55,5 +55,10 @@ class PagoPagadas {
       'ORGANISMO': organismo,
       'BENEFICIARIO': beneficiario,
     };
+  }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "$organismo - $partida - $montoNeto";
   }
 }

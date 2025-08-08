@@ -93,10 +93,7 @@ class OrdenesPagadas extends StatelessWidget {
 
                 if (controller.resultados.isEmpty) {
                   return Center(
-                    child: Text(
-                      controller.filtro.value.isEmpty
-                          ? "Seleccione una opción"
-                          : "No hay registros para mostrar",
+                    child: Text( "No hay registros para mostrar",
                       style: const TextStyle(color: Colors.grey, fontSize: 16),
                     ),
                   );

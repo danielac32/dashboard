@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/config/theme/app_theme.dart';
 import '../controller/busqueda_controller.dart';
 import '../interface/empleado.dart';
 
@@ -40,7 +41,7 @@ class BuscarEmpleadoTab extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Cédula,Nombre..',
                         labelText: 'Buscar',
-                        labelStyle: const TextStyle(fontSize: 14),
+                        labelStyle: const TextStyle(fontSize: 14,color: Colors.black),
                         prefixIcon: Icon(Icons.badge, size: 16, color: Colors.teal),
                         border: InputBorder.none,
                         isDense: true,
@@ -55,17 +56,20 @@ class BuscarEmpleadoTab extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back),
+
+                          icon: Icon(Icons.arrow_back,
+                              color: controller.currentPage.value > 1 ? Colors.black : Colors.transparent,// Colors.black
+                          ),
                           onPressed: controller.currentPage.value > 1
                               ? () => controller.previousPage()
                               : null,
                         ),
                         Text(
                           'Página ${controller.currentPage.value}',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16,color: Colors.black),
                         ),
                         IconButton(
-                          icon: Icon(Icons.arrow_forward),
+                          icon: Icon(Icons.arrow_forward,color: Colors.black,),
                           onPressed: controller.currentPage.value * controller.pageSize <
                               controller.filteredEmpleados.length
                               ? () => controller.nextPage()
@@ -355,6 +359,7 @@ class EmployeCard extends StatelessWidget {
         );
       },
       child: Card(
+        color: AppTheme.ColorVotacion,//Color.fromARGB(200, 0, 124, 247),
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.only(bottom: 12),
@@ -368,15 +373,15 @@ class EmployeCard extends StatelessWidget {
               size: 14,
             ),
           ),
-          title: Text(empleado.nombre!),
+          title: Text(empleado.nombre!,style: TextStyle(color: AppTheme.ColorLetrasCard),),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Cédula: ${empleado.cedula}'),
+              Text('Cédula: ${empleado.cedula}',style: TextStyle(color: AppTheme.ColorLetrasCard)),
               if (empleado.direccion != null)
                 Text(
                   empleado.direccion!.direccion ?? '',
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12,color: AppTheme.ColorLetrasCard),
                   overflow: TextOverflow.ellipsis,
                 ),
             ],

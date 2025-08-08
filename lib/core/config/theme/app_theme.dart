@@ -25,7 +25,8 @@ class AppTheme {
 
 
   static const Color goldColor = Color.fromARGB(255, 174, 155, 61);
-
+  static const Color ColorVotacion = Color.fromARGB(255, 32, 125, 194);
+  static const Color ColorLetrasCard = Color.fromARGB(255, 255, 255, 255);
   ThemeData theme() {
     return ThemeData(
       useMaterial3: true,

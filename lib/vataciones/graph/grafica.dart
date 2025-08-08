@@ -19,7 +19,7 @@ class GraficaVotosTab extends StatelessWidget {
           // Título
           const Text(
             'Estadísticas de Votación',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold,color: Colors.black),
           ),
           const SizedBox(height: 10),
 
@@ -82,14 +82,18 @@ class GraficaVotosTab extends StatelessWidget {
                 children: [
                   // 1. Gráfica Circular
                   SfCircularChart(
-                    title: ChartTitle(text: 'Distribución de Votos por Dirección'),
-                    legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+                    //title: ChartTitle(text: 'Distribución de Votos por Dirección',textStyle: TextStyle(color: Colors.black)),
+                    legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap,textStyle: TextStyle(
+                      color: Colors.black, // Cambia este color según necesites
+                      //fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),),
                     series: <CircularSeries>[
                       PieSeries<VotoDireccion, String>(
                         dataSource: controller.votosData,
                         xValueMapper: (VotoDireccion data, _) => data.nombre,
                         yValueMapper: (VotoDireccion data, _) => data.votos,
-                        dataLabelSettings: const DataLabelSettings(isVisible: true),
+                        dataLabelSettings: const DataLabelSettings(isVisible: true,textStyle: TextStyle(color: Colors.black,fontSize: 14)),
                         enableTooltip: true,
                       )
                     ],
@@ -97,37 +101,72 @@ class GraficaVotosTab extends StatelessWidget {
 
                   // 2. Gráfica de Barras
                   SfCartesianChart(
-                    title: ChartTitle(text: 'Votos por Dirección General'),
-                    primaryXAxis: CategoryAxis(),
-                    primaryYAxis: NumericAxis(minimum: 0, maximum: 60, interval: 10),
-                    legend: Legend(isVisible: true),
+                   // title: ChartTitle(text: 'Votos por Dirección General'),
+
+
+                    primaryXAxis: CategoryAxis(
+                      axisLine: AxisLine(color: Colors.black), // Color del eje X
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black), // Color de las etiquetas del eje X
+                    ),
+                    primaryYAxis: NumericAxis(
+                      minimum: 0,
+                      maximum: 60,
+                      interval: 10,
+                      axisLine: AxisLine(color: Colors.black), // Color del eje Y
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black), // Color de las etiquetas del eje Y
+                    ),
+                    legend: Legend(
+                      isVisible: true,
+                      textStyle: TextStyle(
+                        color: Colors.black, // Color del texto de la leyenda
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     tooltipBehavior: TooltipBehavior(enable: true),
                     series: <BarSeries<VotoDireccion, String>>[
                       BarSeries<VotoDireccion, String>(
-                        name: 'Votos',
+                        //name: 'Votos',
                         dataSource: controller.votosData,
                         xValueMapper: (VotoDireccion data, _) => data.nombre,
                         yValueMapper: (VotoDireccion data, _) => data.votos,
-                        dataLabelSettings: const DataLabelSettings(isVisible: true),
+                        dataLabelSettings: const DataLabelSettings(isVisible: true,textStyle: TextStyle(color: Colors.black,fontSize: 14)),
                       ),
                     ],
                   ),
 
                   // 3. Gráfica de Líneas
                   SfCartesianChart(
-                    title: ChartTitle(text: 'Evolución de Votos por Dirección'),
-                    primaryXAxis: CategoryAxis(),
-                    primaryYAxis: NumericAxis(minimum: 0, maximum: 60, interval: 10),
-                    legend: Legend(isVisible: true),
+                    //title: ChartTitle(text: 'Evolución de Votos por Dirección'),
+                    primaryXAxis: CategoryAxis(
+                      axisLine: AxisLine(color: Colors.black), // Color del eje X
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black), // Color de las etiquetas del eje X
+                    ),
+                    primaryYAxis: NumericAxis(
+                      minimum: 0,
+                      maximum: 60,
+                      interval: 10,
+                      axisLine: AxisLine(color: Colors.black), // Color del eje Y
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.black), // Color de las etiquetas del eje Y
+                    ),
+                    legend: Legend(
+                      isVisible: true,
+                      textStyle: TextStyle(
+                        color: Colors.black, // Color del texto de la leyenda
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     tooltipBehavior: TooltipBehavior(enable: true),
                     series: <LineSeries<VotoDireccion, String>>[
                       LineSeries<VotoDireccion, String>(
-                        name: 'Votos',
+                        //name: 'Votos',
                         dataSource: controller.votosData,
                         xValueMapper: (VotoDireccion data, _) => data.nombre,
                         yValueMapper: (VotoDireccion data, _) => data.votos,
                         markerSettings: const MarkerSettings(isVisible: true),
                         enableTooltip: true,
+                        dataLabelSettings: const DataLabelSettings(isVisible: true,textStyle: TextStyle(color: Colors.black,fontSize: 14)),
                       ),
                     ],
                   ),

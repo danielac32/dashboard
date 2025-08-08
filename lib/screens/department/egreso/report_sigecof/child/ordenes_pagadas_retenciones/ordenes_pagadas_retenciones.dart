@@ -91,16 +91,13 @@ class OrdenesPagadasRetenciones extends StatelessWidget {
                    return const Center(child: CircularProgressIndicator());
                  }
 
-                 if (controller.resultados.isEmpty) {
-                   return Center(
-                     child: Text(
-                       controller.filtro.value.isEmpty
-                           ? "Seleccione una opción"
-                           : "No hay registros para mostrar",
-                       style: const TextStyle(color: Colors.grey, fontSize: 16),
-                     ),
-                   );
-                 }
+                if (controller.resultados.isEmpty) {
+                  return Center(
+                    child: Text( "No hay registros para mostrar",
+                      style: const TextStyle(color: Colors.grey, fontSize: 16),
+                    ),
+                  );
+                }
 
                  return SingleChildScrollView(
                    //controller: controller.horizontalScrollController,

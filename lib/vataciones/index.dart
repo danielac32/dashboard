@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:get/get.dart';
 
+import '../core/config/theme/app_theme.dart';
 import 'controller/busqueda_controller.dart';
 import 'graph/grafica.dart';
 import 'interface/empleado.dart';
@@ -39,11 +40,11 @@ class Index extends StatelessWidget {
               Obx(() => _buildCircularStatCard(
                 'Total',
                 controller.total.value,
-                Colors.blue,Icons.group,
+                Colors.yellowAccent/*Colors.blue*/,Icons.group,
               )),
             ],
           ),
-          backgroundColor: Color.fromARGB(200, 50, 50, 50), // Gris muy claro
+          backgroundColor: AppTheme.ColorVotacion,//Color.fromARGB(200, 0, 124, 247), // Gris muy claro
           bottom: TabBar(
             indicatorColor: Colors.white,
             labelColor: Colors.white,
@@ -56,7 +57,7 @@ class Index extends StatelessWidget {
         ),
         body: Container(
           padding: const EdgeInsets.all(16),
-          color: const Color(0xFFFAFAFA), // Fondo claro general
+          color: Color.fromARGB(255, 188, 218, 240),//const Color(0xFFFAFAFA), // Fondo claro general
           child: TabBarView(
             children: [
               BuscarEmpleadoTab(),
