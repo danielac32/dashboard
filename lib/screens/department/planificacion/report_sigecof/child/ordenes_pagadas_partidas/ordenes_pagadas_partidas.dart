@@ -135,43 +135,75 @@ class OrdenesPagadasPartidas extends StatelessWidget {
                                   DataColumn(label: Text("411", style: TextStyle(color: Colors.black))),
                                   DataColumn(label: Text("total", style: TextStyle(color: Colors.black))),
                                 ],
-                                rows: (controller.res ?? []).map((resumen) {
-                                  // Manejo seguro de propiedades null
-                                  return DataRow(
-                                    cells: [
-                                      //DataCell(Text(resumen.organismo, style: TextStyle(color: Colors.black))),
-                                      DataCell(
-                                        ConstrainedBox(
-                                          constraints: BoxConstraints(
-                                            maxWidth: MediaQuery.of(context).size.width * 0.3,
-                                          ),
-                                          child: Tooltip(
-                                            message: resumen.organismo,
-                                            child: Text(
-                                              resumen.organismo.length > 20
-                                                  ? '${resumen.organismo.substring(0, 20)}...'
-                                                  : resumen.organismo,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(color: Colors.black),
+                                rows: [
+                                  // Filas de datos (cada organismo)
+                                  ...controller.res.map((resumen) {
+                                    return DataRow(
+                                      cells: [
+                                        DataCell(
+                                          ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context).size.width * 0.3,
+                                            ),
+                                            child: Tooltip(
+                                              message: resumen.organismo,
+                                              child: Text(
+                                                resumen.organismo.length > 20
+                                                    ? '${resumen.organismo.substring(0, 20)}...'
+                                                    : resumen.organismo,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(color: Colors.black),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      DataCell(Text(resumen.partida401.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida402.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida403.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida404.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida405.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida406.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida407.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida408.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida409.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida410.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.partida411.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(resumen.total.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                    ],
-                                  );
-                                }).toList(),
+                                        DataCell(Text(resumen.partida401.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida402.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida403.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida404.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida405.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida406.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida407.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida408.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida409.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida410.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.partida411.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                        DataCell(Text(resumen.total.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
+                                      ],
+                                    );
+                                  }).toList(),
+
+                                  // 2. Fila de total general (solo si hay datos)
+                                  if (controller.res.isNotEmpty)
+                                    DataRow(
+                                      color: MaterialStateProperty.all(Colors.yellow[100]!),
+                                      cells: [
+                                        DataCell(
+                                          Text(
+                                            "Total General",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        // 11 celdas vacías para partidas 401 a 411
+                                        ...List.filled(11, DataCell(Text(" "))),
+                                        // Celda de total
+                                        DataCell(
+                                          Text(
+                                            "Bs ${controller.total_monto.value.toStringAsFixed(2)}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+
+
                               ),
                             ),
                           ),

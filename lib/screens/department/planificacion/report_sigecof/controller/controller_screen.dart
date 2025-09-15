@@ -9,6 +9,8 @@ import '../child/ordenes_bcv/ordenes_bcv.dart';
 import '../child/ordenes_pagadas/ordenes_pagadas.dart';
 import '../child/ordenes_pagadas_partidas/ordenes_pagadas_partidas.dart';
 import '../child/ordenes_pendientes/ordenes_pendientes.dart';
+import '../child/pagadas_resumen/model/resumen_model.dart';
+import '../child/pagadas_resumen/pagadas_resumen.dart';
 import '../constant/enum_screen_planificacion.dart';
 
 
@@ -22,7 +24,8 @@ class ControllerScreenPlanificacion extends GetxController {
     AppScreen.dolares_a_blivares: DolaresBolivares(),
     AppScreen.ordenes_pendientes: OrdenesPendientes(),
     AppScreen.ordenes_trasmitidas_bcv: OrdenesBcv(),//ordenes_bcv
-    AppScreen.ordenes_pagadas_partidas: OrdenesPagadasPartidas()
+    AppScreen.ordenes_pagadas_partidas: OrdenesPagadasPartidas(),
+    AppScreen.pagadas_resumen:ResumenPagadas()
   };
   // Cambia la pantalla de forma segura
   void goToScreen(AppScreen screen) {
@@ -41,6 +44,7 @@ class ControllerScreenPlanificacion extends GetxController {
       final res = await ServicePlanificacion.get("api/query/connection");
       hasConnection.value = res['status'] ?? false;
     } catch (e) {
+      print("no se pudo conectar");
       hasConnection.value = false;
     }
     super.onInit();
@@ -56,7 +60,8 @@ class ControllerUser extends GetxController {
     "ORDENES PAGADAS",
     "ORDENES PENDIENTES",
     "DOLARES A BOLIVARES",
-    "ORDENES PAGADAS POR PARTIDAS"
+    "ORDENES PAGADAS POR PARTIDAS",
+    "PAGADAS RESUMEN"
   ].obs;
 
 

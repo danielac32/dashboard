@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../child/detalles_pendientes/detalles_pendientes.dart';
 import '../child/home/home.dart';
 import '../child/ordenes_pagadas/ordenes_pagadas.dart';
 import '../child/ordenes_pagadas_retenciones/ordenes_pagadas_retenciones.dart';
@@ -27,6 +28,7 @@ class ControllerScreenEgreso extends GetxController {
     AppScreen.ordenes_pagadas_retenciones: OrdenesPagadasRetenciones(),
     AppScreen.ordenes_pendientes: OrdenesPendientes(),
     AppScreen.retenciones_partidas:RetencionesPartidas(),
+    AppScreen.detalles_pendientes:DetallesPendientes()
   };
   // Cambia la pantalla de forma segura
   void goToScreen(AppScreen screen) {
@@ -61,7 +63,8 @@ class ControllerUser extends GetxController {
     "ORDENES PAGADAS",
     "ORDENES PENDIENTES",
     "ORDENES PAGADAS RETENCIONES",
-    "RETENCIONES POR PARTIDAS"
+    "RETENCIONES POR PARTIDAS",
+    "DETALLES PENDIENTES"
   ].obs;
 
 

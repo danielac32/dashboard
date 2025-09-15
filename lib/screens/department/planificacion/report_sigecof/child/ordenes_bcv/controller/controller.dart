@@ -64,7 +64,7 @@ class BCVController extends GetxController {
       resultados(datosLista);
       updatePagination();
     } catch (e) {
-      print('Error: $e');
+      SnackbarAlert.error(message: "error mientras se cargaba la lista",durationSeconds: 5);
       resultados([]);
     }
     cargando(false);

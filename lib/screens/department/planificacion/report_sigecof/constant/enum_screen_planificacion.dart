@@ -6,6 +6,7 @@ enum AppScreen {
   ordenes_pagadas,
   ordenes_pendientes,
   dolares_a_blivares,
-  ordenes_pagadas_partidas
+  ordenes_pagadas_partidas,
+  pagadas_resumen
 }
 

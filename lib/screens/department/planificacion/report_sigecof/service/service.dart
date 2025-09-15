@@ -68,15 +68,16 @@ class ServicePlanificacion {
         url,
         headers: await _getHeaders(),
       );
-      return Handle.Response(response);//return _handleResponse(response);
+      return _handleResponse(response);
     } catch (e) {
-      throw e;//throw Exception('Error de red: $e');
+      print("error aqui");
+      throw Exception('Error de red: $e');
     }*/
     return await ErrorExceptions.handleRequest(() async {
       final response = await http.get(
         url,
         headers: {'Content-Type': 'application/json'},
-      );//.timeout(const Duration(seconds: 30));
+      ).timeout(const Duration(seconds: 30));
 
       return Handle.Response(response);
     });

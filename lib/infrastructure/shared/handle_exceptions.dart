@@ -40,7 +40,8 @@ class ErrorExceptions {
 
 class ErrorExceptions {
   static Future<T> handleRequest<T>(Future<T> Function() request) async {
-    try {
+    return await request();
+    /*try {
       return await request();
     } on http.ClientException catch (e) {
       return _handleError(
@@ -66,7 +67,7 @@ class ErrorExceptions {
         errorMessage: 'Error: ${e.toString()}',
         snackbarMessage: 'Error inesperado',
       );
-    }
+    }*/
   }
 
   static Future<T> _handleError<T>({
@@ -74,7 +75,7 @@ class ErrorExceptions {
     required String errorMessage,
     required String snackbarMessage,
   }) async {
-    Get.find<LoginController>().logout();
+    //Get.find<LoginController>().logout();
     _showError(snackbarMessage);
     throw Exception(errorMessage);
   }

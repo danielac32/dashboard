@@ -137,6 +137,7 @@ class LoginController extends GetxController {
       final userDepartment = apiResponse.user!.department;
 
       SnackbarAlert.success(message: "Iniciando ...");
+      //print(userDepartment);
       if(userRole == Role.SUPER_ADMIN.label){
         Get.offNamed(AppRoutes.dashboardSuperAdmin, arguments: { 'user': apiResponse.user});
       } else {

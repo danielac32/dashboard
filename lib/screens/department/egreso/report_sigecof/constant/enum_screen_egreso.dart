@@ -4,5 +4,6 @@ enum AppScreen {
   ordenes_pagadas,
   ordenes_pendientes,
   ordenes_pagadas_retenciones,
-  retenciones_partidas
+  retenciones_partidas,
+  detalles_pendientes
 }

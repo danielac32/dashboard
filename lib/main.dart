@@ -1,5 +1,6 @@
 import 'package:core_system/screens/auth/controller/login_controller.dart';
 import 'package:core_system/screens/auth/login.dart';
+import 'package:core_system/screens/department/cuenta_unica/report_sigecof/shared/controller_shared.dart';
 import 'package:core_system/screens/department/egreso/report_sigecof/shared/controller_shared.dart';
 import 'package:core_system/screens/department/planificacion/report_sigecof/shared/controller_shared.dart';
 import 'package:flutter/foundation.dart';
@@ -23,17 +24,30 @@ Future<void> main() async {
   //AppStrings.urlApiSigecof=config['api_sigecof'];// carga la url de la api de oracle en java
 
 
-
+/*
   if (kIsWeb) {
-    AppStrings.urlApi = 'http://10.78.30.46:8070';
-    AppStrings.urlApiSigecof = 'http://10.78.30.46:7000';
+    //AppStrings.urlApi = 'http://localhost:5288';
+    //AppStrings.urlApiSigecof = 'http://localhost:5288';
+    AppStrings.urlApi = 'http://10.78.30.46:5288';
+    AppStrings.urlApiSigecof = 'http://10.78.30.46:5288';
+
   } else {
     //await GetStorage.init();
     //LocalStorage.saveStatus(false);
     //final config = await ConfigLoader.loadConfig();
-    AppStrings.urlApi = config['api_url'];
-    AppStrings.urlApiSigecof = config['api_sigecof'];
-  }
+    AppStrings.urlApi = 'http://10.78.30.46:5288';
+    AppStrings.urlApiSigecof = 'http://10.78.30.46:5288';
+
+    //AppStrings.urlApi = config['api_url'];
+    //AppStrings.urlApiSigecof = config['api_sigecof'];
+  }*/
+
+  //AppStrings.urlApi = 'http://localhost:5288';
+  //AppStrings.urlApiSigecof = 'http://localhost:5288';
+
+  AppStrings.urlApi = 'http://10.78.30.46:5288';
+  AppStrings.urlApiSigecof = 'http://10.78.30.46:5288';
+
 
   print( "${AppStrings.urlApi} - ${AppStrings.urlApiSigecof}");
 
@@ -44,6 +58,7 @@ Future<void> main() async {
    */
   Get.put(SharedController());//planificacion
   Get.put(SharedEgresoController());
+  Get.put(SharedCuentaUnicaController());
   Get.put(LoginController());//para llamar a logout en todos lados
   runApp(const MyApp());
 }

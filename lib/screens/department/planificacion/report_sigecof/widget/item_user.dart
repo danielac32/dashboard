@@ -29,7 +29,7 @@ class ItemsUser extends StatelessWidget {
           onTap: () {
             //menuControllerScreen.currentIndex(1);
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.ordenes_trasmitidas_bcv);
-            Get.find<SharedController>().addTitle.value = "- Ordenes Transmitidas BCV";
+            Get.find<SharedController>().addTitle.value = "- ${controller.sections[0]}";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -38,7 +38,7 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.ordenes_pagadas);
-            Get.find<SharedController>().addTitle.value = "- Ordenes Pagadas";
+            Get.find<SharedController>().addTitle.value = "- ${controller.sections[1]}";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -47,7 +47,7 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.ordenes_pendientes);
-            Get.find<SharedController>().addTitle.value = "- Ordenes Pendientes";
+            Get.find<SharedController>().addTitle.value = "- ${controller.sections[2]}";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -56,16 +56,25 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.dolares_a_blivares);
-            Get.find<SharedController>().addTitle.value = "- Ordenes Dolares a Bolivares";
+            Get.find<SharedController>().addTitle.value = "- ${controller.sections[3]}";
             Get.back(); // Cierra el Drawer
           },
         ),
-        ListTile(
+        /*ListTile(
           title: Text(controller.sections[4]),
           leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
             Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.ordenes_pagadas_partidas);
             Get.find<SharedController>().addTitle.value = "- Ordenes Pagadas por Partidas";
+            Get.back(); // Cierra el Drawer
+          },
+        ),*/
+        ListTile(
+          title: Text(controller.sections[5]),
+          leading: Icon(Icons.report, color: AppTheme.goldColor),
+          onTap: () {
+            Get.find<ControllerScreenPlanificacion>().goToScreen(AppScreen.pagadas_resumen);
+            Get.find<SharedController>().addTitle.value = "- ${controller.sections[5]}";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -77,7 +86,6 @@ class ItemsUser extends StatelessWidget {
             Get.back(); // Cierra el Drawer
           },
         ),*/
-
       ],
     );
   }

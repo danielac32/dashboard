@@ -1,5 +1,8 @@
 
 {
-  "api_url": "http://10.78.30.46:8070",
-  "api_sigecof": "http://10.78.30.46:7000"
+  "api_url": "http://localhost:5288",
+  "api_sigecof": "http://localhost:5288",
+
+  "api_url2": "http://10.78.30.46:8070",
+  "api_sigecof2": "http://10.78.30.46:7000"
 }

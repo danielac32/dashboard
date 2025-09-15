@@ -6,7 +6,7 @@ import 'package:excel/excel.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as html;
-
+/*
 class ExcelExportService {
   Future<void> exportToExcel({
     required String sheetName,
@@ -50,4 +50,4 @@ class ExcelExportService {
       Get.snackbar('Error', 'No se pudo generar el archivo Excel');
     }
   }
-}
+}*/

@@ -1,5 +1,7 @@
 
 
+import '../../core/utils/constants.dart';
+
 class DefaultUrl{
-  static const String avatarUrl='http://10.78.30.46:8070/avatar/';
+  static final String avatarUrl="${AppStrings.urlApi}/user/avatar/";//'http://localhost:5288/user/avatar/';
 }

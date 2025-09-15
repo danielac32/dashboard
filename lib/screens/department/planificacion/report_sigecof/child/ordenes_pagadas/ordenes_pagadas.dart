@@ -121,40 +121,44 @@ class OrdenesPagadas extends StatelessWidget {
                               columns: const [
                                 DataColumn(label: Text("Monto", style: TextStyle(color: Colors.black))),
                                 DataColumn(label: Text("Estado", style: TextStyle(color: Colors.black))),
-                                DataColumn(label: Text("Moneda", style: TextStyle(color: Colors.black))),
                                 DataColumn(label: Text("Orden", style: TextStyle(color: Colors.black))),
-                                DataColumn(label: Text("Presupuesto", style: TextStyle(color: Colors.black))),
-                                DataColumn(label: Text("Lugar", style: TextStyle(color: Colors.black))),
-                                DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Año", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Fuente", style: TextStyle(color: Colors.black))),
                                 DataColumn(label: Text("Partida", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Cuenta", style: TextStyle(color: Colors.black))),
                                 DataColumn(label: Text("Observación", style: TextStyle(color: Colors.black))),
                                 DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.black))),
                                 DataColumn(label: Text("Beneficiario", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Fecha Pago", style: TextStyle(color: Colors.black))),
+                                DataColumn(label: Text("Fondo", style: TextStyle(color: Colors.black))),
+
                               ],
                               rows: (controller.paginatedResults ?? []).map((pagadas) {
                                 // Manejo seguro de propiedades null
-                                final montoNeto = pagadas?.montoNeto?.toString() ?? "-";
+                                final monto = pagadas?.monto?.toString() ?? "-";
                                 final estado = pagadas?.estado?.toString() ?? "-";
-                                final moneda = pagadas?.moneda ?? "-";
                                 final orden = pagadas?.orden?.toString() ?? "-";
-                                final presupuesto = pagadas?.presupuesto?.toString() ?? "-";
-                                final lugar = pagadas?.lugar ?? "-";
-                                final fecha = controller.formatDate(pagadas?.fechaPago) ?? "-";
+                                final anho = pagadas?.anho?.toString() ?? "-";
+                                final fuente = pagadas?.fuente?.toString() ?? "-";
                                 final partida = pagadas?.partida ?? "-";
+                                final cuenta = pagadas?.cuenta ?? "-";
                                 final observacion = pagadas?.observacion ?? "-";
                                 final organismo = pagadas?.organismo ?? "-";
                                 final beneficiario = pagadas?.beneficiario ?? "-";
+                                final fecha = controller.formatDate(pagadas?.fechaPago) ?? "-";
+                                final fondo = pagadas?.fondo ?? "-";
+
+
 
                                 return DataRow(
                                   cells: [
-                                    DataCell(Text(montoNeto, style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(monto, style: TextStyle(color: Colors.black))),
                                     DataCell(Text(estado, style: TextStyle(color: Colors.black))),
-                                    DataCell(Text(moneda, style: TextStyle(color: Colors.black))),
                                     DataCell(Text(orden, style: TextStyle(color: Colors.black))),
-                                    DataCell(Text(presupuesto, style: TextStyle(color: Colors.black))),
-                                    DataCell(Text(lugar, style: TextStyle(color: Colors.black))),
-                                    DataCell(Text(fecha, style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(anho, style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(fuente, style: TextStyle(color: Colors.black))),
                                     DataCell(Text(partida, style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(cuenta, style: TextStyle(color: Colors.black))),
                                     DataCell(
                                       ConstrainedBox(
                                         constraints: BoxConstraints(
@@ -190,6 +194,8 @@ class OrdenesPagadas extends StatelessWidget {
                                       ),
                                     ),
                                     DataCell(Text(beneficiario, style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(fecha, style: TextStyle(color: Colors.black))),
+                                    DataCell(Text(fondo, style: TextStyle(color: Colors.black))),
                                   ],
                                 );
                               }).toList(),

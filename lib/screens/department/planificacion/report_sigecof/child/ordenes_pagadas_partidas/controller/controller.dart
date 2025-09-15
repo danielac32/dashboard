@@ -34,6 +34,8 @@ class PagadasPartidasController extends GetxController {
   late String jsonString;
 
 
+  var total_monto = 0.0.obs;
+
   final Map<int, String> ministerios = {
      1:	'Asamblea Nacional',
      2:	'Contraloría General de la República',
@@ -129,15 +131,18 @@ class PagadasPartidasController extends GetxController {
     int count=0;
     List<double> partidas = List.filled(11, 0.0);
     List<ResumenOrganismoPartida> resumen=[];
+    total_monto.value = 0.0;
 
 
+    double total=0;
       for(var org in ministerios.entries) //recorrer los organismos
-          {
+        {
         for (final pago in list) {
-          if (org.key == int.parse(pago.organismo)) {
+          if (org.key == int.parse(pago.organismoId)) {
+        //  if (org.key ==  int.tryParse(pago.organismo.split(' - ').first ?? '')) {
             int index = get_alias_partida(int.parse(pago.partida));
-            if (index != -1 && pago.montoNeto.isFinite) {
-              partidas[index] += pago.montoNeto;
+            if (index != -1 && pago.monto.isFinite) {
+              partidas[index] += pago.monto;
             }
             count++;
           }
@@ -145,7 +150,7 @@ class PagadasPartidasController extends GetxController {
 
         if(count > 0){
           //print('${org.value} - $count');
-          double total=0;
+          total=0;// este total es de la suma de las partidas
           for (int i = 0; i < partidas.length; i++) {
             //if(partidas[i] > 0) print('Partida ${400 + i*1}: ${partidas[i]}');
             if (partidas[i].isFinite) {
@@ -168,6 +173,7 @@ class PagadasPartidasController extends GetxController {
               total: total.isFinite ? total : 0.0);
           resumen.add(orga);
         }
+        total_monto.value += total;
         //borrar variables
         for(int i = 0; i < partidas.length; i++) {
           partidas[i] = 0.0;
@@ -203,7 +209,7 @@ class PagadasPartidasController extends GetxController {
       //jsonString = jsonEncode(listaJson);
       //print(jsonString);
     } catch (e) {
-      print('Error aqui: $e');
+      SnackbarAlert.error(message: "error mientras se cargaba la lista",durationSeconds: 5);
       res([]);
     }
     cargando(false);

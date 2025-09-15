@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../infrastructure/entities/user_response.dart';
+import '../../../../../infrastructure/shared/constants.dart';
 import 'controller/user_list_controller.dart';
 
 
@@ -177,7 +178,7 @@ void ShowUserDetails(BuildContext context,User user) {
             Center(
               child: CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage('http://localhost:8080/avatar'),
+                backgroundImage: NetworkImage(DefaultUrl.avatarUrl),
               ),
             ),
             const SizedBox(height: 10),

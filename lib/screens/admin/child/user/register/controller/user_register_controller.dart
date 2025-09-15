@@ -260,8 +260,8 @@ class UserRegisterController extends GetxController {
         colorText: Colors.white,
         icon: Icon(Icons.person_off, color: Colors.white),
       );*/
-      SnackbarAlert.error(title: "Error!", message: 'Error al registrar', durationSeconds: 3);
-      throw Exception('Error de red: $e');
+      //SnackbarAlert.error(title: "Error!", message: 'Error al registrar', durationSeconds: 3);
+      //throw Exception('Error de red: $e');
     }
   }
 

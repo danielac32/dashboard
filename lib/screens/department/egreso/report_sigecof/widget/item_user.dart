@@ -31,7 +31,7 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
             Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.ordenes_pagadas);
-            Get.find<SharedEgresoController>().addTitle.value = "- Ordenes Pagadas";
+            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[0]}";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -40,7 +40,7 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
             Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.ordenes_pendientes);
-            Get.find<SharedEgresoController>().addTitle.value = "- Ordenes Pendientes";
+            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[1]}";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -49,7 +49,7 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
             Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.ordenes_pagadas_retenciones);
-            Get.find<SharedEgresoController>().addTitle.value = "- Ordenes Pagadas con Retenciones";
+            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[2]}";
             Get.back(); // Cierra el Drawer
           },
         ),
@@ -58,19 +58,19 @@ class ItemsUser extends StatelessWidget {
           leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
             Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.retenciones_partidas);
-            Get.find<SharedEgresoController>().addTitle.value = "- Retenciones por Partidas";
+            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[3]}";
             Get.back(); // Cierra el Drawer
           },
         ),
-        /*ListTile(
-          title: Text('Permisos'),
-          leading: Icon(Icons.lock, color: colors.primary),
+        ListTile(
+          title: Text(controller.sections[4]),
+          leading: Icon(Icons.report, color: AppTheme.goldColor),
           onTap: () {
-            menuControllerScreen.currentIndex(3);
+            Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.detalles_pendientes);
+            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[4]}";
             Get.back(); // Cierra el Drawer
           },
-        ),*/
-
+        ),
       ],
     );
   }

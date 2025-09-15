@@ -17,7 +17,7 @@ class AvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundImage: NetworkImage("${AppStrings.urlApi}/avatar/"/*DefaultUrl.avatarUrl*/),//AssetImage('assets/1.jpeg'),
+      backgroundImage: NetworkImage("${AppStrings.urlApi}/user/avatar/"/*DefaultUrl.avatarUrl*/),//AssetImage('assets/1.jpeg'),
       radius: 30,
       backgroundColor: AppTheme.goldColor,
       //child: Icon(Icons.person, size: 40, color: colors.onSecondary),

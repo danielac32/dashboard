@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../infrastructure/shared/storage.dart';
 import '../../screens/admin/dashboard_admin.dart';
 import '../../screens/auth/login.dart';
+import '../../screens/department/cuenta_unica/CuentaUnica.dart';
 import '../../screens/department/egreso/egreso.dart';
 import '../../screens/department/planificacion/planificacion.dart';
 import '../../vataciones/index.dart';
@@ -56,7 +57,7 @@ class AppRoutes {
     GetPage(name: votacion, page: () => Index()),
     GetPage(name: dashboardPlanificacionAnalisisFinanciero, page: () => Planificacion(),middlewares: [AuthMiddleware()]),
     GetPage(name: dashboardEgreso, page: () => Egreso(),middlewares: [AuthMiddleware()]),
-
+    GetPage(name: dashboardCuentaUnica, page: () => CuentaUnica(),middlewares: [AuthMiddleware()]),
 
     //GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
     //GetPage(name: dashboardUser, page: () => DashboardUser()),

@@ -78,6 +78,7 @@ class CarruselController extends GetxController {
       } catch (e) {
         print("Error subiendo imagen: $e");
         Get.snackbar("Error", "Fallo al subir: ${image.name}");
+        return;
       }
     }
     await loadUploadedImages();

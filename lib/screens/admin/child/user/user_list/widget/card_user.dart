@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../infrastructure/entities/user_response.dart';
 //import '../../permisos/interface/permission.dart';
+import '../../../../../../infrastructure/shared/alert.dart';
 import '../../../../../../infrastructure/shared/constants.dart';
 import '../../permisos/permission.dart';
 import '../controller/user_list_controller.dart';
@@ -107,21 +108,23 @@ class CardWidgetUser extends StatelessWidget {
                                     );
 
                                     if (success == true) {
-                                      Get.snackbar(
+                                      SnackbarAlert.success(message: "Permisos actualizados correctamente");
+                                      /*Get.snackbar(
                                         'Éxito',
                                         'Permisos actualizados correctamente',
                                         snackPosition: SnackPosition.BOTTOM,
                                         duration: Duration(seconds: 2),
                                         backgroundColor: Colors.green[100],
-                                      );
+                                      );*/
                                     } else if (success == false) {
-                                      Get.snackbar(
+                                      SnackbarAlert.error(message: "No se pudieron actualizar todos los permisos");
+                                      /*Get.snackbar(
                                         'Error',
                                         'No se pudieron actualizar todos los permisos',
                                         snackPosition: SnackPosition.BOTTOM,
                                         duration: Duration(seconds: 3),
                                         backgroundColor: Colors.red[100],
-                                      );
+                                      );*/
                                     }
                                     /*final permissions = await Get.dialog<List<Permission>>(
                                       DialogAddPermission(id: user.id!),
