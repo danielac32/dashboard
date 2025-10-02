@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/theme/app_theme.dart';
+import '../../../../admin/controller/dashboard_menu.dart';
 import '../constant/enum_screen_cuenta_unica.dart';
 import '../controller/controller.dart';
 import '../shared/controller_shared.dart';
@@ -16,71 +17,41 @@ import '../shared/controller_shared.dart';
 
 class ItemsUser extends StatelessWidget {
   ItemsUser({super.key});
-  //final  menuControllerScreen = Get.find<MenuControllerScreen>();
-  final controller = Get.put(ControllerUser());
+
+  //final controller = Get.put(ControllerUser());
+  final screenController = Get.find<ControllerScreenCuentaUnica>();
+  // Mapa que relaciona cada sección con su pantalla correspondiente
+  final Map<int, AppScreen> _sectionScreens = {
+    0: AppScreen.comprobante_de_retenciones,
+    1: AppScreen.parafiscales_banavih,
+    2: AppScreen.parafiscales_inces,
+    3: AppScreen.parafiscales_ivss,
+    4: AppScreen.retenciones,
+    5: AppScreen.islr,
+  };
+
+  // Método reutilizable para manejar el tap
+  void _onItemTap(int index) {
+    //final screenController = Get.find<ControllerScreenCuentaUnica>();
+    screenController.goToScreen(_sectionScreens[index]!);
+    screenController.addTitle.value = "- ${screenController.sections[index]}";
+    Get.back(); // Cierra el Drawer
+  }
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    //final screenController = Get.find<ControllerScreenCuentaUnica>();
     return ExpansionTile(
-      leading: Icon(Icons.add, color: AppTheme.goldColor),
-      title: Text('Sigecof'),
-      children: [
-        ListTile(
-          title: Text(controller.sections[0]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenCuentaUnica>().goToScreen(AppScreen.comprobante_de_retenciones);
-            Get.find<SharedCuentaUnicaController>().addTitle.value = "- ${controller.sections[0]}";
-            Get.back(); // Cierra el Drawer
-          },
+      leading: const Icon(Icons.add, color: AppTheme.goldColor),
+      title: const Text('Sigecof'),
+      children: List.generate(
+        screenController.sections.length,
+            (index) => ListTile(
+          title: Text(screenController.sections[index]),
+          leading: const Icon(Icons.report, color: AppTheme.goldColor),
+          onTap: () => _onItemTap(index),
         ),
-        ListTile(
-          title: Text(controller.sections[1]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenCuentaUnica>().goToScreen(AppScreen.parafiscales_banavih);
-            Get.find<SharedCuentaUnicaController>().addTitle.value = "- ${controller.sections[1]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-        ListTile(
-          title: Text(controller.sections[2]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenCuentaUnica>().goToScreen(AppScreen.parafiscales_inces);
-            Get.find<SharedCuentaUnicaController>().addTitle.value = "- ${controller.sections[2]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-        ListTile(
-          title: Text(controller.sections[3]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenCuentaUnica>().goToScreen(AppScreen.parafiscales_ivss);
-            Get.find<SharedCuentaUnicaController>().addTitle.value = "- ${controller.sections[3]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-        ListTile(
-          title: Text(controller.sections[4]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenCuentaUnica>().goToScreen(AppScreen.retenciones);
-            Get.find<SharedCuentaUnicaController>().addTitle.value = "- ${controller.sections[4]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-        ListTile(
-          title: Text(controller.sections[5]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenCuentaUnica>().goToScreen(AppScreen.islr);
-            Get.find<SharedCuentaUnicaController>().addTitle.value = "- ${controller.sections[5]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-      ],
+      ),
     );
   }
 }

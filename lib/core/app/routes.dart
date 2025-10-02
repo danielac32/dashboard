@@ -7,6 +7,7 @@ import '../../screens/auth/login.dart';
 import '../../screens/department/cuenta_unica/CuentaUnica.dart';
 import '../../screens/department/egreso/egreso.dart';
 import '../../screens/department/planificacion/planificacion.dart';
+import '../../screens/department/tecnologia/dgtic.dart';
 import '../../vataciones/index.dart';
 //import '../../screens/user/dashboard_user.dart';
 
@@ -58,6 +59,7 @@ class AppRoutes {
     GetPage(name: dashboardPlanificacionAnalisisFinanciero, page: () => Planificacion(),middlewares: [AuthMiddleware()]),
     GetPage(name: dashboardEgreso, page: () => Egreso(),middlewares: [AuthMiddleware()]),
     GetPage(name: dashboardCuentaUnica, page: () => CuentaUnica(),middlewares: [AuthMiddleware()]),
+    GetPage(name: dashboardTecnologia, page: () => Dgtic(),middlewares: [AuthMiddleware()]),
 
     //GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
     //GetPage(name: dashboardUser, page: () => DashboardUser()),

@@ -14,7 +14,7 @@ import './report_sigecof/widget/item_user.dart';
 class Egreso extends StatelessWidget {
   //final controllerScreen = Get.put(MenuControllerScreen());
   final controllerEgreso = Get.put(ControllerScreenEgreso());
-  final controllerShared = Get.find<SharedEgresoController>();
+  //final controllerShared = Get.find<SharedEgresoController>();
 
   Egreso({super.key});
 
@@ -39,7 +39,7 @@ class Egreso extends StatelessWidget {
             appBar: AppBar(
               //title: Obx(() => Text("${controllerShared.Titulo} ${controllerShared.addTitle.value}")),
               title: Center(
-                child: Obx(() => Text("${controllerShared.Titulo} ${controllerShared.addTitle.value}"),),
+                child: Obx(() => Text("${controllerEgreso.Titulo} ${controllerEgreso.addTitle.value}"),),
               ),
               leading: Builder(
                 builder: (context) => IconButton(

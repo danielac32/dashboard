@@ -39,7 +39,7 @@ class MediaService {
       );
       return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw e;//throw Exception('Error de red: $e');
+      rethrow;//throw Exception('Error de red: $e');
     }
   }
 
@@ -54,7 +54,7 @@ class MediaService {
       );
       return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw e;// throw Exception('Error de red: $e');
+      rethrow;// throw Exception('Error de red: $e');
     }
   }
 
@@ -69,7 +69,7 @@ class MediaService {
       );
       return Handle.Response(response);//return _handleResponse(response); // Maneja la respuesta
     } catch (e) {
-      throw e;//throw Exception('Error de red: $e');
+      rethrow;//throw Exception('Error de red: $e');
     }
   }
 
@@ -84,7 +84,7 @@ class MediaService {
       );
       return Handle.Response(response);//return _handleResponse(response); // Manejar la respuesta
     } catch (e) {
-      throw e;//throw Exception('Error de red: $e');
+      rethrow;//throw Exception('Error de red: $e');
     }
   }
 
@@ -100,7 +100,7 @@ class MediaService {
       );
       return Handle.Response(response);//return _handleResponse(response);
     } catch (e) {
-      throw e;//throw Exception('Error de red: $e');
+      rethrow;//throw Exception('Error de red: $e');
     }
   }
 

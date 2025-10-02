@@ -18,10 +18,22 @@ import '../service/service.dart';
 
 
 class ControllerScreenCuentaUnica extends GetxController {
+  final sections = <String>[
+    "COMPROBANTES DE RETENCIONES",
+    "PARAFISCALES BANAVIH",
+    "PARAFISCALES INCES",
+    "PARAFISCALES IVSS",
+    "RETENCIONES",
+    "ISLR"
+  ].obs;
+
+  final String Titulo="Direccion General de Cuenta Unica";
+  var addTitle="".obs;
+
 
   var currentScreen = AppScreen.home.obs;
   var hasConnection = false.obs;
-
+  
 
   final Map<AppScreen, Widget> screenMap = {
     AppScreen.home: Home(),
@@ -70,16 +82,4 @@ class ControllerScreenCuentaUnica extends GetxController {
 
 
 
-class ControllerUser extends GetxController {
-  final sections = <String>[
-    "COMPROBANTES DE RETENCIONES",
-    "PARAFISCALES BANAVIH",
-    "PARAFISCALES INCES",
-    "PARAFISCALES IVSS",
-    "RETENCIONES",
-    "ISLR"
-  ].obs;
-
-
-}
-
+ 

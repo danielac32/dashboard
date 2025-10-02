@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 
-
+/*
 class SharedEgresoController extends GetxController {
   final String Titulo="Direccion General de Egreso";
   var addTitle="".obs;
@@ -15,4 +15,4 @@ class SharedEgresoController extends GetxController {
   void onInit() {
     super.onInit();
   }
-}
+}*/

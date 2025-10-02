@@ -18,6 +18,18 @@ import '../service/service.dart';
 
 class ControllerScreenEgreso extends GetxController {
 
+  final sections = <String>[
+    "ORDENES PAGADAS",
+    "ORDENES PENDIENTES",
+    "ORDENES PAGADAS RETENCIONES",
+    "RETENCIONES POR PARTIDAS",
+    "DETALLES PENDIENTES"
+  ].obs;
+
+  final String Titulo="Direccion General de Egreso";
+  var addTitle="".obs;
+
+
   var currentScreen = AppScreen.home.obs;
   var hasConnection = false.obs;
 
@@ -57,16 +69,4 @@ class ControllerScreenEgreso extends GetxController {
 }
 
 
-
-class ControllerUser extends GetxController {
-  final sections = <String>[
-    "ORDENES PAGADAS",
-    "ORDENES PENDIENTES",
-    "ORDENES PAGADAS RETENCIONES",
-    "RETENCIONES POR PARTIDAS",
-    "DETALLES PENDIENTES"
-  ].obs;
-
-
-}
 

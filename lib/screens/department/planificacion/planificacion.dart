@@ -17,7 +17,7 @@ import '../../auth/controller/login_controller.dart';
 class Planificacion extends StatelessWidget {
   //final  controllerScreen = Get.put(MenuControllerScreen());
   final  controllerPlanificacion = Get.put(ControllerScreenPlanificacion());
-  final  controllerShared = Get.find<SharedController>();
+  //final  controllerShared = Get.find<SharedController>();
 
   Planificacion({super.key});
 
@@ -42,7 +42,7 @@ class Planificacion extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Obx(() => Text("${controllerShared.Titulo} ${controllerShared.addTitle.value}"),),
+          child: Obx(() => Text("${controllerPlanificacion.Titulo} ${controllerPlanificacion.addTitle.value}"),),
         ),
 
         leading: Builder(

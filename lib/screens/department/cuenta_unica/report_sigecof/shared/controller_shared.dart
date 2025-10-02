@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 
-
+/*
 class SharedCuentaUnicaController extends GetxController {
   final String Titulo="Direccion General de Cuenta Unica";
   var addTitle="".obs;
@@ -15,4 +15,4 @@ class SharedCuentaUnicaController extends GetxController {
   void onInit() {
     super.onInit();
   }
-}
+}*/

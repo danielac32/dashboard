@@ -5,24 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/theme/app_theme.dart';
-import '../constant/enum_screen_planificacion.dart';
-import '../controller/controller_screen.dart';
-import '../shared/controller_shared.dart';
-
+import '../constant/constant.dart';
+import '../controller/ControllerDgtic.dart';
 
 
 class ItemsUser extends StatelessWidget {
   ItemsUser({super.key});
 
   //final controller = Get.put(ControllerUser());
-  final screenController = Get.find<ControllerScreenPlanificacion>();
+  final screenController = Get.find<ControllerDgtic>();
   // Mapa que relaciona cada sección con su pantalla correspondiente
   final Map<int, AppScreen> _sectionScreens = {
-    0: AppScreen.ordenes_trasmitidas_bcv,
-    1: AppScreen.ordenes_pagadas,
-    2: AppScreen.ordenes_pendientes,
-    3: AppScreen.dolares_a_blivares,
-    4: AppScreen.pagadas_resumen,
+    0: AppScreen.XmlTxt,
   };
 
   // Método reutilizable para manejar el tap
@@ -38,7 +32,7 @@ class ItemsUser extends StatelessWidget {
     //final screenController = Get.find<ControllerScreenCuentaUnica>();
     return ExpansionTile(
       leading: const Icon(Icons.add, color: AppTheme.goldColor),
-      title: const Text('Sigecof'),
+      title: const Text(' '),
       children: List.generate(
         screenController.sections.length,
             (index) => ListTile(

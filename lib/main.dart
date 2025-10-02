@@ -56,9 +56,9 @@ Future<void> main() async {
   ests controladores se usan para cada vista , para tener un titulo mientras el drawer al darle a cada opcion
   cambia el titulo
    */
-  Get.put(SharedController());//planificacion
-  Get.put(SharedEgresoController());
-  Get.put(SharedCuentaUnicaController());
+  //Get.put(SharedController());//planificacion
+ //Get.put(SharedEgresoController());
+  //Get.put(SharedCuentaUnicaController());
   Get.put(LoginController());//para llamar a logout en todos lados
   runApp(const MyApp());
 }

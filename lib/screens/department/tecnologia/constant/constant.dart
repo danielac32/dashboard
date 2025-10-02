@@ -1,0 +1,6 @@
+
+
+enum AppScreen{
+  XmlTxt
+}
+

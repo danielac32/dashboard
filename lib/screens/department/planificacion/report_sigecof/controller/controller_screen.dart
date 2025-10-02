@@ -16,6 +16,22 @@ import '../constant/enum_screen_planificacion.dart';
 
 
 class ControllerScreenPlanificacion extends GetxController {
+
+
+  final sections = <String>[
+    //"HOME",
+    "ORDENES TRANSMITIDAS BCV",
+    "ORDENES PAGADAS",
+    "ORDENES PENDIENTES",
+    "DOLARES A BOLIVARES",
+    "ORDENES PAGADAS POR PARTIDAS",
+    "PAGADAS RESUMEN"
+  ].obs;
+
+  final String Titulo="Direccion de Planificacion";
+  var addTitle="".obs;
+
+
   var hasConnection = false.obs;
   var currentScreen = AppScreen.home.obs;
   final Map<AppScreen, Widget> screenMap = {
@@ -24,7 +40,7 @@ class ControllerScreenPlanificacion extends GetxController {
     AppScreen.dolares_a_blivares: DolaresBolivares(),
     AppScreen.ordenes_pendientes: OrdenesPendientes(),
     AppScreen.ordenes_trasmitidas_bcv: OrdenesBcv(),//ordenes_bcv
-    AppScreen.ordenes_pagadas_partidas: OrdenesPagadasPartidas(),
+    //AppScreen.ordenes_pagadas_partidas: OrdenesPagadasPartidas(),
     AppScreen.pagadas_resumen:ResumenPagadas()
   };
   // Cambia la pantalla de forma segura
@@ -49,21 +65,6 @@ class ControllerScreenPlanificacion extends GetxController {
     }
     super.onInit();
   }
-
-}
-
-
-class ControllerUser extends GetxController {
-  final sections = <String>[
-    //"HOME",
-    "ORDENES TRANSMITIDAS BCV",
-    "ORDENES PAGADAS",
-    "ORDENES PENDIENTES",
-    "DOLARES A BOLIVARES",
-    "ORDENES PAGADAS POR PARTIDAS",
-    "PAGADAS RESUMEN"
-  ].obs;
-
 
 }
 

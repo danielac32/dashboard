@@ -40,8 +40,8 @@ class ErrorExceptions {
 
 class ErrorExceptions {
   static Future<T> handleRequest<T>(Future<T> Function() request) async {
-    return await request();
-    /*try {
+
+    try {
       return await request();
     } on http.ClientException catch (e) {
       return _handleError(
@@ -55,19 +55,7 @@ class ErrorExceptions {
         errorMessage: 'Sin conexión: ${e.message}',
         snackbarMessage: 'No hay conexión a internet',
       );
-    } on Exception catch (_) {
-      return _handleError(
-        error: Exception('Timeout'),
-        errorMessage: 'Timeout La solicitud tardó demasiado',
-        snackbarMessage: 'Tiempo de espera agotado',
-      );
-    } catch (e) {
-      return _handleError(
-        error: e,
-        errorMessage: 'Error: ${e.toString()}',
-        snackbarMessage: 'Error inesperado',
-      );
-    }*/
+    }
   }
 
   static Future<T> _handleError<T>({

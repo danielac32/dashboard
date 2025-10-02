@@ -13,65 +13,43 @@ import '../shared/controller_shared.dart';
 
 
 
-
 class ItemsUser extends StatelessWidget {
   ItemsUser({super.key});
-  //final  menuControllerScreen = Get.find<MenuControllerScreen>();
-  final controller = Get.put(ControllerUser());
+
+  //final controller = Get.put(ControllerUser());
+  final screenController = Get.find<ControllerScreenEgreso>();
+  // Mapa que relaciona cada sección con su pantalla correspondiente
+  final Map<int, AppScreen> _sectionScreens = {
+    0: AppScreen.ordenes_pagadas,
+    1: AppScreen.ordenes_pendientes,
+    2: AppScreen.ordenes_pagadas_retenciones,
+    3: AppScreen.retenciones_partidas,
+    4: AppScreen.detalles_pendientes,
+  };
+
+  // Método reutilizable para manejar el tap
+  void _onItemTap(int index) {
+    //final screenController = Get.find<ControllerScreenCuentaUnica>();
+    screenController.goToScreen(_sectionScreens[index]!);
+    screenController.addTitle.value = "- ${screenController.sections[index]}";
+    Get.back(); // Cierra el Drawer
+  }
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    //final screenController = Get.find<ControllerScreenCuentaUnica>();
     return ExpansionTile(
-      leading: Icon(Icons.add, color: AppTheme.goldColor),
-      title: Text('Sigecof'),
-      children: [
-        ListTile(
-          title: Text(controller.sections[0]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.ordenes_pagadas);
-            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[0]}";
-            Get.back(); // Cierra el Drawer
-          },
+      leading: const Icon(Icons.add, color: AppTheme.goldColor),
+      title: const Text('Sigecof'),
+      children: List.generate(
+        screenController.sections.length,
+            (index) => ListTile(
+          title: Text(screenController.sections[index]),
+          leading: const Icon(Icons.report, color: AppTheme.goldColor),
+          onTap: () => _onItemTap(index),
         ),
-        ListTile(
-          title: Text(controller.sections[1]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.ordenes_pendientes);
-            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[1]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-        ListTile(
-          title: Text(controller.sections[2]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.ordenes_pagadas_retenciones);
-            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[2]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-        ListTile(
-          title: Text(controller.sections[3]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.retenciones_partidas);
-            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[3]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-        ListTile(
-          title: Text(controller.sections[4]),
-          leading: Icon(Icons.report, color: AppTheme.goldColor),
-          onTap: () {
-            Get.find<ControllerScreenEgreso>().goToScreen(AppScreen.detalles_pendientes);
-            Get.find<SharedEgresoController>().addTitle.value = "- ${controller.sections[4]}";
-            Get.back(); // Cierra el Drawer
-          },
-        ),
-      ],
+      ),
     );
   }
 }
+

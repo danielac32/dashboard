@@ -14,7 +14,7 @@ import '../../auth/controller/login_controller.dart';
 class CuentaUnica extends StatelessWidget {
    CuentaUnica({super.key});
    final controllerCuentaUnica = Get.put(ControllerScreenCuentaUnica());
-   final controllerShared = Get.find<SharedCuentaUnicaController>();
+   //final controllerShared = Get.find<SharedCuentaUnicaController>();
    @override
    Widget build(BuildContext context) {
      // 👇 Aquí forzamos el tema oscuro solo para esta pantalla
@@ -34,9 +34,8 @@ class CuentaUnica extends StatelessWidget {
 
            return Scaffold(
              appBar: AppBar(
-               //title: Obx(() => Text("${controllerShared.Titulo} ${controllerShared.addTitle.value}")),
                title: Center(
-                 child: Obx(() => Text("${controllerShared.Titulo} ${controllerShared.addTitle.value}"),),
+                 child: Obx(() => Text("${controllerCuentaUnica.Titulo} ${controllerCuentaUnica.addTitle.value}"),),
                ),
                leading: Builder(
                  builder: (context) => IconButton(
