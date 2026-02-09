@@ -54,12 +54,32 @@ class IslrController extends GetxController {
   }
 
 
-  Future<void> cargarRetencion(DateTime desde, DateTime hasta) async {
+
+
+  Future<void> islr(DateTime desde, DateTime hasta) async {
+    cargando(true);
+    try {
+
+      final fileName = 'islr_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      await ServiceCuentaUnica.downloadExcelReport(
+        url: 'api/query/islr/excel',
+        startDate: DateFormat('dd/MM/yyyy').format(desde),
+        endDate: DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))),
+        fileName: fileName,
+      );
+    } catch (e) {
+      SnackbarAlert.error(message: "${e}",durationSeconds: 5);
+    }
+    cargando(false);
+  }
+
+
+  Future<void> islr2(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
       jsonDataAlmacenado.clear();
       final jsonData = await ServiceCuentaUnica.post('api/query/islr', {}, queryParams: queryParams);

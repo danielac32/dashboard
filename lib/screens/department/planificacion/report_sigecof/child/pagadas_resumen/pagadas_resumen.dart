@@ -17,6 +17,7 @@ class ResumenPagadas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
 
       body: Padding(
@@ -73,13 +74,7 @@ class ResumenPagadas extends StatelessWidget {
                         );
                       },
                     )),
-                    const SizedBox(width: 12),
-                    Obx(() =>GenericDownloadButton(
-                      isLoading: controller.cargando.value,
-                      onDownload: () async {
-                        await controller.descargarReporte();
-                      },
-                    ))
+
                   ],
                 ),
               ),
@@ -87,88 +82,86 @@ class ResumenPagadas extends StatelessWidget {
 
               // Tabla con scroll horizontal y vertical
               Expanded(
-
                 child: Obx(() {
-
                   if (controller.cargando.value) {
                     return const Center(child: CircularProgressIndicator());
                   }
-
-                  if (controller.res.isEmpty) {
-                    return Center(
-                      child: Text( "No hay registros para mostrar",
-                        style: const TextStyle(color: Colors.grey, fontSize: 16),
+                  return const Center();
+                  if (controller.jsonDataAlmacenado.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No hay registros para mostrar",
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     );
                   }
+
+                  // Aquí mostramos el mensaje cuando hay resultados
                   return SingleChildScrollView(
-                    child: Column(
-                      children: [
-
-                        SizedBox(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: DataTable(
-                                border: TableBorder.all(
-                                  color: Colors.grey, // Color del borde
-                                  width: 1.0,         // Grosor del borde
-                                  style: BorderStyle.solid, // Estilo sólido como Excel
-                                ),
-                                columnSpacing: 10,
-                                horizontalMargin: 10,
-                                showCheckboxColumn: false,
-                                dataRowColor: WidgetStateProperty.all(Colors.white),
-                                headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
-                                columns: const [
-                                  DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Partidas", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Año Anterior", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Año Actual", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Monto Total", style: TextStyle(color: Colors.black))),
-                                ],
-                                rows: [
-                                  // Filas de datos (cada organismo)
-                                  ...controller.res.map((resumen) {
-                                    return DataRow(
-                                      cells: [
-                                        DataCell(
-                                          ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                              maxWidth: MediaQuery.of(context).size.width * 0.3,
-                                            ),
-                                            child: Tooltip(
-                                              message: resumen.organismo,
-                                              child: Text(
-                                                resumen.organismo.length > 20
-                                                    ? '${resumen.organismo.substring(0, 20)}...'
-                                                    : resumen.organismo,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(color: Colors.black),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        DataCell(Text(resumen?.partidas?.toString() ?? "-", style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen?.anhoAnterior?.toString() ?? "-", style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen?.anhoActual?.toString() ?? "-", style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen?.montoTotal?.toString() ?? "-", style: TextStyle(color: Colors.black))),
-                                      ],
-                                    );
-                                  }).toList(),
-
-                                  // 2. Fila de total general (solo si hay datos)
+                    child: Center(
+                      child: Container(
+                        height: screenHeight * 1.5, // Hace el contenedor más alto que la pantalla
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            SizedBox(height: screenHeight * 0.3), // 40% de espacio vacío
+                            // Tu contenido del mensaje aquí
+                            Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.green[50],
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.green, width: 1),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.green,
+                                    size: 48,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    "¡Su reporte ha sido generado!",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green[800],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    "Ya puede descargar el Documento",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.green[700],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton.icon(
+                                    onPressed: () async {
+                                      await controller.descargarReporte();
+                                    },
+                                    icon: const Icon(Icons.download),
+                                    label: const Text("Descargar Reporte"),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppTheme.goldColor,
+                                      foregroundColor: Colors.black,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   );
                 }),
-              ),
+              )
             ],
           ),
         ),

@@ -55,23 +55,52 @@ class PagadasController extends GetxController {
   }
 
 
+
   Future<void> cargarPagadas(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
 
+      final fileName = 'pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      await ServicePlanificacion.downloadExcelReport(
+        url: 'api/query/pagadas2/excel',
+        startDate: DateFormat('dd/MM/yyyy').format(desde),
+        endDate: DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))),
+        fileName: fileName,
+      );
+    } catch (e) {
+      SnackbarAlert.error(message: "${e}",durationSeconds: 5);
+    }
+    cargando(false);
+  }
+
+
+
+  Future<void> cargarPagadas2(DateTime desde, DateTime hasta) async {
+    cargando(true);
+    try {
+      jsonDataAlmacenado.clear();
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
       final jsonData = await ServicePlanificacion.post('api/query/pagadas2', {}, queryParams: queryParams);
-      jsonDataAlmacenado = jsonData as List<dynamic>;
-      final List<PagoPagadas> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => PagoPagadas.fromJson(item)).toList();
-      resultados(datosLista);
-      //print(resultados);
-      updatePagination();
+      //jsonDataAlmacenado = jsonData as List<dynamic>;
+
+      final List<dynamic> datosProcesados = [];
+      for (var item in jsonData) {
+        if (item is Map<String, dynamic>) {
+          final fechaMod = item['PAGADA'] as String?;
+          if (fechaMod != null) {
+            item['PAGADA'] = formatDate(fechaMod);
+          }
+          datosProcesados.add(item);
+        } else {
+          datosProcesados.add(item);
+        }
+      }
+      jsonDataAlmacenado.assignAll(datosProcesados);
     } catch (e) {
       SnackbarAlert.error(message: "error mientras se cargaba la lista",durationSeconds: 5);
-      resultados([]);
     }
     cargando(false);
   }
@@ -113,7 +142,7 @@ class PagadasController extends GetxController {
   Future<void> descargarReporte() async {
     cargando(true);
 
-    if (resultados.isEmpty) {
+    if (jsonDataAlmacenado.isEmpty) {
       SnackbarAlert.warning(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
       return;
     }
@@ -127,7 +156,7 @@ class PagadasController extends GetxController {
 
 
       // Nombre del archivo
-      final fileName = 'ordenes_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      final fileName = 'ordenes_pagadas_${DateFormat('yyyyMM').format(DateTime.now())}.xlsx';
 
       // Escuchar respuesta del worker
       worker.onMessage.listen((event) {

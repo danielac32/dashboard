@@ -29,6 +29,13 @@ abstract class AppStrings {
   static const String dgInversionesYValores = 'DIRECCIÓN GENERAL DE INVERSIONES Y VALORES';
   static const String dgConsultoriaJuridica = 'DIRECCIÓN GENERAL DE CONSULTORÍA JURÍDICA';
 
+  //oficinas externas
+  static const String Seguro ='IVSS';
+ // static const String Seguro ='IVSS';
+ // static const String Seguro ='IVSS';
+ // static const String Seguro ='IVSS';
+
+
 
   // Secciones para permisos
   static const String organismosGobernacion = 'ORGANISMOS_GOBERNACION';
@@ -65,7 +72,34 @@ static const String coordinador="COORDINADOR";
   static const String otro="OTRO";
   static late String urlApi;//=dotenv.env['API_URL'];//'http://localhost:8085';
   static late String urlApiSigecof;
+
+  static void setup({required bool isLocal}) {
+    if (isLocal) {
+      urlApi = 'http://localhost:5288';
+      urlApiSigecof = 'http://localhost:5288';
+    } else {
+      urlApi = 'http://10.78.30.46:5288';
+      urlApiSigecof = 'http://10.78.30.46:5288';
+    }
+  }
 }
+
+/*
+abstract class AppConfig {
+  static late String urlApi;
+  static late String urlApiSigecof;
+
+  static void setup({required bool isLocal}) {
+    if (isLocal) {
+      urlApi = 'http://localhost:5288';
+      urlApiSigecof = 'http://localhost:5288';
+    } else {
+      urlApi = 'http://10.78.30.46:5288';
+      urlApiSigecof = 'http://10.78.30.46:5288';
+    }
+  }
+}
+*/
 
 Future<String> getApiUrl() async {
   final String jsonString = await rootBundle.loadString('assets/config.json');

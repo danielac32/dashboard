@@ -58,21 +58,38 @@ class DolarBolivarController extends GetxController {
   }
 
 
+
   Future<void> cargar(DateTime desde, DateTime hasta) async {
+    cargando(true);
+    try {
+
+      final fileName = 'ordenes-divisas-bolivares_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      await ServicePlanificacion.downloadExcelReport(
+        url: 'api/query/ordenes-divisas-bolivares/excel',
+        startDate: DateFormat('dd/MM/yyyy').format(desde),
+        endDate: DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))),
+        fileName: fileName,
+      );
+    } catch (e) {
+      SnackbarAlert.error(message: "${e}",durationSeconds: 5);
+    }
+    cargando(false);
+  }
+
+  Future<void> cargar2(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
+      jsonDataAlmacenado.clear();
       final jsonData = await ServicePlanificacion.post('api/query/ordenes-divisas-bolivares', {}, queryParams: queryParams);
       jsonDataAlmacenado = jsonData as List<dynamic>;
-      final List<DolarBolivar> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => DolarBolivar.fromJson(item)).toList();
-      resultados(datosLista);
-      updatePagination();
+
     } catch (e) {
       SnackbarAlert.error(message: "error mientras se cargaba la lista",durationSeconds: 5);
-      resultados([]);
+
     }
     cargando(false);
   }
@@ -113,7 +130,7 @@ class DolarBolivarController extends GetxController {
   Future<void> descargarReporte() async {
     cargando(true);
 
-    if (resultados.isEmpty) {
+    if (jsonDataAlmacenado.isEmpty) {
       SnackbarAlert.warning(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
       return;
     }

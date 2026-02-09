@@ -67,15 +67,7 @@ class Banavih extends StatelessWidget {
                        );
                      },
                    )),
-                   const SizedBox(width: 12),
-                   Obx(() => controller.jsonDataAlmacenado.isNotEmpty
-                       ? GenericDownloadButton(
-                     isLoading: controller.cargando.value,
-                     onDownload: () async {
-                       await controller.descargarReporte();
-                     },
-                   )
-                       : const SizedBox())
+
                  ],
                ),
              ),
@@ -87,7 +79,7 @@ class Banavih extends StatelessWidget {
                  if (controller.cargando.value) {
                    return const Center(child: CircularProgressIndicator());
                  }
-
+                 return const Center( );
                  if (controller.jsonDataAlmacenado.isEmpty) {
                    return const Center(
                      child: Text(
@@ -134,7 +126,7 @@ class Banavih extends StatelessWidget {
                                  ),
                                  const SizedBox(height: 8),
                                  Text(
-                                   "Ya puede descargar el comprobante de retención",
+                                   "Ya puede descargar el Documento",
                                    style: TextStyle(
                                      fontSize: 14,
                                      color: Colors.green[700],

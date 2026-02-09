@@ -1,6 +1,8 @@
 
 
 enum AppScreen{
-  XmlTxt
+  XmlTxt,
+  Intranet,
+  Soporte
 }
 

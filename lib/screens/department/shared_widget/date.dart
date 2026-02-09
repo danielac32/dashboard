@@ -87,22 +87,6 @@ class GenericDatePickerField extends StatelessWidget {
                   ),
                 ),
               ),
-              if (isLoading)
-                Positioned(
-                  right: 8,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.blue[700],
-                      ),
-                    ),
-                  ),
-                ),
             ],
           ),
         ],

@@ -1,3 +1,4 @@
+import 'package:core_system/screens/admin/controller/dashboard_menu.dart';
 import 'package:core_system/screens/auth/controller/login_controller.dart';
 import 'package:core_system/screens/auth/login.dart';
 import 'package:core_system/screens/department/cuenta_unica/report_sigecof/shared/controller_shared.dart';
@@ -42,17 +43,18 @@ Future<void> main() async {
     //AppStrings.urlApiSigecof = config['api_sigecof'];
   }*/
 
-  //AppStrings.urlApi = 'http://localhost:5288';
-  //AppStrings.urlApiSigecof = 'http://localhost:5288';
+  /*AppStrings.urlApi = 'http://localhost:5288';
+  AppStrings.urlApiSigecof = 'http://localhost:5288';*/
 
-  AppStrings.urlApi = 'http://10.78.30.46:5288';
-  AppStrings.urlApiSigecof = 'http://10.78.30.46:5288';
+  //AppStrings.urlApi = 'http://10.78.30.46:5288';
+  //AppStrings.urlApiSigecof = 'http://10.78.30.46:5288';
 
+  AppStrings.setup(isLocal: false);
 
   print( "${AppStrings.urlApi} - ${AppStrings.urlApiSigecof}");
 
 
-  /*
+  /*1425086s
   ests controladores se usan para cada vista , para tener un titulo mientras el drawer al darle a cada opcion
   cambia el titulo
    */
@@ -80,7 +82,6 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.login,
       getPages: AppRoutes.routes,
       unknownRoute: GetPage(name: '/login', page: () => LoginScreen()),
-
     );
   }
 }

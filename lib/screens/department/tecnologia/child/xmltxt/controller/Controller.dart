@@ -8,6 +8,7 @@ import '../../../service/service.dart';
 import '../model/file_info.dart';
 import '../model/list_dir_response.dart';
 import '../model/list_process_response.dart';
+import '../model/paginate.dart';
 import '../response/deleteResponse.dart';
 
 import 'package:file_picker/file_picker.dart';
@@ -23,13 +24,90 @@ class XmlTxtController extends GetxController {
   var isLoading = false.obs;
   var isProcessing = false.obs;
 
+
+
+
+  var currentPage = 1.obs;
+  var pageSize = 5.obs;
+  var totalPages = 0.obs;
+  var totalCount = 0.obs;
+  var hasPrevious = false.obs;
+  var hasNext = false.obs;
+  final recaudaciones = <Data>[].obs;
+  final paginationInfo = Pagination().obs;
+
+
+
+
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    await fetchRecaudaciones(page: 1);
+  }
+
+  bool _validarDatoFile(Map<String, dynamic> data) {
+    if (data['fecha'] == null || data['fecha'].toString().isEmpty) {
+
+      SnackbarAlert.warning(
+          title: "Error de validación",
+          message: "El campo 'fecha' es obligatorio",
+          durationSeconds: 1
+      );
+      return false;
+    }
+
+    if (data['banco'] == null || data['banco'].toString().isEmpty) {
+      SnackbarAlert.warning(
+          title: "Error de validación",
+          message: "El campo 'banco' es obligatorio",
+          durationSeconds: 1
+      );
+      return false;
+    }
+
+    if (data['estatus'] == null || data['estatus'].toString().isEmpty) {
+      SnackbarAlert.warning(
+          title: "Error de validación",
+          message: "El campo 'estatus' es obligatorio",
+          durationSeconds: 1
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void>insertFile(Map<String, dynamic> data)async{
+    print(data);
+    if (!_validarDatoFile(data)) {
+      return;
+    }
+    try{
+        final d = {
+          "fecha_recaudacion": data["fecha"],
+          "banco": data["banco"],
+          "estatus": data["estatus"]
+        };
+        final res = await DgticService.post(
+          'api/xmltxt/pg_upload_file', // Asegúrate que esta es la ruta correcta
+          d,
+        );
+
+    }catch(e){
+      print(e);
+      SnackbarAlert.error(title: "Oops!", message: "No se pudo Insertar planilla", durationSeconds: 1);
+    }
+  }
+
+
+
   Future<void> consultarArchivos() async {
     isLoading.value = true;
     xmlFiles.clear();
     resultados.clear();
 
     //await Future.delayed(const Duration(seconds: 2));
-    final apiResponse = await XmlService.get('api/xmltxt/list');
+    final apiResponse = await DgticService.get('api/xmltxt/list');
     if (apiResponse == null || apiResponse.isEmpty) {
       SnackbarAlert.warning(title: "Advertencia", message: "No se encontraron archivos", durationSeconds: 1);
       xmlFiles.clear();
@@ -62,7 +140,7 @@ class XmlTxtController extends GetxController {
         SnackbarAlert.error(title: "Error!", message: "Archivo no se pudo eliminar: ${xmlFiles[index].name}", durationSeconds: 1);
         return;
       }
-      final apiResponse = await XmlService.delete("api/xmltxt/deleteFile",queryParams: {
+      final apiResponse = await DgticService.delete("api/xmltxt/deleteFile",queryParams: {
         "name": xmlFiles[index].name
       });
       final res = DeleteResponse.fromJson(apiResponse);
@@ -74,6 +152,62 @@ class XmlTxtController extends GetxController {
       }
   }
 
+
+
+
+  Future<void> fetchRecaudaciones({int? page}) async {
+    try {
+      isLoading.value = true;
+
+      if (page != null) {
+        currentPage.value = page;
+      }
+
+      final response = await DgticService.get(
+        'api/xmltxt/paginated',
+        queryParams: {
+          'page': currentPage.value.toString(),
+          'pageSize': pageSize.value.toString(),
+        },
+      );
+
+      final apiResponse = recaudacion.fromJson(response);
+
+      // ¡IMPORTANTE! Asigna los datos a la variable observable
+      recaudaciones.value = apiResponse.data ?? [];
+
+      // También actualiza la paginación
+      paginationInfo.value = apiResponse.pagination ?? Pagination();
+
+      // Debug para verificar que los datos llegaron
+      print('✅ Datos recibidos: ${apiResponse.data?.length ?? 0} registros');
+      for (var re in apiResponse.data!) {
+        print('    ${re.fechaRecaudacion}  ${re.banco} ${re.estatus}');
+      }
+
+    } catch (e) {
+      print('❌ Excepción: $e');
+      SnackbarAlert.error(
+        title: "Error",
+        message: "Error al cargar los datos: $e",
+        durationSeconds: 2,
+      );
+
+      // Limpiar la lista en caso de error
+      recaudaciones.clear();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> prev() async {
+    if (currentPage.value <= 1) return;
+    await fetchRecaudaciones(page: currentPage.value - 1);
+  }
+
+  Future<void> next() async {
+    await fetchRecaudaciones(page: currentPage.value + 1);
+  }
 
 
 
@@ -109,7 +243,7 @@ class XmlTxtController extends GetxController {
         'files': filesData, // ← clave "files", no "file"
       };
 
-      final response = await XmlService.upload('api/xmltxt/upload', body: body);
+      final response = await DgticService.upload('api/xmltxt/upload', body: body);
 
       isLoading.value = false;
 
@@ -171,7 +305,7 @@ class XmlTxtController extends GetxController {
         }
       };
       // Usamos el método postImage del MediaService
-      final response = await XmlService.upload('api/xmltxt/upload', body: body);
+      final response = await DgticService.upload('api/xmltxt/upload', body: body);
 
       isLoading.value = false;
 
@@ -203,7 +337,7 @@ class XmlTxtController extends GetxController {
     isProcessing.value = true;
 
     try {
-      final apiResponse = await XmlService.get('api/xmltxt/process');
+      final apiResponse = await DgticService.get('api/xmltxt/process');
 
       final res = ListProcess.fromJson(apiResponse);
 

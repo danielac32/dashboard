@@ -32,13 +32,13 @@ class GenericConsultButton extends StatelessWidget {
             child: SizedBox(
               width: 20,
               height: 20,
-              child: CircularProgressIndicator(
+              /*child: CircularProgressIndicator(
                 strokeWidth: 2,
                 color: Colors.blue,
-              ),
+              ),*/
             ),
           )
-      ] else...[
+        ] else...[
           Tooltip(
             message: 'Consultar',
             child: InkWell(

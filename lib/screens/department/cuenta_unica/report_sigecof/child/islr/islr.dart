@@ -62,21 +62,13 @@ class Islr extends StatelessWidget {
                     Obx(() => GenericConsultButton(
                       isLoading: controller.cargando.value,
                       onConsult: () async {
-                        await controller.cargarRetencion(
+                        await controller.islr(
                           controller.fechaDesde.value,
                           controller.fechaHasta.value,
                         );
                       },
                     )),
-                    const SizedBox(width: 12),
-                    Obx(() => controller.jsonDataAlmacenado.isNotEmpty
-                        ? GenericDownloadButton(
-                      isLoading: controller.cargando.value,
-                      onDownload: () async {
-                        await controller.descargarReporte();
-                      },
-                    )
-                        : const SizedBox())
+
                   ],
                 ),
               ),
@@ -88,80 +80,8 @@ class Islr extends StatelessWidget {
                   if (controller.cargando.value) {
                     return const Center(child: CircularProgressIndicator());
                   }
+                  return const Center();
 
-                  if (controller.jsonDataAlmacenado.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        "No hay registros para mostrar",
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                    );
-                  }
-
-                  // Aquí mostramos el mensaje cuando hay resultados
-                  return SingleChildScrollView(
-                    child: Center(
-                      child: Container(
-                        height: screenHeight * 1.5, // Hace el contenedor más alto que la pantalla
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            SizedBox(height: screenHeight * 0.3), // 40% de espacio vacío
-                            // Tu contenido del mensaje aquí
-                            Container(
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: Colors.green[50],
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.green, width: 1),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.check_circle_outline,
-                                    color: Colors.green,
-                                    size: 48,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    "¡Su reporte ha sido generado!",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green[800],
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    "Ya puede descargar el comprobante de retención",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.green[700],
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  ElevatedButton.icon(
-                                    onPressed: () async {
-                                      await controller.descargarReporte();
-                                    },
-                                    icon: const Icon(Icons.download),
-                                    label: const Text("Descargar Reporte"),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppTheme.goldColor,
-                                      foregroundColor: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
                 }),
               ),
             ],

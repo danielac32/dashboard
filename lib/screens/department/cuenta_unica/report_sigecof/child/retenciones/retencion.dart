@@ -68,15 +68,7 @@ class Retencion extends StatelessWidget {
                         );
                       },
                     )),
-                    const SizedBox(width: 12),
-                    Obx(() => controller.jsonDataAlmacenado.isNotEmpty
-                        ? GenericDownloadButton(
-                      isLoading: controller.cargando.value,
-                      onDownload: () async {
-                        await controller.descargarReporte();
-                      },
-                    )
-                        : const SizedBox())
+
                   ],
                 ),
               ),
@@ -89,14 +81,7 @@ class Retencion extends StatelessWidget {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (controller.jsonDataAlmacenado.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        "No hay registros para mostrar",
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                    );
-                  }
+                  return const Center();
 
                   // Aquí mostramos el mensaje cuando hay resultados
                   return SingleChildScrollView(
@@ -135,7 +120,7 @@ class Retencion extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    "Ya puede descargar el comprobante de retención",
+                                    "Ya puede descargar el Documento",
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.green[700],

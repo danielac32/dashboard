@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 
 
 import '../child/comprobante_retenciones/comprobante_retencion.dart';
+import '../child/formato_iva_seniat/iva_seniat.dart';
 import '../child/home/home.dart';
 import '../child/islr/islr.dart';
+import '../child/ordenes_devueltas/ordenes_devueltas.dart';
 import '../child/parafiscales_banavih/banavih.dart';
 import '../child/parafiscales_inces/inces.dart';
 import '../child/parafiscales_ivss/ivss.dart';
@@ -24,7 +26,9 @@ class ControllerScreenCuentaUnica extends GetxController {
     "PARAFISCALES INCES",
     "PARAFISCALES IVSS",
     "RETENCIONES",
-    "ISLR"
+    "ISLR",
+    "IVA SENIAT",
+    "ORDENES DEVUELTAS"
   ].obs;
 
   final String Titulo="Direccion General de Cuenta Unica";
@@ -42,7 +46,9 @@ class ControllerScreenCuentaUnica extends GetxController {
     AppScreen.parafiscales_inces:Inces(),
     AppScreen.parafiscales_ivss:Ivss(),
     AppScreen.retenciones:Retencion(),
-    AppScreen.islr:Islr()
+    AppScreen.islr:Islr(),
+    AppScreen.formato_iva_seniat: IvaSeniat(),
+    AppScreen.ordenes_devueltas:OrdenesDevueltas()
   };
   // Cambia la pantalla de forma segura
   void goToScreen(AppScreen screen) {

@@ -190,11 +190,11 @@ class PagadasPartidasController extends GetxController {
 
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
       final jsonData = await ServicePlanificacion.post('api/query/pagadas2', {}, queryParams: queryParams);
       final List<PagoPagadas> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => PagoPagadas.fromJson(item)).toList();
-
+      jsonDataAlmacenado.clear();
       /*datosLista.forEach((part){
         print("-> $part");
       });*/
@@ -229,7 +229,7 @@ class PagadasPartidasController extends GetxController {
   Future<void> descargarReporte() async {
     cargando(true);
 
-    if (res.isEmpty) {
+    if (jsonDataAlmacenado.isEmpty) {
       SnackbarAlert.warning(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
       return;
     }

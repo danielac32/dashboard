@@ -1,9 +1,11 @@
 
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:core_system/core/utils/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:universal_html/html.dart' as html;
 
 import '../../../../../infrastructure/shared/handle_exceptions.dart';
 import '../../../../../infrastructure/shared/handle_response.dart';
@@ -22,6 +24,7 @@ class ServiceEgreso {
       'Content-Type': 'application/json',
     };
   }
+
 
 
   static Future<dynamic> post(
@@ -74,4 +77,74 @@ class ServiceEgreso {
       return Handle.Response(response);
     });
   }
+/*************************************************************************/
+
+  static Future<void> downloadFile(
+      String endpoint,
+      String fileName, {
+        Map<String, String>? queryParams,
+      }) async {
+    try {
+      final url = Uri.parse('$_baseUrl/$endpoint').replace(queryParameters: queryParams);
+
+      print('🔗 URL de descarga: $url');
+
+      // Hacer la petición GET para obtener el archivo
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+      // Verificar si la respuesta fue exitosa
+      if (response.statusCode == 200) {
+        // Crear un blob con los datos del archivo
+        final blob = html.Blob([response.bodyBytes]);
+        final url = html.Url.createObjectUrlFromBlob(blob);
+
+        // Crear un elemento <a> para la descarga
+        final anchor = html.AnchorElement(href: url)
+          ..setAttribute('download', fileName)
+          ..click();
+
+        // Liberar el objeto URL
+        html.Url.revokeObjectUrl(url);
+
+        print('✅ Archivo descargado: $fileName');
+      } else {
+        throw Exception('Error en la descarga: ${response.statusCode} - ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('❌ Error al descargar archivo: $e');
+      rethrow;
+    }
+  }
+
+  // Método específico para descargar reporte Excel
+  static Future<void> downloadExcelReport({
+    required String url,
+    required String startDate,
+    required String endDate,
+    required String fileName,
+  }) async {
+    try {
+
+      // Parámetros de consulta
+      final queryParams = {
+        'desde': startDate,
+        'hasta': endDate,
+      };
+
+      // Llamar al método de descarga
+      await downloadFile(
+        url, // Asegúrate que este endpoint coincide con tu backend
+        fileName,
+        queryParams: queryParams,
+      );
+
+    } catch (e) {
+      print('❌ Error en downloadExcelReport: $e');
+      rethrow;
+    }
+  }
+
+
 }

@@ -58,17 +58,55 @@ class ParafiscalesIncesController extends GetxController {
     super.onClose();
   }
 
-
   Future<void> cargarInces(DateTime desde, DateTime hasta) async {
+
+    cargando(true);
+    try {
+
+      final fileName = 'parafiscales_inces_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      await ServiceCuentaUnica.downloadExcelReport(
+        url: 'api/query/parafiscales_inces/excel',
+        startDate: DateFormat('dd/MM/yyyy').format(desde),
+        endDate: DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))),
+        fileName: fileName,
+      );
+    } catch (e) {
+      SnackbarAlert.error(message: "${e}",durationSeconds: 5);
+    }
+    cargando(false);
+  }
+
+
+  Future<void> cargarInces2(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
       jsonDataAlmacenado.clear();
       final jsonData = await ServiceCuentaUnica.post('api/query/parafiscales_inces', {}, queryParams: queryParams);
-      jsonDataAlmacenado.assignAll(jsonData);
+      // 👇 Procesar cada item para formatear FECHA_MODIFICACION
+      final List<dynamic> datosProcesados = [];
+      for (var item in jsonData) {
+        if (item is Map<String, dynamic>) {
+          final fechaMod = item['FECHA_MODIFICACION'] as String?;
+          if (fechaMod != null) {
+            item['FECHA_MODIFICACION'] = formatDate(fechaMod);
+          }
+          // Formatear PAGADAS (asumiendo que también es una cadena de fecha)
+          final fechaPagadas = item['PAGADA'] as String?;
+          if (fechaPagadas != null) {
+            item['PAGADA'] = formatDate(fechaPagadas);
+          }
+
+          datosProcesados.add(item);
+        } else {
+          datosProcesados.add(item);
+        }
+      }
+
+      jsonDataAlmacenado.assignAll(datosProcesados);
 
     } catch (e) {
       SnackbarAlert.error(message: "error mientras se cargaba la lista",durationSeconds: 5);
@@ -77,7 +115,7 @@ class ParafiscalesIncesController extends GetxController {
     cargando(false);
   }
 
-
+/*
   String formatDate(String dateStr) {
     try {
       DateTime date = DateTime.parse(dateStr);
@@ -86,9 +124,16 @@ class ParafiscalesIncesController extends GetxController {
       return dateStr; // Si falla el parseo, devuelve el original
     }
   }
+*/
 
-
-
+  String formatDate(String dateStr) {
+    try {
+      DateTime date = DateTime.parse(dateStr);
+      return DateFormat('d/M/yyyy').format(date); // Sin ceros iniciales
+    } catch (e) {
+      return dateStr;
+    }
+  }
 
 
 

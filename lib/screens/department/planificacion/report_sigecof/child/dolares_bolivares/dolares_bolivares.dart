@@ -14,6 +14,7 @@ class DolaresBolivares extends StatelessWidget {
   final controller = Get.put(DolarBolivarController());
    @override
    Widget build(BuildContext context) {
+     final screenHeight = MediaQuery.of(context).size.height;
      return Scaffold(
        //backgroundColor: const Color(0xfff4f6f9),
        /*appBar: AppBar(
@@ -74,13 +75,7 @@ class DolaresBolivares extends StatelessWidget {
                        );
                      },
                    )),
-                   const SizedBox(width: 12),
-                         Obx(() =>GenericDownloadButton(
-                     isLoading: controller.cargando.value,
-                     onDownload: () async {
-                       await controller.descargarReporte();
-                     },
-                   ))
+
                  ],
                ),
              ),
@@ -88,150 +83,86 @@ class DolaresBolivares extends StatelessWidget {
 
              // Tabla con scroll horizontal y vertical
              Expanded(
-
                child: Obx(() {
-
                  if (controller.cargando.value) {
                    return const Center(child: CircularProgressIndicator());
                  }
+                 return const Center();
+                 if (controller.jsonDataAlmacenado.isEmpty) {
+                   return const Center(
+                     child: Text(
+                       "No hay registros para mostrar",
+                       style: TextStyle(color: Colors.grey, fontSize: 16),
+                     ),
+                   );
+                 }
 
-                 if (controller.resultados.isEmpty) {
-                  return Center(
-                    child: Text( "No hay registros para mostrar",
-                      style: const TextStyle(color: Colors.grey, fontSize: 16),
-                    ),
-                  );
-                }
-
+                 // Aquí mostramos el mensaje cuando hay resultados
                  return SingleChildScrollView(
-                   //controller: controller.horizontalScrollController,
-                   // scrollDirection: Axis.horizontal,
-                   child: Column(
-                     children: [
-                       Center(
-                           child: Text("Registros: ${controller.resultados.length} en paginas de ${controller.itemsPerPage}",
-                               style: const TextStyle(color: Colors.grey, fontSize: 16))
-                       ),
-
-                       SizedBox(
-                         //width: MediaQuery.of(context).size.width,
-                         child: SingleChildScrollView(
-                           //scrollDirection: Axis.vertical,
-                           //controller: controller.verticalScrollController,
-                           scrollDirection: Axis.horizontal,
-                           child: Padding(
-                             padding: const EdgeInsets.all(5),
-                             child: DataTable(
-                               /*columnSpacing: 20,
-                              horizontalMargin: 12,*/
-                               columnSpacing: 8, // Reducir este valor
-                               horizontalMargin: 8, // Reducir este valor
-                               showCheckboxColumn: false,
-                               dataRowColor: WidgetStateProperty.all(Colors.white),
-                               headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
-                               columns: const [
-                                 DataColumn(label: Text("Año", style: TextStyle(color: Colors.black))),
-                                 DataColumn(label: Text("Estado", style: TextStyle(color: Colors.black))),
-                                 DataColumn(label: Text("Estado 2", style: TextStyle(color: Colors.black))),
-                                 DataColumn(label: Text("Pagada", style: TextStyle(color: Colors.black))),
-                                 DataColumn(label: Text("Orden", style: TextStyle(color: Colors.black))),
-                                 DataColumn(label: Text("Monto Pagado", style: TextStyle(color: Colors.black))),
-                                 DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.black))),
-                                 DataColumn(label: Text("Beneficiario", style: TextStyle(color: Colors.black))),
-                                 DataColumn(label: Text("Observación", style: TextStyle(color: Colors.black))),
+                   child: Center(
+                     child: Container(
+                       height: screenHeight * 1.5, // Hace el contenedor más alto que la pantalla
+                       padding: const EdgeInsets.all(20),
+                       child: Column(
+                         children: [
+                           SizedBox(height: screenHeight * 0.3), // 40% de espacio vacío
+                           // Tu contenido del mensaje aquí
+                           Container(
+                             padding: const EdgeInsets.all(20),
+                             decoration: BoxDecoration(
+                               color: Colors.green[50],
+                               borderRadius: BorderRadius.circular(12),
+                               border: Border.all(color: Colors.green, width: 1),
+                             ),
+                             child: Column(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: [
+                                 const Icon(
+                                   Icons.check_circle_outline,
+                                   color: Colors.green,
+                                   size: 48,
+                                 ),
+                                 const SizedBox(height: 16),
+                                 Text(
+                                   "¡Su reporte ha sido generado!",
+                                   style: TextStyle(
+                                     fontSize: 18,
+                                     fontWeight: FontWeight.bold,
+                                     color: Colors.green[800],
+                                   ),
+                                   textAlign: TextAlign.center,
+                                 ),
+                                 const SizedBox(height: 8),
+                                 Text(
+                                   "Ya puede descargar el Documento",
+                                   style: TextStyle(
+                                     fontSize: 14,
+                                     color: Colors.green[700],
+                                   ),
+                                   textAlign: TextAlign.center,
+                                 ),
+                                 const SizedBox(height: 16),
+                                 ElevatedButton.icon(
+                                   onPressed: () async {
+                                     await controller.descargarReporte();
+                                   },
+                                   icon: const Icon(Icons.download),
+                                   label: const Text("Descargar Reporte"),
+                                   style: ElevatedButton.styleFrom(
+                                     backgroundColor: AppTheme.goldColor,
+                                     foregroundColor: Colors.black,
+                                   ),
+                                 ),
                                ],
-                               rows: controller.paginatedResults.map((dolarbolivar) {
-                                 return DataRow(
-                                   cells: [
-                                     DataCell(Text(dolarbolivar.anho.toString(), style: TextStyle(color: Colors.black))),
-                                     DataCell(Text(dolarbolivar.estado.toString(), style: TextStyle(color: Colors.black))),
-                                     DataCell(Text(dolarbolivar.estado2.toString(), style: TextStyle(color: Colors.black))),
-                                     DataCell(Text(controller.formatDate(dolarbolivar.pagada), style: TextStyle(color: Colors.black))),
-                                     DataCell(Text(dolarbolivar.orden.toString(), style: TextStyle(color: Colors.black))),
-                                     DataCell(Text('\$${dolarbolivar.montoPagado.toStringAsFixed(2)}', style: TextStyle(color: Colors.black))),
-                                     DataCell(
-                                       ConstrainedBox(
-                                         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.2),
-                                         child: Tooltip(
-                                           message: dolarbolivar.organismo,
-                                           child: Text(
-                                             dolarbolivar.organismo.length > 20
-                                                 ? '${dolarbolivar.organismo.substring(0, 20)}...'
-                                                 : dolarbolivar.organismo,
-                                             overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
-                                           ),
-                                         ),
-                                       ),
-                                     ),
-                                     DataCell(
-                                       ConstrainedBox(
-                                         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.2),
-                                         child: Tooltip(
-                                           message: dolarbolivar.beneficiario,
-                                           child: Text(
-                                             dolarbolivar.beneficiario.length > 20
-                                                 ? '${dolarbolivar.beneficiario.substring(0, 20)}...'
-                                                 : dolarbolivar.beneficiario,
-                                             overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
-                                           ),
-                                         ),
-                                       ),
-                                     ),
-                                     DataCell(
-                                       ConstrainedBox(
-                                         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
-                                         child: Tooltip(
-                                           message: dolarbolivar.observacion,
-                                           child: Text(
-                                             dolarbolivar.observacion.length > 30
-                                                 ? '${dolarbolivar.observacion.substring(0, 30)}...'
-                                                 : dolarbolivar.observacion,
-                                             overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.black)
-                                           ),
-                                         ),
-                                       ),
-                                     ),
-                                   ],
-                                 );
-                               }).toList(),
                              ),
                            ),
-                         ),
+                         ],
                        ),
-                     ],
+                     ),
                    ),
                  );
                }),
-             ),
-
-             // Paginación
-             Obx(() => controller.resultados.isNotEmpty
-                 ? Padding(
-               padding: const EdgeInsets.only(top: 12),
-               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                   IconButton(
-                     icon: const Icon(Icons.chevron_left),
-                     onPressed: controller.currentPage.value > 0
-                         ? () => controller.previousPage()
-                         : null,
-                   ),
-                   Text(
-                     'Página ${controller.currentPage.value + 1} de ${controller.totalPages}',
-                     style: const TextStyle(fontSize: 14),
-                   ),
-                   IconButton(
-                     icon: const Icon(Icons.chevron_right),
-                     onPressed: (controller.currentPage.value + 1) < controller.totalPages
-                         ? () => controller.nextPage()
-                         : null,
-                   ),
-                 ],
-               ),
              )
-                 : const SizedBox(),
-             ),
            ],
          ),
        ),

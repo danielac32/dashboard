@@ -17,6 +17,7 @@ class OrdenesBcv extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       //backgroundColor: const Color(0xfff4f6f9),
       /*appBar: AppBar(
@@ -78,13 +79,7 @@ class OrdenesBcv extends StatelessWidget {
                         );
                       },
                     )),
-                    const SizedBox(width: 12),
-                          Obx(() =>GenericDownloadButton(
-                      isLoading: controller.cargando.value,
-                      onDownload: () async {
-                        await controller.descargarReporte();
-                      },
-                    ))
+
                   ],
                 ),
               ),
@@ -92,103 +87,86 @@ class OrdenesBcv extends StatelessWidget {
 
               // Tabla con scroll horizontal y vertical
               Expanded(
-
                 child: Obx(() {
-
                   if (controller.cargando.value) {
                     return const Center(child: CircularProgressIndicator());
                   }
-
-                  if (controller.resultados.isEmpty) {
-                    return Center(
-                      child: Text( "No hay registros para mostrar",
-                        style: const TextStyle(color: Colors.grey, fontSize: 16),
+                  return const Center();
+                  if (controller.jsonDataAlmacenado.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No hay registros para mostrar",
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     );
                   }
 
+                  // Aquí mostramos el mensaje cuando hay resultados
                   return SingleChildScrollView(
-                    //controller: controller.horizontalScrollController,
-                    // scrollDirection: Axis.horizontal,
-                    child: Column(
-                      children: [
-                        Center(
-                            child: Text("Registros: ${controller.resultados.length} en paginas de ${controller.itemsPerPage}",
-                                style: const TextStyle(color: Colors.grey, fontSize: 16))
-                        ),
-
-                        SizedBox(
-                          //width: MediaQuery.of(context).size.width ,
-                          child: SingleChildScrollView(
-                            //scrollDirection: Axis.vertical,
-                            //controller: controller.verticalScrollController,
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: DataTable(
-                                /*columnSpacing: 20,
-                                horizontalMargin: 12,*/
-                                columnSpacing: 8, // Reducir este valor
-                                horizontalMargin: 8, // Reducir este valor
-                                showCheckboxColumn: false,
-                                dataRowColor: WidgetStateProperty.all(Colors.white),
-                                headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
-                                columns: const [
-                                  DataColumn(label: Text("Fecha", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Monto Total", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Denominación", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Pago Id", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("Organismo ", style: TextStyle(color: Colors.black))),
+                    child: Center(
+                      child: Container(
+                        height: screenHeight * 1.5, // Hace el contenedor más alto que la pantalla
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            SizedBox(height: screenHeight * 0.3), // 40% de espacio vacío
+                            // Tu contenido del mensaje aquí
+                            Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.green[50],
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.green, width: 1),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.green,
+                                    size: 48,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    "¡Su reporte ha sido generado!",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green[800],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    "Ya puede descargar el Documento",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.green[700],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton.icon(
+                                    onPressed: () async {
+                                      await controller.descargarReporte();
+                                    },
+                                    icon: const Icon(Icons.download),
+                                    label: const Text("Descargar Reporte"),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppTheme.goldColor,
+                                      foregroundColor: Colors.black,
+                                    ),
+                                  ),
                                 ],
-                                rows: controller.paginatedResults.map((bcv) {
-                                  return DataRow(
-                                    cells: [
-                                      DataCell(Text(controller.formatDate(bcv.fechaValor?? ""), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(bcv.montoTotal.toString(), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(bcv.denominacion?? "", style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(bcv.pagoId.toString(), style: TextStyle(color: Colors.black))),
-                                      DataCell(Text(bcv.orgaId.toString(), style: TextStyle(color: Colors.black))),
-                                    ],
-                                  );
-                                }).toList(),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   );
                 }),
-              ),
-
-              // Paginación
-              Obx(() => controller.resultados.isNotEmpty
-                  ? Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.chevron_left),
-                      onPressed: controller.currentPage.value > 0
-                          ? () => controller.previousPage()
-                          : null,
-                    ),
-                    Text(
-                      'Página ${controller.currentPage.value + 1} de ${controller.totalPages}',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.chevron_right),
-                      onPressed: (controller.currentPage.value + 1) < controller.totalPages
-                          ? () => controller.nextPage()
-                          : null,
-                    ),
-                  ],
-                ),
               )
-                  : const SizedBox(),
-              ),
             ],
           ),
         ),

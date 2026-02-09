@@ -6,5 +6,7 @@ enum AppScreen {
   parafiscales_inces,
   parafiscales_ivss,
   retenciones,
-  islr
+  islr,
+  formato_iva_seniat,
+  ordenes_devueltas
 }

@@ -15,7 +15,6 @@ class Dgtic extends StatelessWidget {
    final controller = Get.put(ControllerDgtic());
 
 
-
    @override
    Widget build(BuildContext context) {
      // 👇 Aquí forzamos el tema oscuro solo para esta pantalla

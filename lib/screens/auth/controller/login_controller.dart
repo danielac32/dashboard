@@ -142,6 +142,9 @@ class LoginController extends GetxController {
         Get.offNamed(AppRoutes.dashboardSuperAdmin, arguments: { 'user': apiResponse.user});
       } else {
         switch (userDepartment) {
+          case AppStrings.Seguro:
+            Get.offNamed(AppRoutes.externReports_ivss, arguments: {'user': apiResponse.user});
+            break;
           case AppStrings.dgTecnologiaInformacion:
             Get.offNamed(AppRoutes.dashboardTecnologia, arguments: {'user': apiResponse.user});
             break;

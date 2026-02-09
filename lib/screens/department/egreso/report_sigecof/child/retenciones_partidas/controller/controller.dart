@@ -56,22 +56,39 @@ class EgresoRetencionesPartidasController extends GetxController {
     super.onClose();
   }
 
-
   Future<void> cargarRetencionesPartidas(DateTime desde, DateTime hasta) async {
+    cargando(true);
+    try {
+
+      final fileName = 'retenciones_partidas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      await ServiceEgreso.downloadExcelReport(
+        url: 'api/query/retenciones-partidas/excel',
+        startDate: DateFormat('dd/MM/yyyy').format(desde),
+        endDate: DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))),
+        fileName: fileName,
+      );
+    } catch (e) {
+      SnackbarAlert.error(message: "${e}",durationSeconds: 5);
+    }
+    cargando(false);
+  }
+
+
+
+  Future<void> cargarRetencionesPartidas2(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
+      jsonDataAlmacenado.clear();
       final jsonData = await ServiceEgreso.post('api/query/retenciones-partidas', {}, queryParams: queryParams);
       jsonDataAlmacenado = jsonData as List<dynamic>;
-      final List<RetencionesPartidas> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => RetencionesPartidas.fromJson(item)).toList();
-      resultados(datosLista);
-      updatePagination();
+
     } catch (e) {
       SnackbarAlert.error(message: "error mientras se cargaba la lista",durationSeconds: 5);
-      resultados([]);
+
     }
     cargando(false);
   }
@@ -112,7 +129,7 @@ class EgresoRetencionesPartidasController extends GetxController {
   Future<void> descargarReporte() async {
     cargando(true);
 
-    if (resultados.isEmpty) {
+    if (jsonDataAlmacenado.isEmpty) {
       SnackbarAlert.warning(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
       return;
     }
@@ -126,7 +143,7 @@ class EgresoRetencionesPartidasController extends GetxController {
 
 
       // Nombre del archivo
-      final fileName = 'reporte_rentenciones_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      final fileName = 'reporte_retenciones_pagadas_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
 
       // Escuchar respuesta del worker
       worker.onMessage.listen((event) {

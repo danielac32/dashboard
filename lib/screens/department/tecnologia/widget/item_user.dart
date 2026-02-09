@@ -17,6 +17,8 @@ class ItemsUser extends StatelessWidget {
   // Mapa que relaciona cada sección con su pantalla correspondiente
   final Map<int, AppScreen> _sectionScreens = {
     0: AppScreen.XmlTxt,
+    1: AppScreen.Intranet,
+    2: AppScreen.Soporte,
   };
 
   // Método reutilizable para manejar el tap

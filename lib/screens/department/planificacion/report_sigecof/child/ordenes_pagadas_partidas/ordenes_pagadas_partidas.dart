@@ -16,6 +16,7 @@ class OrdenesPagadasPartidas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
 
       body: Padding(
@@ -86,133 +87,86 @@ class OrdenesPagadasPartidas extends StatelessWidget {
 
               // Tabla con scroll horizontal y vertical
               Expanded(
-
                 child: Obx(() {
-
                   if (controller.cargando.value) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (controller.res.isEmpty) {
-                    return Center(
-                      child: Text( "No hay registros para mostrar",
-                        style: const TextStyle(color: Colors.grey, fontSize: 16),
+                  if (controller.jsonDataAlmacenado.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No hay registros para mostrar",
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     );
                   }
+
+                  // Aquí mostramos el mensaje cuando hay resultados
                   return SingleChildScrollView(
-                    child: Column(
-                      children: [
-
-                        SizedBox(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: DataTable(
-                                border: TableBorder.all(
-                                  color: Colors.grey, // Color del borde
-                                  width: 1.0,         // Grosor del borde
-                                  style: BorderStyle.solid, // Estilo sólido como Excel
-                                ),
-                                columnSpacing: 10,
-                                horizontalMargin: 10,
-                                showCheckboxColumn: false,
-                                dataRowColor: WidgetStateProperty.all(Colors.white),
-                                headingRowColor: WidgetStateProperty.all(AppTheme.goldColor),
-                                columns: const [
-                                  DataColumn(label: Text("Organismo", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("401", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("402", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("403", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("404", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("405", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("406", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("407", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("408", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("409", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("410", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("411", style: TextStyle(color: Colors.black))),
-                                  DataColumn(label: Text("total", style: TextStyle(color: Colors.black))),
-                                ],
-                                rows: [
-                                  // Filas de datos (cada organismo)
-                                  ...controller.res.map((resumen) {
-                                    return DataRow(
-                                      cells: [
-                                        DataCell(
-                                          ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                              maxWidth: MediaQuery.of(context).size.width * 0.3,
-                                            ),
-                                            child: Tooltip(
-                                              message: resumen.organismo,
-                                              child: Text(
-                                                resumen.organismo.length > 20
-                                                    ? '${resumen.organismo.substring(0, 20)}...'
-                                                    : resumen.organismo,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(color: Colors.black),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        DataCell(Text(resumen.partida401.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida402.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida403.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida404.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida405.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida406.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida407.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida408.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida409.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida410.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.partida411.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                        DataCell(Text(resumen.total.toStringAsFixed(2), style: TextStyle(color: Colors.black))),
-                                      ],
-                                    );
-                                  }).toList(),
-
-                                  // 2. Fila de total general (solo si hay datos)
-                                  if (controller.res.isNotEmpty)
-                                    DataRow(
-                                      color: MaterialStateProperty.all(Colors.yellow[100]!),
-                                      cells: [
-                                        DataCell(
-                                          Text(
-                                            "Total General",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                        // 11 celdas vacías para partidas 401 a 411
-                                        ...List.filled(11, DataCell(Text(" "))),
-                                        // Celda de total
-                                        DataCell(
-                                          Text(
-                                            "Bs ${controller.total_monto.value.toStringAsFixed(2)}",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                    child: Center(
+                      child: Container(
+                        height: screenHeight * 1.5, // Hace el contenedor más alto que la pantalla
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            SizedBox(height: screenHeight * 0.3), // 40% de espacio vacío
+                            // Tu contenido del mensaje aquí
+                            Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.green[50],
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.green, width: 1),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.green,
+                                    size: 48,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    "¡Su reporte ha sido generado!",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green[800],
                                     ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    "Ya puede descargar el Documento",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.green[700],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton.icon(
+                                    onPressed: () async {
+                                      await controller.descargarReporte();
+                                    },
+                                    icon: const Icon(Icons.download),
+                                    label: const Text("Descargar Reporte"),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppTheme.goldColor,
+                                      foregroundColor: Colors.black,
+                                    ),
+                                  ),
                                 ],
-
-
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   );
                 }),
-              ),
+              )
             ],
           ),
         ),

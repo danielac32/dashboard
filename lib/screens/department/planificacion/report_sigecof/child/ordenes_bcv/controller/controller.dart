@@ -50,22 +50,39 @@ class BCVController extends GetxController {
   }
 
 
+
+
   Future<void> cargar(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
 
+      final fileName = 'reporte_bcv_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      await ServicePlanificacion.downloadExcelReport(
+        url: 'api/query/transmisiones/excel',
+        startDate: DateFormat('dd/MM/yyyy').format(desde),
+        endDate: DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))),
+        fileName: fileName,
+      );
+    } catch (e) {
+      SnackbarAlert.error(message: "${e}",durationSeconds: 5);
+    }
+    cargando(false);
+  }
+
+  Future<void> cargar2(DateTime desde, DateTime hasta) async {
+    cargando(true);
+    try {
+      jsonDataAlmacenado.clear();
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
       final jsonData = await ServicePlanificacion.post('api/query/transmisiones', {}, queryParams: queryParams);
       jsonDataAlmacenado = jsonData as List<dynamic>;
-      final List<Bcv> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => Bcv.fromJson(item)).toList();
-      resultados(datosLista);
-      updatePagination();
+
     } catch (e) {
       SnackbarAlert.error(message: "error mientras se cargaba la lista",durationSeconds: 5);
-      resultados([]);
+
     }
     cargando(false);
   }
@@ -106,7 +123,7 @@ class BCVController extends GetxController {
   Future<void> descargarReporte() async {
     cargando(true);
 
-    if (resultados.isEmpty) {
+    if (jsonDataAlmacenado.isEmpty) {
       SnackbarAlert.warning(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
       return;
     }

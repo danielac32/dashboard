@@ -8,6 +8,7 @@ import '../../screens/department/cuenta_unica/CuentaUnica.dart';
 import '../../screens/department/egreso/egreso.dart';
 import '../../screens/department/planificacion/planificacion.dart';
 import '../../screens/department/tecnologia/dgtic.dart';
+import '../../screens/extern_reports/ivss/ivss.dart';
 import '../../vataciones/index.dart';
 //import '../../screens/user/dashboard_user.dart';
 
@@ -50,6 +51,7 @@ class AppRoutes {
   static const String dashboardInversionesValores = '/inversionesvalores';
   static const String dashboardConsultoriaJuridica = '/consultoriajuridica';
 
+  static const String externReports_ivss = "/ivss";
 
   // Lista de rutas para GetPages
   static final List<GetPage> routes = [
@@ -60,6 +62,7 @@ class AppRoutes {
     GetPage(name: dashboardEgreso, page: () => Egreso(),middlewares: [AuthMiddleware()]),
     GetPage(name: dashboardCuentaUnica, page: () => CuentaUnica(),middlewares: [AuthMiddleware()]),
     GetPage(name: dashboardTecnologia, page: () => Dgtic(),middlewares: [AuthMiddleware()]),
+    GetPage(name: externReports_ivss, page: () => Ivss(),middlewares: [AuthMiddleware()]),
 
     //GetPage(name: dashboardAdmin, page: () => DashboardAdmin()),
     //GetPage(name: dashboardUser, page: () => DashboardUser()),

@@ -57,12 +57,32 @@ class RetencionController extends GetxController {
   }
 
 
+
+
+
   Future<void> cargarRetencion(DateTime desde, DateTime hasta) async {
+    cargando(true);
+    try {
+
+      final fileName = 'retenciones_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      await ServiceCuentaUnica.downloadExcelReport(
+        url: 'api/query/retenciones/excel',
+        startDate: DateFormat('dd/MM/yyyy').format(desde),
+        endDate: DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))),
+        fileName: fileName,
+      );
+    } catch (e) {
+      SnackbarAlert.error(message: "${e}",durationSeconds: 5);
+    }
+    cargando(false);
+  }
+
+  Future<void> cargarRetencion2(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
       jsonDataAlmacenado.clear();
       final jsonData = await ServiceCuentaUnica.post('api/query/retenciones', {}, queryParams: queryParams);

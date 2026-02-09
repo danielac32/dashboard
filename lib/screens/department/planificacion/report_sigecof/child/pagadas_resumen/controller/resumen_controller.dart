@@ -54,25 +54,41 @@ class PagadasResumenController extends GetxController {
   }
 
 
-
-
   Future<void> cargarPagadasResumen(DateTime desde, DateTime hasta) async {
+    cargando(true);
+    try {
+
+      final fileName = 'pagadas_resumen_${DateFormat('yyyyMMdd').format(DateTime.now())}.xlsx';
+      await ServicePlanificacion.downloadExcelReport(
+        url: 'api/query/pagadas_resumen/excel',
+        startDate: DateFormat('dd/MM/yyyy').format(desde),
+        endDate: DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))),
+        fileName: fileName,
+      );
+    } catch (e) {
+      SnackbarAlert.error(message: "${e}",durationSeconds: 5);
+    }
+    cargando(false);
+  }
+
+  Future<void> cargarPagadasResumen2(DateTime desde, DateTime hasta) async {
     cargando(true);
     try {
 
       final queryParams = {
         'desde': DateFormat('dd/MM/yyyy').format(desde),
-        'hasta': DateFormat('dd/MM/yyyy').format(hasta),
+        'hasta': DateFormat('dd/MM/yyyy').format(hasta.add(Duration(days: 1))), // Sumar 1 día
       };
+      jsonDataAlmacenado.clear();
       final jsonData = await ServicePlanificacion.post('api/query/pagadas_resumen', {}, queryParams: queryParams);
-      final List<PagadasResumen> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => PagadasResumen.fromJson(item)).toList();
-      res(datosLista);
-      final listaJson = res.map((item) => item.toJson()).toList();
-      jsonDataAlmacenado = listaJson;
+      //final List<PagadasResumen> datosLista = (jsonData as List).cast<Map<String, dynamic>>().map((item) => PagadasResumen.fromJson(item)).toList();
+      //res(datosLista);
+      //final listaJson = res.map((item) => item.toJson()).toList();
+      jsonDataAlmacenado = jsonData;//listaJson;
     } catch (e) {
       //print('Error aqui: $e');
       SnackbarAlert.error(message: "error mientras se cargaba la lista",durationSeconds: 5);
-      res([]);
+
     }
     cargando(false);
   }
@@ -90,7 +106,7 @@ class PagadasResumenController extends GetxController {
 
   Future<void> descargarReporte() async {
     cargando(true);
-    if (res.isEmpty) {
+    if (jsonDataAlmacenado.isEmpty) {
       SnackbarAlert.warning(title: "Advertencia", message: "No hay datos para generar el reporte", durationSeconds: 1);
       return;
     }

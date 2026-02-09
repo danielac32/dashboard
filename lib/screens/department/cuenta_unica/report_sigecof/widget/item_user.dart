@@ -28,6 +28,8 @@ class ItemsUser extends StatelessWidget {
     3: AppScreen.parafiscales_ivss,
     4: AppScreen.retenciones,
     5: AppScreen.islr,
+    6: AppScreen.formato_iva_seniat,
+    7: AppScreen.ordenes_devueltas
   };
 
   // Método reutilizable para manejar el tap
